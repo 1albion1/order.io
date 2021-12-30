@@ -1,0 +1,11 @@
+from django.urls import path
+from . import views
+app_name = "order"
+urlpatterns = [
+    path("daily_orders",views.daily_orders,name="daily_orders"),
+    path("create_order",views.create_order,name="create_order"),
+    path("<int:pk>",views.view_order,name="view_order"),
+    path("user_order_history",views.user_order_history,name="user_order_history"),
+    #path("delete_order<int:pk>",views.delete_order,name="delete_order"),
+    path("change_order_status/<int:pk>/<int:status>",views.change_order_status,name="change_order_status")
+]

@@ -1,0 +1,13 @@
+
+
+{% for user in users %}
+{{user.username}}
+{{user.role}}
+{{user.employee.daily_allowance}}
+{{user.employee.weekly_allowance}}
+<a href="{% url 'update_user' user.id %}">Update</a> 
+<a href="{% url 'delete_user' user.id %}">Delete</a> 
+<br>
+{% endfor %}
+
+  

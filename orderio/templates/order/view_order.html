@@ -1,0 +1,16 @@
+Order ID:{{order.pk}}<br>
+Meals:
+<ol>
+{% for meal in order.meals.all %}
+  <li>{{meal}}</li>
+{% endfor %}
+</ol>
+Weekly menu: {{order.menu.weekly_menu.week}}<br>
+{% for day in order.menu.DAYS %}
+{% if day.0 == order.menu.created_for %}
+  Menu for: {{day.1}}
+{% endif %}
+{% endfor %}<br>
+Created at: {{order.created_at}}<br>
+Order status: {{order.order_status}}<br>
+Created by: {{order.employee.user.username}}

@@ -1,0 +1,29 @@
+{% extends "../base.html" %}
+{% block content %}
+<form method="post" action="">
+    {% csrf_token %}
+    {{form.username.label}}
+    {{form.username}}<br>
+    {{form.first_name.label}}
+    {{form.first_name}}<br>
+    {{form.last_name.label}}
+    {{form.last_name}}<br>
+    {{form.email.label}}
+    {{form.email}}<br>
+    {{form.password1.label}}
+    {{form.password1}}<br>
+    {{form.password2.label}}
+    {{form.password2}}
+    
+    {{form.role}}
+    {{form.errors}}
+    {% for message in messages %}
+      {{message}}
+    {% endfor %}
+    <input type="submit" value="Register">
+</form>
+
+
+
+  
+{% endblock %}

@@ -1,0 +1,26 @@
+{% for message in messages %}
+        <div class="alert alert-{{message.level_tag}}  alert-dismissible fade show">
+            {{message}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+{% endfor %}
+<form method="post" action="">
+    {% csrf_token %}
+{{form.name.label}}
+{{form.name}}<br>
+{{form.description.label}}<br>
+{{form.description}}<br>
+<div class="alert alert-danger">
+    {% if form.errors %}
+      {% for field in form %}
+          {% for error in field.errors %} 
+              <div class="alert alert-danger">
+                  <strong>{{ error|escape }}</strong>
+              </div>
+          {% endfor %}
+      {% endfor %}
+    {% endif %}
+</div>
+
+<input type="submit" class="" value="Create Category">
+</form>

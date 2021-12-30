@@ -1,0 +1,13 @@
+{% if request.user.employee.profile_pic %}
+<img src="{{request.user.employee.profile_pic.url}}" width="200px"> 
+{% endif %}
+
+
+<form action="" enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+    
+    {{e_form}}
+    <input type="submit" value="Update" class="btn btn-success">
+</form>
+
+<a href='{% url "change_password" %}'>Change password</a>

@@ -1,0 +1,70 @@
+
+  {% extends "../base.html" %}
+  {% load static %}
+  {% block content %}
+  {% for message in messages %}
+  <div class="alert alert-{{message.level_tag}}  alert-dismissible fade show">
+      {{message}}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% endfor %}
+  Menu for: {{menu.created_for}}<br>
+  Menu status: {{menu_status}}<br>
+  Your budget for this menu: {{menu_budget}}
+  <br>
+  {% for meal in meals%}
+  {{meal.name}}
+  {{meal.description}}
+  {{meal.calories}}
+  {{meal.price}}
+
+  <button value="{{meal.id}}"  id="add-btn{{meal.id}}" class="btn btn-info btn-sm" data-url="{% url 'user:add_to_order' %}">Add to Order</button>
+  <br>
+  {% endfor %}
+
+  
+  
+ 
+  <div  class="col-md-5 col-lg-4 order-md-last">
+    <div id="menu-items">
+    <h4 class="d-flex justify-content-between align-items-center mb-3">
+      <span class="text-primary">Your order</span>
+      
+      <span class="badge bg-primary rounded-pill">{% with bag|length as b %}
+        {{b}}
+        {% endwith %}</span>
+    </h4>
+    
+    <ul class="list-group mb-3">
+      {% for i in bag.get_menu_items.values %}
+      <li class="list-group-item d-flex justify-content-between lh-sm">
+        <div>
+          <h6 class="my-0">{{i.name}}</h6>
+          <small class="text-muted">{{i.description|truncatechars:30}}</small>
+        </div>
+        <span class="text-muted">${{i.price}} 
+          <button class="btn"  id="del-btn{{i.id}}" value="{{i.id}}" data-url="{% url 'user:add_to_order' %}">
+          <i class="bi bi-x-lg text-danger"></i>
+        </button></span>
+        
+      </li>
+      {% endfor %}
+      <li class="list-group-item d-flex justify-content-between">
+        <span>Menu total price (USD)</span>
+        <strong>${{ bag.get_total_price|floatformat:2 }}</strong>
+      </li>
+    </ul>
+
+    <form class="card p-2" action="{% url 'order:create_order' %}" method="post" >
+      {% csrf_token %}
+      <div class="input-group">
+        <input type="hidden" name="menu_id" value="{{menu.id}}">
+        <button type="submit" class="btn btn-secondary {% if bag|length == 0 %}disabled{% endif %}">COMPLETE ORDER</button>
+      </div>
+    </form>
+  </div>
+  </div>
+
+
+  <script src="{% static 'js/create_order.js' %}"></script>
+  {% endblock%}

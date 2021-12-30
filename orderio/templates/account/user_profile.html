@@ -1,0 +1,45 @@
+<form action="" method="POST" enctype="multipart/form-data">
+{% csrf_token %}
+Basic info: 
+
+<hr>
+Username:
+{{user.username}}
+first:
+{{form.first_name}}
+Last:
+{{form.last_name}}
+Email:
+{{user.email}}
+<hr>
+Other info:
+<hr>
+{% if form.daily_allowance %}
+{{form.daily_allowance.label}}
+{{form.daily_allowance}}
+{% endif %}
+{% if form.weekly_allowance %}
+{{form.weekly_allowance}}
+{{form.weekly_allowance}}
+{% endif %}
+{% if form.department %}
+{{form.department}}
+{% endif %}
+
+{% if form.phone_number %}
+{{form.phone_number}}
+{% endif %}
+
+
+
+{% for field in form.visible_fields %}
+    {% if field.errors %}
+        <span>{{ field.errors|striptags }}</span>
+    {% endif %}
+{% endfor %}
+<p>{{form.errors}}</p>
+{% for message in messages %}
+  <div class="alert alert.success">{{message}}</div>
+{% endfor %}
+<input type="submit" value="Save">
+</form>

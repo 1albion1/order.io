@@ -1,0 +1,39 @@
+{% extends "../base.html" %}
+{% block content %}
+<a href="{% url 'meal:all_meals' %}">Back</a>
+{% for message in messages %}
+        <div class="alert alert-{{message.level_tag}}  alert-dismissible fade show">
+            {{message}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+{% endfor %}
+<form method="post" action="" enctype="multipart/form-data">
+    {% csrf_token %}
+{{form.name.label}}
+{{form.name}}<br>
+{{form.description.label}}<br>
+{{form.description}}<br>
+{{form.price.label}}<br>
+{{form.price}}<br>
+{{form.calories.label}}<br>
+{{form.calories}}<br>
+{{form.meal_img.label}}<br>
+{{form.meal_img}}<br>
+{{form.category.label}}<br>
+{{form.category}}<br>
+
+    {% if form.errors %}
+      {% for field in form %}
+          {% for error in field.errors %} 
+              <div class="alert alert-danger">
+                  <strong>{{ error|escape }}</strong>
+              </div>
+          {% endfor %}
+      {% endfor %}
+    {% endif %}
+
+
+<input type="submit" class="" value="Save">
+</form>
+
+{% endblock %}

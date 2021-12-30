@@ -1,0 +1,50 @@
+{% extends "../base.html" %}
+{% load static %}
+{% block content %}
+  {% if not orders %}
+    No orders yet!
+  {% endif %}
+
+  {% for order in orders %}
+  
+    {{order.employee}}
+    {% for meal in order.meals.all %}
+      {{meal.name}}
+    {% endfor %}
+    {{order.created_at}}<br>
+    {{order.order_cost }}<br>
+    <a href="{{order.get_absolute_url}}" class="btn btn-info">View</a>
+    {% if order.order_status == "Pending" %}
+      <a href="{% url 'order:change_order_status' order.pk 1 %}" class="btn btn-success">Accept</a> 
+      <button data-url="{% url 'order:change_order_status' order.pk 0 %}" class="btn btn-danger" 
+      data-bs-toggle="modal" data-bs-target="#exampleModal" value="{% url 'order:change_order_status' order.pk 0 %}" id="del-btn{{order.pk}}">Deny</button> 
+    {% elif order.order_status == "Accepted" %}
+    <a href="#" class="btn btn-success btn-sm disabled"><i class="bi bi-check-circle"></i> Accepted</a> 
+    {% else%}
+    <a href="#" class="btn btn-danger btn-sm disabled"><i class="bi bi-x-circle"></i> Denied</a> 
+
+    {% endif %}
+    <br>
+  {% endfor %}
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">You are about to deny an order!</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to deny this order?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-danger" id="conf-btn">Deny</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script src="{% static 'js/danger-confirmation.js' %}"></script>
+{% endblock content %}

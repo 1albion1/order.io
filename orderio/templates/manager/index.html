@@ -1,0 +1,20 @@
+{% extends "../base.html" %}
+{% block content %}
+{% for message in messages %}
+        <div class="alert alert-{{message.level_tag}}  alert-dismissible fade show">
+            {{message}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+{% endfor %}
+
+<a href="{% url 'meal:index' %}" class="btn btn-primary">Meals</a> 
+<a href="{% url 'create_user' %}" class="btn btn-primary">Create user</a> 
+<a href="{% url 'menu:weekly_menu' %}" class="btn btn-primary">This week's Menu</a>
+<a href="{% url 'menu:all_weekly_menus' %}" class="btn btn-primary">Weekly menu History</a>
+ Menu</a>
+<a href="{'order:daily_orders' %}" class="btn btn-primary">Daily Orders</a>
+<a href="{% url 'meal:create_meal' %}" class="btn btn-primary">Create meal</a>
+<a href="" class="btn btn-primary">Reports</a>
+<a href="{% url 'user_list' %}" class="btn btn-primary">User List</a>
+<a href="{% url 'change_password' %}" class="btn btn-primary">Change Password</a>
+{% endblock%}
