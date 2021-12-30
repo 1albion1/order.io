@@ -44,6 +44,8 @@ def weekly_menu_all_orders(request,pk):
 
 def view_weekly_menu(request,pk):
     wm = get_object_or_404(WeeklyMenu,pk=pk)
+    context = {"wm":wm}
+    return render(request,"menu/view_weekly_menu.html",context)
 
 
 @login_required(login_url="login")

@@ -17,6 +17,7 @@
               <th>Calories</th>
               <th>Price</th>
               <th>Description</th>
+              <th>Category</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -28,6 +29,7 @@
               <td>{{meal.calories}} </td>
               <td>{{meal.price}} </td>
               <td>{{meal.description|truncatechars:150}}</td>
+              <td>{{meal.category.name}}</td>
               <td>
                 {% if bag|length < 7 %}
                 
@@ -98,6 +100,4 @@
 
 <!-- table filter js -->
 <script src="{% static 'js/table-filter.js' %}"></script>
-
-
-t>
+{% endblock content %}

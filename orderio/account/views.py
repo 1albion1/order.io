@@ -114,5 +114,5 @@ def update_user(request,pk):
             messages.success(request,"Changes saved!")
             
     context={"user":user,"form":form}
-    return render(request,"account/user_profile.html",context)
+    return render(request,"account/update_user.html",context)
 

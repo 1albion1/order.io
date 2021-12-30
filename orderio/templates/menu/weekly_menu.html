@@ -1,42 +1,40 @@
 {% extends "../base.html" %}
 {% block content %}
 {% for message in messages %}
-  <div class="alert alert-{{message.level_tag}}  alert-dismissible fade show">
-      {{message}}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div>
+<div class="alert alert-{{message.level_tag}}  alert-dismissible fade show">
+  {{message}}
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
 {% endfor %}
 {% for menu in menus %}
 <ol>
   {% for day in menu.DAYS %}
-    {% if day.0 == menu.created_for %}
-      Menu for: {{day.1}}
-    {% endif %}
+  {% if day.0 == menu.created_for %}
+  Menu for: {{day.1}}
+  {% endif %}
   {% endfor %}
   <br>
   Meals:
   {% for meal in menu.meals.all %}
-  <li><a href="{{meal.get_absolute_url}}">{{meal.name}}</a></li> 
+  <li><a href="{{meal.get_absolute_url}}">{{meal.name}}</a></li>
   {% endfor %}
   {% if menu.approved %}
-  <a href="#" class="btn btn-success btn-sm disabled"><i class="bi bi-check-circle"></i>Approved</a> 
+  <a href="#" class="btn btn-success btn-sm disabled"><i class="bi bi-check-circle"></i>Approved</a>
   {%else%}
   {% if not menu.is_holiday %}
   {% if menu.meals.all.count > 0 %}
-  <a href="{% url 'menu:update_menu' menu.pk %}">Update</a> 
-  <a href="{% url 'menu:approve_menu' menu.pk %}">Approve</a> 
-
-  
-  {%else%} 
-  <a href="{% url 'menu:update_menu' menu.pk %}">Create</a> 
-  {% endif %}
-  {% endif %}
-  
-  {% if menu.is_holiday %}
-  <a href="{% url 'menu:make_menu_holiday' menu.pk %}" class="btn btn-danger">Holiday</a> 
+  <a href="{% url 'menu:update_menu' menu.pk %}">Update</a>
+  <a href="{% url 'menu:approve_menu' menu.pk %}">Approve</a>
   {%else%}
-  <a href="{% url 'menu:make_menu_holiday' menu.pk %}" class="btn btn-success">Working Day</a> 
+  <a href="{% url 'menu:update_menu' menu.pk %}">Create</a>
+  {% endif %}
+  {% endif %}
+  {% if menu.is_holiday %}
+  <a href="{% url 'menu:make_menu_holiday' menu.pk %}" class="btn btn-danger">Holiday</a>
+  {%else%}
+  <a href="{% url 'menu:make_menu_holiday' menu.pk %}" class="btn btn-success">Working Day</a>
   {% endif %}
   {% endif %}
 </ol>
-
+{% endfor %}
+{% endblock content %}
