@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import redirect, render,get_object_or_404
 from main.forms import UserProfileForm
 from main.decorators import allowed_users
 from main.session_handle import Custom_Session
@@ -9,13 +9,15 @@ from meal.models import Meal
 from menu.models import Menu,WeeklyMenu
 from django.utils import timezone
 from employee.employee_status import *
+from employee.models import Employee
 # Create your views here.
 @login_required(login_url="login")
 @allowed_users(allowed_roles=['user'])
 def index(request):
+    week = timezone.now().isocalendar().week
     budget_available = user_money_available(request)
-    context = {"budget_available":budget_available}
-    return render(request,'user/index.html',context)
+    context = {"budget_available":budget_available,"week":week}
+    return render(request,'employee/index.html',context)
 
 @login_required(login_url="login")
 @allowed_users(allowed_roles=['user'])
@@ -47,3 +49,11 @@ def add_to_order(request):
         response = JsonResponse({"id": meal_id})
         return response
     
+def change_daily_allowance(request,pk):
+    employee = get_object_or_404(Employee,pk=pk)
+    if request.method == 'POST':
+        employee.daily_allowance = request.POST.get('daily_allowance')
+        employee.save()
+        messages.success(request,f"Daily allowance changed for user {employee.user.username}")
+    return redirect("user_list")
+

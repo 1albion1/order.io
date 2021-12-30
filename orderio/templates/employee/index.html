@@ -7,7 +7,7 @@
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 {% endfor %}
-<a href="{% url 'user:daily_menu' %}">Daily menu</a> <br>
+<a href="{% url 'menu:view_weekly_menu' week %}">This weeks menu</a> <br>
 
 Your daily allowance is : {{request.user.employee.daily_allowance}}<br>
 Budget available: {{budget_available}}

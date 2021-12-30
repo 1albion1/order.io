@@ -13,7 +13,7 @@ urlpatterns = [
     
     #weekly
     path("weekly_menu",views.weekly_menu,name="weekly_menu"),
-    path("view_weekly_menu/<int:>",views.view_weekly_menu,name="view_weekly_menu"),
+    path("view_weekly_menu/<int:week>",views.view_weekly_menu,name="view_weekly_menu"),
     path("all_weekly_menus/",views.all_weekly_menus,name="all_weekly_menus"),
     path("<int:pk>/orders/",views.weekly_menu_all_orders,name="weekly_menu_all_orders"),
     # path("create_weekly_menu",views.create_weekly_menu,name="create_weekly_menu"),

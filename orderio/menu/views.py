@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.utils import timezone
 from menu.models import WeeklyMenu,Menu
 from meal.models import Meal
+from menu.custom_functions import user_or_manager
 
 #weekly menu
 @login_required(login_url="login")
@@ -42,12 +43,13 @@ def weekly_menu_all_orders(request,pk):
     context = {"orders":orders}
     return render(request,"menu/weekly_menu_all_orders.html",context)
 
-def view_weekly_menu(request,pk):
-    wm = get_object_or_404(WeeklyMenu,pk=pk)
+    
+def view_weekly_menu(request,week):
+    wm = get_object_or_404(WeeklyMenu,week=week)
     context = {"wm":wm}
-    return render(request,"menu/view_weekly_menu.html",context)
+    return user_or_manager(request,"view_weekly_menu",context)
 
-
+#daily menu
 @login_required(login_url="login")
 @allowed_users(allowed_roles=['manager'])
 def update_menu(request,pk):
@@ -56,8 +58,6 @@ def update_menu(request,pk):
     menu_meals = menu.meals.all()
     item_count = menu.meals.all().count()
     item_price_total = menu.get_menu_total_price()
-    
-
     if request.method == 'POST':
         avability = request.POST.get("avability")
         menu.avability = avability
@@ -79,7 +79,7 @@ def approve_menu(request,pk):
 def view_menu(request,pk):
     menu = get_object_or_404(Menu,pk=pk)
     context = {"menu":menu}
-    return render(request,"menu/view_menu.html",context)
+    return user_or_manager(request,"view_menu",context)
 
 def make_menu_holiday(request,pk):
     menu = get_object_or_404(Menu,pk=pk)

@@ -1,0 +1,18 @@
+<ol>
+{% for menu in wm.menu_set.all %}
+
+<li>
+    {% for day in menu.DAYS %}
+        {% if day.0 == menu.created_for %}
+            {{day.1}}
+        {% endif %}
+    {% endfor %}
+    {% if not menu.is_holiday %}
+    <a href="{{menu.get_absolute_url}}">View</a>
+    {% else %}
+    <a class="btn btn-danger btn-disabled">Holiday</a>
+    {% endif %}
+    
+</li> 
+{% endfor %}
+</ol>

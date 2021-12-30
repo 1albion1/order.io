@@ -14,7 +14,7 @@ class WeeklyMenu(models.Model):
         ordering = ('-week',)
     
     def get_absolute_url(self):
-        return reverse("menu:view_weekly_menu", kwargs={"pk": self.pk})
+        return reverse("menu:view_weekly_menu", kwargs={"week": self.week})
     
     def get_total_order_count(self):
         total = 0

@@ -5,6 +5,7 @@ urlpatterns = [
     path("",views.index,name="index"),
     path("employee_profile",views.employee_profile,name="employee_profile"),
     path("add_to_order",views.add_to_order,name="add_to_order"),
+    path("change_daily_allowance/<int:pk>",views.change_daily_allowance,name="change_daily_allowance"),
     #path("delete_employee",views.delete_employee,name="delete_employee")
     #path("update_employee",views.update_employee,name="update_employee")
 ]

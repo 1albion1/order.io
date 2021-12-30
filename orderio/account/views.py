@@ -22,7 +22,7 @@ def login_page(request):
             if user.role.name == "manager":
                 return redirect("manager:index")
             else:
-                return redirect("user:index")
+                return redirect("employee:index")
         else:
             messages.info(request,"Username or password is incorrect!")
     context = {}
