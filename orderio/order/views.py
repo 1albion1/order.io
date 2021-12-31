@@ -17,8 +17,9 @@ from meal.models import Meal
 def daily_orders(request):
     week = timezone.now().isocalendar().week
     day = timezone.now().isoweekday()
+    year = timezone.now().isocalendar().year
     try:
-        weekly_menu = get_object_or_404(WeeklyMenu,week=week)
+        weekly_menu = get_object_or_404(WeeklyMenu,week=week,year=year)
         menu = weekly_menu.menu_set.get(created_for=day)
         orders = menu.order_set.all()
         if not menu.approved:
@@ -43,6 +44,9 @@ def create_order(request):
         if menu.allowes_orders():
             if can_user_order(request,ss.get_total_price()):
                 meals = ss.get_menu_items()
+                for meal in meals.keys():
+                    if not menu.meals.filter(pk=meal):
+                        return HttpResponse("the meal is not on the menu")
                 total_price = ss.get_total_price()
                 order = Order(employee = employee, menu=menu,order_cost=total_price)
                 order.save()

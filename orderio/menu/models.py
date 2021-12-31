@@ -5,16 +5,16 @@ from django.urls import reverse
 # Create your models here.
 class WeeklyMenu(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
-    week = models.IntegerField(default=int(timezone.now().isocalendar().week),unique=True)
-    year = models.IntegerField(default=int(timezone.now().year))
+    week = models.IntegerField(default=int(timezone.now().isocalendar().week))
+    year = models.IntegerField(default=int(timezone.now().isocalendar().year))
     def __str__(self):
-        return "Year "+str(timezone.now().year)+" Week "+str(self.week)
+        return "Year "+str(self.year)+" Week "+str(self.week)
     
     class Meta:
         ordering = ('-week',)
     
     def get_absolute_url(self):
-        return reverse("menu:view_weekly_menu", kwargs={"week": self.week})
+        return reverse("menu:view_weekly_menu", kwargs={"week": self.week,"year":self.year})
     
     def get_total_order_count(self):
         total = 0

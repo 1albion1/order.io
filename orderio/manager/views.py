@@ -31,7 +31,7 @@ def population_chart(request,pk):
     for weekly_menu in weekly_menus.order_by('created_at')[:30]:
         for order in user.employee.order_set.filter(menu__weekly_menu = weekly_menu):
             total_spent+=order.order_cost
-        labels.append(weekly_menu.week)
+        labels.append(f'Week: {weekly_menu.week} {weekly_menu.year}')
         data.append(total_spent)
         total_spent=0
     

@@ -8,7 +8,7 @@
 </div>
 {% endfor %}
 <a href="{% url 'employee:daily_menu' %}">Today's menu</a> <br>
-<a href="{% url 'menu:view_weekly_menu' week %}">This weeks menu</a> <br>
+<a href="{% url 'menu:view_weekly_menu' week year %}">This weeks menu</a> <br>
 <a href="{% url 'order:user_order_history' %}">Order History</a> <br>
 <a href="{% url 'employee:employee_profile' %}">View Profile</a> <br>
 

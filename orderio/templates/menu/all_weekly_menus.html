@@ -1,5 +1,6 @@
 {% for wm in all_weekly_menus %}
     Week: <a href="{{wm.get_absolute_url}}">{{wm.week}} </a><br>
+    Year: {{wm.year}}<br>
     Created at: {{wm.created_at}}<br>
     Total Order Count: {{wm.get_total_order_count}}<br>
     <a href="{{wm.get_absolute_url}}"> More Details </a>

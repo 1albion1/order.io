@@ -12,12 +12,14 @@ from employee.employee_status import *
 from employee.models import Employee
 from django.http.response import HttpResponse
 # Create your views here.
+year = timezone.now().isocalendar().year
 @login_required(login_url="login")
 @allowed_users(allowed_roles=['user'])
 def index(request):
     week = timezone.now().isocalendar().week
+    
     budget_available = user_money_available(request)
-    context = {"budget_available":budget_available,"week":week}
+    context = {"budget_available":budget_available,"week":week,"year":year}
     return render(request,'employee/index.html',context)
 
 @login_required(login_url="login")
@@ -41,13 +43,14 @@ def daily_menu(request):
     day = timezone.now().isoweekday()
     menu_budget = user_money_available(request)
     try:
-        weekly_menu = get_object_or_404(WeeklyMenu,week=week)
+        weekly_menu = get_object_or_404(WeeklyMenu,week=week,year=year)
         menu = weekly_menu.menu_set.get(created_for=day)
         menu_status = "Available" if menu.allowes_orders() else "Expired"
+        print(menu_status)
         if not menu.approved:
-            return HttpResponse("The menu for today is not ready yet!")
+            return HttpResponse("The menu for today is not approved ready yet!")
     except:
-        return HttpResponse(f"The menu for {day} is not ready yet!")
+        return HttpResponse(f"The menu for today is not ready yet!")
     meals = menu.meals.all()
     context={"menu":menu,"meals":meals,"day":day,"menu_status":menu_status,"menu_budget":menu_budget}
     return render(request,'employee/daily_menu.html',context)

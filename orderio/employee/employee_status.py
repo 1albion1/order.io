@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.contrib import messages
 today = timezone.now().date()
 week = timezone.now().isocalendar().week
-
+year = timezone.now().isocalendar().year
 def has_order(request):
     user_orders = Order.objects.filter(created_at__date = today, employee = request.user.employee)
     if user_orders:
@@ -14,14 +14,14 @@ def has_order(request):
 def user_money_spent(request):
     employee = request.user.employee
     spent = 0
-    weekly_menu = WeeklyMenu.objects.get(week=week)
+    weekly_menu = WeeklyMenu.objects.get(week=week,year=year)
     for menu in weekly_menu.menu_set.all():
         for order in menu.order_set.filter(employee=employee):
             spent += order.order_cost
     return spent
 
 def allowance_until_now(request):
-    weekly_menu = WeeklyMenu.objects.get(week=week)
+    weekly_menu = WeeklyMenu.objects.get(week=week,year=year)
     total_working_days = weekly_menu.menu_set.all()
     weekday = timezone.now().isoweekday()
     days_until_now = 0

@@ -15,11 +15,12 @@ from menu.custom_functions import user_or_manager
 @allowed_users(allowed_roles=['manager'])
 def weekly_menu(request):
     week = timezone.now().isocalendar().week
+    year = timezone.now().isocalendar().year
     days = {1:"Moday",2:"Tuesday",3:"Wendnesday",4:"Thursday",5:"Friday",6:"Saturday",7:"Sunday"} 
     try:
-        weekly_menu = WeeklyMenu.objects.get(week=week)
+        weekly_menu = WeeklyMenu.objects.get(week=week,year=year)
     except:
-        weekly_menu = WeeklyMenu(week=week)
+        weekly_menu = WeeklyMenu(week=week,year=year)
         weekly_menu.save()
     menus = weekly_menu.menu_set.all()
     context={"weekly_menu":weekly_menu,"menus":menus,"days":days}
@@ -37,8 +38,8 @@ def weekly_menu_all_orders(request,pk):
     return render(request,"menu/weekly_menu_all_orders.html",context)
 
     
-def view_weekly_menu(request,week):
-    wm = get_object_or_404(WeeklyMenu,week=week)
+def view_weekly_menu(request,week,year):
+    wm = get_object_or_404(WeeklyMenu,week=week,year=year)
     context = {"wm":wm}
     return user_or_manager(request,"view_weekly_menu",context)
 
