@@ -7,11 +7,7 @@
             {{day.1}}
         {% endif %}
     {% endfor %}
-    {% if not menu.is_holiday %}
     <a href="{{menu.get_absolute_url}}">View</a>
-    {% else %}
-    <a class="btn btn-danger btn-disabled">Holiday</a>
-    {% endif %}
     
 </li> 
 {% endfor %}

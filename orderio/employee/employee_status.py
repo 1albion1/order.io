@@ -17,7 +17,7 @@ def user_money_spent(request):
     weekly_menu = WeeklyMenu.objects.get(week=week)
     for menu in weekly_menu.menu_set.all():
         for order in menu.order_set.filter(employee=employee):
-            spent += order.cost
+            spent += order.order_cost
     return spent
 
 def allowance_until_now(request):
@@ -29,7 +29,7 @@ def allowance_until_now(request):
         if int(day.created_for) > weekday:
             break
         else:
-            if not day.is_holiday:
+            if day.approved:
                 days_until_now += 1
     daily_allowance = request.user.employee.daily_allowance
     allowance_until_now = days_until_now*daily_allowance

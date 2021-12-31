@@ -10,6 +10,7 @@ from menu.models import Menu,WeeklyMenu
 from django.utils import timezone
 from employee.employee_status import *
 from employee.models import Employee
+from django.http.response import HttpResponse
 # Create your views here.
 @login_required(login_url="login")
 @allowed_users(allowed_roles=['user'])
@@ -35,19 +36,21 @@ def employee_profile(request):
 
 @login_required(login_url="login")
 @allowed_users(allowed_roles=['user'])
-def add_to_order(request):
-    ss = Custom_Session(request)
-    if request.POST.get('action') == 'add':
-        meal_id = int(request.POST.get('meal_id'))
-        meal = get_object_or_404(Meal,pk=meal_id)
-        ss.add(product=meal)
-        response = JsonResponse({"id": meal.id})
-        return response
-    if request.POST.get('action') == 'remove':
-        meal_id = str(request.POST.get('meal_id'))
-        ss.remove(product=meal_id)
-        response = JsonResponse({"id": meal_id})
-        return response
+def daily_menu(request):
+    week = timezone.now().isocalendar().week
+    day = timezone.now().isoweekday()
+    menu_budget = user_money_available(request)
+    try:
+        weekly_menu = get_object_or_404(WeeklyMenu,week=week)
+        menu = weekly_menu.menu_set.get(created_for=day)
+        menu_status = "Available" if menu.allowes_orders() else "Expired"
+        if not menu.approved:
+            return HttpResponse("The menu for today is not ready yet!")
+    except:
+        return HttpResponse(f"The menu for {day} is not ready yet!")
+    meals = menu.meals.all()
+    context={"menu":menu,"meals":meals,"day":day,"menu_status":menu_status,"menu_budget":menu_budget}
+    return render(request,'employee/daily_menu.html',context)
     
 def change_daily_allowance(request,pk):
     employee = get_object_or_404(Employee,pk=pk)

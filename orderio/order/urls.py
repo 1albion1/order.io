@@ -7,5 +7,6 @@ urlpatterns = [
     path("<int:pk>",views.view_order,name="view_order"),
     path("user_order_history",views.user_order_history,name="user_order_history"),
     #path("delete_order<int:pk>",views.delete_order,name="delete_order"),
-    path("change_order_status/<int:pk>/<int:status>",views.change_order_status,name="change_order_status")
+    path("change_order_status/<int:pk>/<int:status>",views.change_order_status,name="change_order_status"),
+    path("add_to_order",views.add_to_order,name="add_to_order"),
 ]

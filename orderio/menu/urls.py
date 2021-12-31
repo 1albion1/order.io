@@ -1,16 +1,16 @@
 from django.urls import path
 from . import views
 
-app_name = "manager"
+app_name = "menu"
 urlpatterns = [
-    # path("create_menu/<int:weekly_id>/",views.create_menu,name="create_menu"),
+    path("create_menu/<int:weekly_id>/",views.create_menu,name="create_menu"),
     path("add_to_menu/<int:meal_pk>/<int:menu_pk>",views.add_to_menu,name="add_to_menu"),
     path("remove_from_menu/<int:meal_pk>/<int:menu_pk>",views.remove_from_menu,name="remove_from_menu"),
     path("update_menu/<int:pk>",views.update_menu,name="update_menu"),
     path("approve_menu/<int:pk>",views.approve_menu,name="approve_menu"),
     path("<int:pk>/",views.view_menu,name="view_menu"),
     path("make_menu_holiday/<int:pk>",views.make_menu_holiday,name="make_menu_holiday"),
-    
+    path("update_session/",views.update_session,name="update_session"),
     #weekly
     path("weekly_menu",views.weekly_menu,name="weekly_menu"),
     path("view_weekly_menu/<int:week>",views.view_weekly_menu,name="view_weekly_menu"),

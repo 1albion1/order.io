@@ -1,9 +1,9 @@
 {% for order in orders %}
-{{order.created_at}}
+ <a href="{{order.get_absolute_url}}">{{order.created_at}}</a>
 {% for meal in order.meals.all %}
   {{meal}}
 {% endfor %}
-{{order.accepted}}
+{{order.order_status}}
 {{order.order_cost}}
 <hr>
 {% endfor %}

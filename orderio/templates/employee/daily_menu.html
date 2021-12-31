@@ -18,7 +18,7 @@
   {{meal.calories}}
   {{meal.price}}
 
-  <button value="{{meal.id}}"  id="add-btn{{meal.id}}" class="btn btn-info btn-sm" data-url="{% url 'user:add_to_order' %}">Add to Order</button>
+  <button value="{{meal.id}}"  id="add-btn{{meal.id}}" class="btn btn-info btn-sm" data-url="{% url 'order:add_to_order' %}">Add to Order</button>
   <br>
   {% endfor %}
 
@@ -43,7 +43,7 @@
           <small class="text-muted">{{i.description|truncatechars:30}}</small>
         </div>
         <span class="text-muted">${{i.price}} 
-          <button class="btn"  id="del-btn{{i.id}}" value="{{i.id}}" data-url="{% url 'user:add_to_order' %}">
+          <button class="btn"  id="del-btn{{i.id}}" value="{{i.id}}" data-url="{% url 'order:add_to_order' %}">
           <i class="bi bi-x-lg text-danger"></i>
         </button></span>
         

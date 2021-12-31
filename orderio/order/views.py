@@ -8,7 +8,8 @@ from .models import Order
 from employee.models import Employee
 from django.contrib import messages
 from django.utils import timezone
-from employee.employee_status import *
+from employee.employee_status import can_user_order
+from meal.models import Meal
 # Create your views here.
 # Create your views here.
 @login_required(login_url="login")
@@ -50,12 +51,11 @@ def create_order(request):
                 ss.clear()
                 messages.success(request,"Your order was created successfully!")
             else:
-                return redirect("user:index")
+                return redirect("employee:index")
         else:
             messages.warning(request,"Menu does not allow orders anymore")
-            return redirect("user:index")
-        
-    return redirect("user:index")
+            return redirect("employee:index")
+    return redirect("employee:index")
 
 
 
@@ -71,7 +71,7 @@ def user_order_history(request):
     context={
         "orders":orders
     }
-    return render(request,"user/order_history.html",context)
+    return render(request,"employee/order_history.html",context)
 
 def change_order_status(request,pk,status):
     order = get_object_or_404(Order,pk=pk)
@@ -83,3 +83,19 @@ def change_order_status(request,pk,status):
         return redirect("order:daily_orders")
     order.save()
     return redirect("order:daily_orders")
+
+@login_required(login_url="login")
+@allowed_users(allowed_roles=['user'])
+def add_to_order(request):
+    ss = Custom_Session(request)
+    if request.POST.get('action') == 'add':
+        meal_id = int(request.POST.get('meal_id'))
+        meal = get_object_or_404(Meal,pk=meal_id)
+        ss.add(product=meal)
+        response = JsonResponse({"id": meal.id})
+        return response
+    if request.POST.get('action') == 'remove':
+        meal_id = str(request.POST.get('meal_id'))
+        ss.remove(product=meal_id)
+        response = JsonResponse({"id": meal_id})
+        return response

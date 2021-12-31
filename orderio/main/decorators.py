@@ -5,7 +5,12 @@ from django.shortcuts import redirect
 def authenticated_user(view_func):
     def wrapper(request,*args, **kwargs):
         if request.user.is_authenticated:
-            return redirect(f"manager:index")
+            if request.user.role.name == 'manager':
+                return redirect("manager:index")
+            elif request.user.role.name == 'user':
+                return redirect("employee:index")
+            else:
+                return HttpResponse("The template for this user role is not ready yet.")
         return view_func(request,*args, **kwargs)
     return wrapper
 

@@ -1,0 +1,26 @@
+{% extends "../base.html" %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css" integrity="sha512-yVvxUQV0QESBt1SyZbNJMAwyKvFTLMyXSyBHDO4BG5t7k/Lw34tyqlSDlKIrIENIzCl+RVUNjmCPG+V/GMesRw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+Select week to see how much order has each department placed.
+<select id="user-select" class="chosen">
+  <option default>Select week</option>
+    {% for weekly_menu in weekly_menus%}
+      <option value="{{weekly_menu.id}}" data-url="{% url 'manager:chart_total_orders_by_department' weekly_menu.id %}">
+        {{weekly_menu}}
+      </option>
+    {% endfor %}
+</select>
+<div id="container" style="width: 75%;">
+    <canvas id="population-chart" ></canvas>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js" integrity="sha512-rMGGF4wg1R73ehtnxXBt5mbUfN9JUJwbk21KMlnLZDJh7BkPmeovBuddZCENJddHYYMkCh9hPFnPmS9sspki8g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js" integrity="sha256-hlKLmzaRlE8SCJC1Kw8zoUbU8BxA+8kR3gseuKfMjxA=" crossorigin="anonymous"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+  <script src='{% static "js/total_orders_by_department.js" %}'></script> 
+  <script type="text/javascript">
+    $(".chosen").chosen();
+  </script>
+{% endblock content %}

@@ -39,7 +39,7 @@
               <td>{{meal.description|truncatechars:150}}</td>
               <td>
                 {% if bag|length < 7 %}
-                <button class="btn btn-success" id="add-btn{{meal.id}}" value="{{meal.id}}" data-url="{% url 'manager:add_to_menu' %}">Add</button>
+                <button class="btn btn-success" id="add-btn{{meal.id}}" value="{{meal.id}}" data-url="{% url 'menu:update_session' %}">Add</button>
                 {% else %}
                 <button class="btn btn-success disabled" >Add</button>
                 {% endif %}
@@ -76,7 +76,7 @@
             <small class="text-muted">{{i.description|truncatechars:30}}</small>
           </div>
           <span class="text-muted">${{i.price}} 
-            <button class="btn"  id="del-btn{{i.id}}" value="{{i.id}}" data-url="{% url 'manager:add_to_menu' %}">
+            <button class="btn"  id="del-btn{{i.id}}" value="{{i.id}}" data-url="{% url 'menu:update_session' %}">
             <i class="bi bi-x-lg text-danger"></i>
           </button></span>
           
@@ -93,7 +93,13 @@
         <div class="input-group">
           <select name="weekday">
             {% for option in available_options %}
-            <option value="{{option}}">{{option}}</option>
+            <option value="{{option}}">
+              {% for day in all_options %}
+                  {% if day.0 == option %}
+                      {{day.1}}
+                  {% endif %}
+              {% endfor %}
+            </option>
             {% endfor %}
             
           </select>

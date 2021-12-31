@@ -5,10 +5,10 @@ from django.urls import reverse
 # Create your models here.
 class WeeklyMenu(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
-    week = models.IntegerField(default=int(timezone.now().isocalendar().week))
-    
+    week = models.IntegerField(default=int(timezone.now().isocalendar().week),unique=True)
+    year = models.IntegerField(default=int(timezone.now().year))
     def __str__(self):
-        return "Week "+str(self.week)
+        return "Year "+str(timezone.now().year)+" Week "+str(self.week)
     
     class Meta:
         ordering = ('-week',)
@@ -48,7 +48,6 @@ class Menu(models.Model):
     approved = models.BooleanField(default=False)
     approved_at = models.DateTimeField(blank=True,null=True)
     created_for = models.IntegerField(choices=DAYS,default=Monday,null=True,blank=True)
-    is_holiday = models.BooleanField(default=False)
     
     class Meta:
         ordering = ('created_for',)

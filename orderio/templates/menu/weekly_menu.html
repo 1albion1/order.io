@@ -21,20 +21,13 @@
   {% if menu.approved %}
   <a href="#" class="btn btn-success btn-sm disabled"><i class="bi bi-check-circle"></i>Approved</a>
   {%else%}
-  {% if not menu.is_holiday %}
-  {% if menu.meals.all.count > 0 %}
   <a href="{% url 'menu:update_menu' menu.pk %}">Update</a>
+  {% if menu.meals.all.count > 0 %}
   <a href="{% url 'menu:approve_menu' menu.pk %}">Approve</a>
-  {%else%}
-  <a href="{% url 'menu:update_menu' menu.pk %}">Create</a>
-  {% endif %}
-  {% endif %}
-  {% if menu.is_holiday %}
-  <a href="{% url 'menu:make_menu_holiday' menu.pk %}" class="btn btn-danger">Holiday</a>
-  {%else%}
-  <a href="{% url 'menu:make_menu_holiday' menu.pk %}" class="btn btn-success">Working Day</a>
   {% endif %}
   {% endif %}
 </ol>
 {% endfor %}
+
+<a href="{% url 'menu:create_menu' weekly_menu.pk %}" class="btn btn-danger">Create</a>
 {% endblock content %}
