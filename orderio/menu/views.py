@@ -21,13 +21,6 @@ def weekly_menu(request):
     except:
         weekly_menu = WeeklyMenu(week=week)
         weekly_menu.save()
-        for day in Menu.DAYS:
-            if day[0] in (6,7):
-                menu = Menu.objects.create(weekly_menu = weekly_menu,created_for=day[0],is_holiday=True)
-                menu.save()
-            else:
-                menu = Menu.objects.create(weekly_menu = weekly_menu,created_for=day[0])
-                menu.save()
     menus = weekly_menu.menu_set.all()
     context={"weekly_menu":weekly_menu,"menus":menus,"days":days}
     return render(request,'menu/weekly_menu.html',context)
@@ -81,19 +74,13 @@ def view_menu(request,pk):
     context = {"menu":menu}
     return user_or_manager(request,"view_menu",context)
 
-def make_menu_holiday(request,pk):
-    menu = get_object_or_404(Menu,pk=pk)
-    menu.is_holiday = False if menu.is_holiday else True
-    menu.save()
-    return redirect("menu:weekly_menu")
-
 @login_required(login_url="login")
 @allowed_users(allowed_roles=['manager'])
 def add_to_menu(request,meal_pk,menu_pk):
+    print(meal_pk)
     menu = get_object_or_404(Menu,pk=menu_pk)
     meal = get_object_or_404(Meal,pk=meal_pk)
     menu.meals.add(meal)
-    print(menu.meals.all())
     return redirect("menu:update_menu",pk=menu_pk)
     
 def remove_from_menu(request,meal_pk,menu_pk):
@@ -101,6 +88,64 @@ def remove_from_menu(request,meal_pk,menu_pk):
     meal = get_object_or_404(Meal,pk=meal_pk)
     menu.meals.remove(meal)
     return redirect("menu:update_menu",pk=menu_pk)
-    
+       
+@login_required(login_url="login")
+@allowed_users(allowed_roles=['manager'])
+def index(request):
+    return render(request,'manager/index.html')
+
+@login_required(login_url="login")
+@allowed_users(allowed_roles=['manager'])
+def create_menu(request,weekly_id):
+    meals = Meal.objects.all()
+    weekly_menu = get_object_or_404(WeeklyMenu,id=weekly_id) 
+    all_options = Menu.DAYS
+    available_options = []
+    for day in all_options:
+        if not weekly_menu.menu_set.filter(created_for=day[0]):
+            available_options.append(int(day[0]))
+    if request.method == 'POST':
+        ss = Custom_Session(request)
+        weekday = request.POST.get('weekday')
+
+        menu_meals_session = ss.get_menu_items()
+        if len(menu_meals_session) > 7:
+            return HttpResponse("You cannot andd more than 7 meals")
+        avability = request.POST.get('menu_avability')  
+        
+        if weekly_menu.menu_set.filter(created_for=weekday):
+            return HttpResponse(f"A menu for {weekday} has already been created!")
+        else:
+            menu = Menu(created_for=weekday,avability=avability,weekly_menu=weekly_menu)
+            menu.save()
+            menu.meals.set(menu_meals_session)
+            menu.save()
+            ss.clear()
+            messages.success(request,f"Your menu for {weekday} has been created!")
+            return redirect("manager:index")
+    context = {
+        "meals":meals,
+        "available_options" : available_options,
+        "all_options" : all_options
+    }
+    return render(request,"menu/create_menu.html",context)
 
     
+@login_required(login_url="login")
+@allowed_users(allowed_roles=['manager'])
+def update_session(request):
+    ss = Custom_Session(request)
+    if request.POST.get('action') == 'add':
+        print("no")
+        meal_id = int(request.POST.get('meal_id'))
+        meal = get_object_or_404(Meal,pk=meal_id)
+        ss.add(product=meal)
+        response = JsonResponse({"id": meal.id})
+        return response
+    if request.POST.get('action') == 'remove':
+        print("remove")
+        meal_id = str(request.POST.get('meal_id'))
+        ss.remove(product=meal_id)
+        response = JsonResponse({"id": meal_id})
+        return response
+        
