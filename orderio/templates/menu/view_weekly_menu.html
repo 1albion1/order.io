@@ -5,11 +5,7 @@ Week: <a href="{{wm.get_absolute_url}}">{{wm.week}} </a><br>
     <ol>
     {% for menu in wm.menu_set.all %}
     <li><a href="{{menu.get_absolute_url}}">
-        {% for day in menu.DAYS %}
-            {% if day.0 == menu.created_for %}
-                {{day.1}}
-            {% endif %}
-        {% endfor %}
+        {{menu.get_day_name}}
     </a></li> 
     {% endfor %}
     </ol>

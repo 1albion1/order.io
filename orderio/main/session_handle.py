@@ -23,6 +23,7 @@ class  Custom_Session():
                 }
         self.save()
     
+   
     def remove(self,product):
         product_id = product
         if product_id in self.ss:

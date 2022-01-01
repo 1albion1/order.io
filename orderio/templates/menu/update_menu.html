@@ -10,7 +10,7 @@
       <div class="input-group m-1 d-flex justify-content-end">
         <span class="input-group-text" id="addon-wrapping"><i class="bi bi-search"></i></span>
         <input type="text" id="search" onkeyup="filterTable()" placeholder="Search for food.." class="form-control">
-        <table class="table table-white table-hover" id="myTable">
+        <table class="table table-white table-hover" id="meal-table">
           <thead>
             <tr class="bg-dark text-white">
               <th>Meal</th>
@@ -21,7 +21,7 @@
               <th>Action</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="meal-table-body">
             {% for meal in meals %}
             {% if meal not in menu_meals %}
             <tr>

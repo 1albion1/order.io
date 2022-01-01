@@ -103,3 +103,12 @@ def add_to_order(request):
         ss.remove(product=meal_id)
         response = JsonResponse({"id": meal_id})
         return response
+    
+def all_orders_this_week(request):
+    week = timezone.now().isocalendar().week
+    year = timezone.now().isocalendar().year
+    weekly_menu = get_object_or_404(WeeklyMenu,week=week,year=year)
+    
+        
+    context = {"weekly_menu":weekly_menu}
+    return render(request,"order/all_orders_this_week.html",context)

@@ -4,7 +4,7 @@
 <div class="container">
   <div class="px-4 py-5 my-5 text-center">
     <h1 class="display-5 fw-bold">CREATE A MENU</h1>
-    
+
     <div class="col-lg-6 mx-auto">
       <p class="lead mb-4">Search, add and remove meals from a meal</p>
       <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
@@ -16,98 +16,102 @@
   <div class="row">
     <div class="col-lg-8">
       <div class="table-responsive">
-      <div class="input-group m-1 d-flex justify-content-end">
-        <span class="input-group-text" id="addon-wrapping"><i class="bi bi-search"></i></span>
-        <input type="text" id="search" onkeyup="filterTable()" placeholder="Search for food.." class="form-control">
-        
-        <table class="table table-white table-hover" id="myTable">
-          <thead>
-            <tr class="bg-dark text-white">
-              <th>Meal</th>
-              <th>Calories</th>
-              <th>Price</th>
-              <th>Description</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for meal in meals %}
-            <tr>
-              <td>{{meal.name}}</td>
-              <td>{{meal.calories}} </td>
-              <td>{{meal.price}} </td>
-              <td>{{meal.description|truncatechars:150}}</td>
-              <td>
-                {% if bag|length < 7 %}
-                <button class="btn btn-success" id="add-btn{{meal.id}}" value="{{meal.id}}" data-url="{% url 'menu:update_session' %}">Add</button>
-                {% else %}
-                <button class="btn btn-success disabled" >Add</button>
-                {% endif %}
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-      </div>
-    </div>
+        <div class="input-group m-1 d-flex justify-content-end">
+          <span class="input-group-text" id="addon-wrapping"><i class="bi bi-search"></i></span>
+          <input type="text" id="search" placeholder="Search for food.." class="form-control">
 
-
-    
-    <div  class="col-md-5 col-lg-4 order-md-last">
-      <div id="menu-items">
-      <h4 class="d-flex justify-content-between align-items-center mb-3">
-        <span class="text-primary">Your menu</span>
-        
-        <span class="badge bg-primary rounded-pill">{% with bag|length as b %}
-          {{b}}
-          {% endwith %}</span>
-      </h4>
-      
-      <ul class="list-group mb-3">
-        {% if bag|length == 7 %}
-            
-        <div class="alert alert-danger">Menu is at maximum capacity!</div>
-        {% endif %}
-        {% for i in bag.get_menu_items.values %}
-        <li class="list-group-item d-flex justify-content-between lh-sm">
-          <div>
-            <h6 class="my-0">{{i.name}}</h6>
-            <small class="text-muted">{{i.description|truncatechars:30}}</small>
-          </div>
-          <span class="text-muted">${{i.price}} 
-            <button class="btn"  id="del-btn{{i.id}}" value="{{i.id}}" data-url="{% url 'menu:update_session' %}">
-            <i class="bi bi-x-lg text-danger"></i>
-          </button></span>
-          
-        </li>
-        {% endfor %}
-        <li class="list-group-item d-flex justify-content-between">
-          <span>Menu total price (USD)</span>
-          <strong>${{bag.get_total_price|floatformat:2}}</strong>
-        </li>
-      </ul>
-      
-      <form class="card p-2" action="" method="post" >
-        {% csrf_token %}
-        <div class="input-group">
-          <select name="weekday">
-            {% for option in available_options %}
-            <option value="{{option}}">
-              {% for day in all_options %}
-                  {% if day.0 == option %}
-                      {{day.1}}
-                  {% endif %}
+          <table class="table table-white table-hover" id="meal-table" >
+            <thead>
+              <tr class="bg-dark text-white">
+                <th>Meal</th>
+                <th>Calories</th>
+                <th>Price</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="meal-table-body">
+              {% for meal in meals %}
+                <tr>
+                  <td>{{meal.name}}</td>
+                  <td>{{meal.calories}} </td>
+                  <td>{{meal.price}} </td>
+                  <td>{{meal.description|truncatechars:150}}</td>
+                  <td>{{meal.category.name}}</td>
+                  <td>
+                    {% if bag|length < 7 %}
+                    <button class="btn btn-success" id="add-btn{{meal.id}}" value="{{meal.id}}"
+                      data-url="{% url 'menu:update_session' %}">Add</button>
+                    {% else %}
+                    <button class="btn btn-success disabled">Add</button>
+                    {% endif %}
+                  </td>
+                </tr>
               {% endfor %}
-            </option>
-            {% endfor %}
-            
-          </select>
-          <input type="number" name="menu_avability" class="form-control" placeholder="Avability">
-          <button type="submit" class="btn btn-secondary">Create Menu</button>
+            </tbody>
+          </table>
         </div>
-      </form>
+      </div>
     </div>
+    <div class="col-md-5 col-lg-4 order-md-last">
+      <div id="menu-items">
+        <h4 class="d-flex justify-content-between align-items-center mb-3">
+          <span class="text-primary">Your menu</span>
+
+          <span class="badge bg-primary rounded-pill">{% with bag|length as b %}
+            {{b}}
+            {% endwith %}</span>
+        </h4>
+
+        <ul class="list-group mb-3">
+          {% if bag|length == 7 %}
+          <div class="alert alert-danger">Menu is at maximum capacity!</div>
+          {% endif %}
+          {% for i in bag.get_menu_items.values %}
+          <li class="list-group-item d-flex justify-content-between lh-sm">
+            <div>
+              <h6 class="my-0">{{i.name}}</h6>
+              <small class="text-muted">{{i.description|truncatechars:30}}</small>
+            </div>
+            <span class="text-muted">${{i.price}}
+              <button class="btn" id="del-btn{{i.id}}" value="{{i.id}}" data-url="{% url 'menu:update_session' %}">
+                <i class="bi bi-x-lg text-danger"></i>
+              </button></span>
+
+          </li>
+          {% endfor %}
+          <li class="list-group-item d-flex justify-content-between">
+            <span>Menu total price (USD)</span>
+            <strong>${{bag.get_total_price|floatformat:2}}</strong>
+          </li>
+        </ul>
+        {% csrf_token %}
+        {% if bag|length > 0 %}
+        <div class="card p-2 " id="show">
+          <button type="submit" class="btn btn-info hw-3 text-white">Continue</button>
+        </div>
+        <form class="card p-2 invisible" action="" method="post">
+          
+          <div class="input-group">
+            <select name="weekday">
+              {% for option in available_options %}
+              <option value="{{option}}">
+                {% for day in all_options %}
+                {% if day.0 == option %}
+                {{day.1}}
+                {% endif %}
+                {% endfor %}
+              </option>
+              {% endfor %}
+            </select>
+            <input type="number" name="menu_avability" class="form-control" placeholder="Avability">
+            <button type="submit" class="btn btn-success">Create Menu</button>
+          </div>
+        </form>
+        {% endif %}
+        
+      </div>
     </div>
   </div>
 
@@ -117,8 +121,11 @@
 <script src="{% static 'js/table-filter.js' %}"></script>
 <!-- ajax js -->
 <script src="{% static 'js/create_menu.js' %}">
-  
 </script>
-
+<script>
+  $(document).on("click", "#show", function show () {
+    $("#show").hide();
+    $("form").removeClass('invisible').addClass('visible');;
+  });
+</script>
 {% endblock%}
-

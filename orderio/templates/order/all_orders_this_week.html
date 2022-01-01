@@ -1,0 +1,34 @@
+{% extends "../base.html" %}
+{% block content %}
+<select id="select-btn" data-url="{% url 'order:all_orders_this_week' %}">
+    {% for menu in weekly_menu.menu_set.all %}
+        <option value="{{menu.id}}">{{menu.get_day_name}}</option>
+    {% endfor %}
+    </select>
+    {% csrf_token %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Menu
+                </th>
+                <th>
+                    Order
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for menu in weekly_menu.menu_set.all %}
+                    {% for order in menu.order_set.all %}
+                    <tr>
+                        <td>{{order.menu.get_day_name}}</td>
+                        <td>{{order}}</td>
+                    </tr>
+                    {% endfor %}
+                {% endfor %}
+
+        </tbody>
+    </table>
+
+
+{% endblock content %}

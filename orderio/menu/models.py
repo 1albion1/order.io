@@ -51,7 +51,9 @@ class Menu(models.Model):
     
     class Meta:
         ordering = ('created_for',)
+    
         
+    
     def __str__(self):
         try: 
             week = self.weekly_menu.week
@@ -70,6 +72,15 @@ class Menu(models.Model):
         for meal in self.meals.all():
             total+=meal.price
         return total
+    
+    def get_day_name(self):
+        name =""
+        for day in Menu.DAYS:
+            if day[0] == self.created_for:
+                name = day[1]
+                break
+        return name
+ 
 
     def get_absolute_url(self):
         return reverse("menu:view_menu", kwargs={"pk": self.pk})

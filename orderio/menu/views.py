@@ -31,18 +31,18 @@ def all_weekly_menus(request):
     context={"all_weekly_menus":all_weekly_menus}
     return render(request,"menu/all_weekly_menus.html",context)
 
-def weekly_menu_all_orders(request,pk):
-    wm = get_object_or_404(WeeklyMenu,pk=pk)
-    orders = wm.order_set.all()
-    context = {"orders":orders}
-    return render(request,"menu/weekly_menu_all_orders.html",context)
-
-    
 def view_weekly_menu(request,week,year):
     wm = get_object_or_404(WeeklyMenu,week=week,year=year)
     context = {"wm":wm}
     return user_or_manager(request,"view_weekly_menu",context)
 
+def delete_menu(request,pk):
+    menu = get_object_or_404(Menu,pk=pk)
+    name = menu.get_day_name()
+    menu.delete()
+    messages.success(request,f"Menu for {name} was deleted successfully!")
+    return redirect("menu:weekly_menu")
+    
 #daily menu
 @login_required(login_url="login")
 @allowed_users(allowed_roles=['manager'])
@@ -108,21 +108,20 @@ def create_menu(request,weekly_id):
     if request.method == 'POST':
         ss = Custom_Session(request)
         weekday = request.POST.get('weekday')
-
         menu_meals_session = ss.get_menu_items()
         if len(menu_meals_session) > 7:
             return HttpResponse("You cannot andd more than 7 meals")
         avability = request.POST.get('menu_avability')  
         
         if weekly_menu.menu_set.filter(created_for=weekday):
-            return HttpResponse(f"A menu for {weekday} has already been created!")
+            return HttpResponse(f"A menu for {Menu.DAYS[int(weekday)-1][1]} has already been created!")
         else:
             menu = Menu(created_for=weekday,avability=avability,weekly_menu=weekly_menu)
             menu.save()
             menu.meals.set(menu_meals_session)
             menu.save()
             ss.clear()
-            messages.success(request,f"Your menu for {weekday} has been created!")
+            messages.success(request,f"Your menu for {Menu.DAYS[int(weekday)-1][1]} has been created!")
             return redirect("manager:index")
     context = {
         "meals":meals,

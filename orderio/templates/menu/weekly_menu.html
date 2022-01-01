@@ -8,11 +8,7 @@
 {% endfor %}
 {% for menu in menus %}
 <ol>
-  {% for day in menu.DAYS %}
-  {% if day.0 == menu.created_for %}
-  Menu for: {{day.1}}
-  {% endif %}
-  {% endfor %}
+  {{menu.get_day_name}}
   <br>
   Meals:
   {% for meal in menu.meals.all %}
@@ -21,7 +17,8 @@
   {% if menu.approved %}
   <a href="#" class="btn btn-success btn-sm disabled"><i class="bi bi-check-circle"></i>Approved</a>
   {%else%}
-  <a href="{% url 'menu:update_menu' menu.pk %}">Update</a>
+  <a href="{% url 'menu:update_menu' menu.pk %}" class="btn btn-warning">Update</a>
+  <a href="{% url 'menu:delete_menu' menu.pk %}" class="btn btn-danger">Delete</a>
   {% if menu.meals.all.count > 0 %}
   <a href="{% url 'menu:approve_menu' menu.pk %}">Approve</a>
   {% endif %}
