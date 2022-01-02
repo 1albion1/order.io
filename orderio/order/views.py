@@ -1,3 +1,4 @@
+from datetime import timedelta
 from django.shortcuts import render,get_object_or_404,redirect
 from main.decorators import allowed_users 
 from django.http.response import HttpResponse, JsonResponse
@@ -10,6 +11,7 @@ from django.contrib import messages
 from django.utils import timezone
 from employee.employee_status import can_user_order
 from meal.models import Meal
+from order.filters import OrderFilter
 # Create your views here.
 # Create your views here.
 @login_required(login_url="login")
@@ -61,8 +63,6 @@ def create_order(request):
             return redirect("employee:index")
     return redirect("employee:index")
 
-
-
 def view_order(request,pk):
     order = get_object_or_404(Order,pk=pk)
     context ={"order" : order}
@@ -108,7 +108,9 @@ def all_orders_this_week(request):
     week = timezone.now().isocalendar().week
     year = timezone.now().isocalendar().year
     weekly_menu = get_object_or_404(WeeklyMenu,week=week,year=year)
-    
-        
-    context = {"weekly_menu":weekly_menu}
+    orders = Order.objects.filter(created_at__week=week)
+    if request.method == "GET":    
+        order_filter = OrderFilter(request.GET,queryset=orders)
+        orders = order_filter.qs
+    context = {"weekly_menu":weekly_menu,"order_filter":order_filter,"orders":orders}
     return render(request,"order/all_orders_this_week.html",context)
