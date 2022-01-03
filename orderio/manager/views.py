@@ -6,12 +6,16 @@ from account.models import CustomUser
 from menu.models import WeeklyMenu
 from django.urls import reverse
 from django.http import JsonResponse
-
+from main.forms import FnameLnameForm
 @login_required(login_url="login")
 @allowed_users(allowed_roles=['manager'])
 def index(request):
     return render(request,'manager/index.html')
 
+def manager_profile(request):
+    form = FnameLnameForm
+    context ={"form":form}
+    return render(request,'manager/manager_profile.html',context)
 
 def reports_index (request):
     return render(request,'manager/reports_index.html')

@@ -19,7 +19,7 @@
         <div class="input-group m-1 d-flex justify-content-end">
           <span class="input-group-text" id="addon-wrapping"><i class="bi bi-search"></i></span>
           <input type="text" id="search" placeholder="Search for food.." class="form-control">
-
+        
           <table class="table table-white table-hover" id="meal-table" >
             <thead>
               <tr class="bg-dark text-white">
@@ -92,7 +92,7 @@
           <button type="submit" class="btn btn-info hw-3 text-white">Continue</button>
         </div>
         <form class="card p-2 invisible" action="" method="post">
-          
+          {% csrf_token %}
           <div class="input-group">
             <select name="weekday">
               {% for option in available_options %}

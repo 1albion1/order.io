@@ -52,14 +52,12 @@ class Menu(models.Model):
     class Meta:
         ordering = ('created_for',)
     
-        
-    
     def __str__(self):
         try: 
             week = self.weekly_menu.week
         except:
             week = "no week"
-        return "Day "+str(self.created_for) +" Week "+ str(week)
+        return str(self.get_day_name()) +" Week "+ str(week)
     
     def allowes_orders(self):
         return (timezone.now()-self.approved_at)<timezone.timedelta(hours=self.avability)

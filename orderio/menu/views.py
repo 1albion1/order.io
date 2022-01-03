@@ -9,7 +9,6 @@ from django.utils import timezone
 from menu.models import WeeklyMenu,Menu
 from meal.models import Meal
 from menu.custom_functions import user_or_manager
-
 #weekly menu
 @login_required(login_url="login")
 @allowed_users(allowed_roles=['manager'])
@@ -32,9 +31,12 @@ def all_weekly_menus(request):
     return render(request,"menu/all_weekly_menus.html",context)
 
 def view_weekly_menu(request,week,year):
-    wm = get_object_or_404(WeeklyMenu,week=week,year=year)
-    context = {"wm":wm}
-    return user_or_manager(request,"view_weekly_menu",context)
+    try:
+        wm = Menu.objects.get(week=week,year=year)
+        context = {"wm":wm}
+        return user_or_manager(request,"view_weekly_menu",context)
+    except:
+        return HttpResponse("The menu for this week is available!")
 
 def delete_menu(request,pk):
     menu = get_object_or_404(Menu,pk=pk)

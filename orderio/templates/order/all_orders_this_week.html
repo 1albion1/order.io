@@ -1,11 +1,11 @@
 {% extends "../base.html" %}
 {% block content %}
-<select id="select-btn" data-url="{% url 'order:all_orders_this_week' %}">
-    {% for menu in weekly_menu.menu_set.all %}
-        <option value="{{menu.id}}">{{menu.get_day_name}}</option>
-    {% endfor %}
-    </select>
-    {% csrf_token %}
+
+    <form method="get" action="">
+    {{order_filter.form}}
+    <input type="submit" value="Search">
+    </form>
+    
     <table class="table">
         <thead>
             <tr>
@@ -13,19 +13,29 @@
                     Menu
                 </th>
                 <th>
-                    Order
+                    created_at
+                </th>
+                <th>
+                    Employee
+                </th>
+                <th>
+                    Action
                 </th>
             </tr>
         </thead>
         <tbody>
-            {% for menu in weekly_menu.menu_set.all %}
-                    {% for order in menu.order_set.all %}
-                    <tr>
-                        <td>{{order.menu.get_day_name}}</td>
-                        <td>{{order}}</td>
-                    </tr>
-                    {% endfor %}
-                {% endfor %}
+            
+        {% for order in orders %}
+        <tr>
+            <td>{{order.menu.get_day_name}}</td>
+            <td>{{order.created_at}}</td>
+            <td>{{order.employee.user.username}}</td>
+            <td>
+                <a href="{{order.get_absolute_url}}">View Details</a>
+            </td>
+        </tr>
+        {% endfor %}
+                
 
         </tbody>
     </table>

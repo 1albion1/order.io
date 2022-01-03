@@ -13,8 +13,6 @@ class Employee(models.Model):
     user = models.OneToOneField(CustomUser,null=True,on_delete=models.CASCADE)
     department = models.ForeignKey(Department,on_delete=models.CASCADE,null=True)
     daily_allowance = models.DecimalField(max_digits=6,decimal_places=2,default=5)
-    first_name = models.CharField(max_length=30,blank=True,null=True)
-    last_name = models.CharField(max_length=30,blank=True,null=True)
     phone_number = models.CharField(max_length=15,blank=True,null=True)
     profile_pic = models.ImageField(null=True,blank=True,default="default.png",upload_to=img_path)
     created_at = models.DateTimeField(auto_now_add=True)

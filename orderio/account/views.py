@@ -1,3 +1,4 @@
+from django.forms import widgets
 from django.http.response import HttpResponse
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404, render,redirect
@@ -24,7 +25,7 @@ def login_page(request):
             else:
                 return redirect("employee:index")
         else:
-            messages.info(request,"Username or password is incorrect!")
+            messages.warning(request,"Username or password is incorrect!")
     context = {}
     return render(request,"account/login.html",context)
 
@@ -85,6 +86,7 @@ def create_user(request):
 @allowed_users(allowed_roles=['manager'])
 def user_list(request):
     users = CustomUser.objects.all()
+
     context ={"users":users}
     return render(request,"account/user_list.html",context)
 

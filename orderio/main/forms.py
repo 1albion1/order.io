@@ -12,12 +12,25 @@ class EmployeeForm(ModelForm):
         exclude = ['user','weekly_allowance']
         
 class CreateUserForm(UserCreationForm):
+    
     class Meta:
         model = CustomUser
-        fields =( 'username','email','password1','password2','role')
+        fields =( 'username','email','password1','password2','role','first_name','last_name')
     
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs.update({'class': 'form-control form-control-user','placeholder':'Username'})
+        self.fields['email'].widget.attrs.update({'class': 'form-control form-control-user','placeholder':'Email'})
+        self.fields['password1'].widget.attrs.update({'class': 'form-control form-control-user','placeholder':'Password'})
+        self.fields['password2'].widget.attrs.update({'class': 'form-control form-control-user','placeholder':'Confirm Password'})
+        self.fields['role'].widget.attrs.update({'class': 'form-control form-control-user','placeholder':'Role','required':True})
+        self.fields['first_name'].widget.attrs.update({'class': 'form-control form-control-user','placeholder':'First Name'})
+        self.fields['last_name'].widget.attrs.update({'class': 'form-control form-control-user','placeholder':'Last Name'})
+        
     def clean_email(self):
         email = self.cleaned_data.get('email')
+        if len(email) <5:
+            raise forms.ValidationError("Please enter a valid email.")
         if CustomUser.objects.filter(email=email).exists():
             raise forms.ValidationError("Email is already registered")
         return email
@@ -34,5 +47,13 @@ class UserProfileForm(ModelForm):
         fields = '__all__'
         exclude = ['user','daily_allowance','wekly_allowance']
 
-        
+class FnameLnameForm(ModelForm):
+    class Meta():
+        model = CustomUser
+        fields = ['first_name','last_name','email']
     
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if CustomUser.objects.filter(email=email).exists():
+            raise forms.ValidationError("Email is already registered")
+        return email
