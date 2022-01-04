@@ -86,7 +86,7 @@ def create_user(request):
 @allowed_users(allowed_roles=['manager'])
 def user_list(request):
     users = CustomUser.objects.all()
-
+    
     context ={"users":users}
     return render(request,"account/user_list.html",context)
 

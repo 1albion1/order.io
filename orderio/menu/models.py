@@ -11,7 +11,7 @@ class WeeklyMenu(models.Model):
         return "Year "+str(self.year)+" Week "+str(self.week)
     
     class Meta:
-        ordering = ('-week',)
+        ordering = ('year','-week',)
     
     def get_absolute_url(self):
         return reverse("menu:view_weekly_menu", kwargs={"week": self.week,"year":self.year})
@@ -50,7 +50,7 @@ class Menu(models.Model):
     created_for = models.IntegerField(choices=DAYS,default=Monday,null=True,blank=True)
     
     class Meta:
-        ordering = ('created_for',)
+        ordering = ('weekly_menu','created_for',)
     
     def __str__(self):
         try: 

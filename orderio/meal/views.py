@@ -39,15 +39,16 @@ def update_meal(request,pk):
     if request.method == 'POST':
         form = MealForm(request.POST,request.FILES,instance=meal)
         if form.is_valid():
-            messages.success(request,f"meal {request.POST.get('name')} was updated successfully!")
+            messages.success(request,f"Meal {request.POST.get('name')} was updated successfully!")
             form.save()
+            return redirect("meal:all_meals")
     context = {"form":form}
     return render(request,"meal/update_meal.html",context)
 
 def delete_meal(request,pk):
     meal = get_object_or_404(Meal,pk=pk)
     meal.delete()
-    messages.success(request,"meal was deleted successfully!")
+    messages.success(request,"The meal was deleted successfully!")
     return redirect("meal:all_meals")
 
 

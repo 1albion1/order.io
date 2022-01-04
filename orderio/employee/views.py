@@ -14,11 +14,10 @@ from django.http.response import HttpResponse
 
 # Create your views here.
 year = timezone.now().isocalendar().year
+week = timezone.now().isocalendar().week
 @login_required(login_url="login")
 @allowed_users(allowed_roles=['user'])
 def index(request):
-    week = timezone.now().isocalendar().week
-    
     budget_available = user_money_available(request)
     context = {"budget_available":budget_available,"week":week,"year":year}
     return render(request,'employee/index.html',context)
@@ -44,7 +43,6 @@ def employee_profile(request):
 @login_required(login_url="login")
 @allowed_users(allowed_roles=['user'])
 def daily_menu(request):
-    week = timezone.now().isocalendar().week
     day = timezone.now().isoweekday()
     menu_budget = user_money_available(request)
     try:
@@ -54,7 +52,7 @@ def daily_menu(request):
         if not menu.approved:
             return HttpResponse(f"The menu for {menu.get_day_name} is not approved ready yet!")
         meals = menu.meals.all()
-        context={"menu":menu,"meals":meals,"day":day,"menu_status":menu_status,"menu_budget":menu_budget}
+        context={"menu":menu,"meals":meals,"day":day,"menu_status":menu_status,"menu_budget":menu_budget,"week":week,"year":year}
         return render(request,'employee/daily_menu.html',context)
     except:
         return HttpResponse(f"The menu for today is not ready yet!")
@@ -62,10 +60,15 @@ def daily_menu(request):
     
     
 def change_daily_allowance(request,pk):
+    today = timezone.now().isoweekday()
     employee = get_object_or_404(Employee,pk=pk)
+    
     if request.method == 'POST':
-        employee.daily_allowance = request.POST.get('daily_allowance')
-        employee.save()
-        messages.success(request,f"Daily allowance changed for user {employee.user.username}")
+        if not has_order_this_week(request,pk):
+            employee.daily_allowance = request.POST.get('daily_allowance')
+            employee.save()
+            messages.success(request,f"Daily allowance changed for user {employee.user.username}")
+        else:
+            return HttpResponse("This user already has an order this week. You cannot change the allowance!")
     return redirect("user_list")
 

@@ -1,3 +1,4 @@
+from datetime import timedelta
 from order.models import Order
 from menu.models import Menu, WeeklyMenu
 from django.utils import timezone
@@ -7,7 +8,7 @@ today = timezone.now().date()
 week = timezone.now().isocalendar().week
 year = timezone.now().isocalendar().year
 def has_order(request):
-    user_orders = Order.objects.filter(created_at__date = today, employee = request.user.employee)
+    user_orders = Order.objects.filter(Q(created_at__date = today), Q(employee = request.user.employee),Q(order_status="Pending") | Q(order_status="Accepted"))
     if user_orders:
         return True
     return False
@@ -57,3 +58,10 @@ def can_user_order(request,cost):
         messages.warning(request,"You have already placed an order for today!")
         return False
 
+def has_order_this_week(request,employee_id):
+    weekly_menu = WeeklyMenu.objects.get(week=week,year=year)
+    for menu in weekly_menu.menu_set.all():
+        orders = menu.order_set.filter(Q(employee = employee_id),Q(order_status="Pending") | Q(order_status="Accepted"))
+        if orders:
+            return True
+    return False

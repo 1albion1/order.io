@@ -31,12 +31,12 @@ def all_weekly_menus(request):
     return render(request,"menu/all_weekly_menus.html",context)
 
 def view_weekly_menu(request,week,year):
-    try:
-        wm = Menu.objects.get(week=week,year=year)
-        context = {"wm":wm}
-        return user_or_manager(request,"view_weekly_menu",context)
-    except:
-        return HttpResponse("The menu for this week is available!")
+    print(week,year)
+    
+    wm = WeeklyMenu.objects.get(week=week,year=year)
+    context = {"wm":wm}
+    return user_or_manager(request,"view_weekly_menu",context)
+    
 
 def delete_menu(request,pk):
     menu = get_object_or_404(Menu,pk=pk)
@@ -124,7 +124,7 @@ def create_menu(request,weekly_id):
             menu.save()
             ss.clear()
             messages.success(request,f"Your menu for {Menu.DAYS[int(weekday)-1][1]} has been created!")
-            return redirect("manager:index")
+            return redirect("menu:weekly_menu")
     context = {
         "meals":meals,
         "available_options" : available_options,

@@ -9,26 +9,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" type="image/jpg" href="{% static 'img/logo.png' %}"/>
-    
+    <link rel="shortcut icon" type="image/jpg" href="{% static 'img/logo.png' %}" />
     <title>
-      {% block title %}
-        
-      {% endblock title %} | ORDER.IO
-      </title>
-      <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <!-- Custom fonts for this template-->
+        {% block title %}
+
+        {% endblock title %} | ORDER.IO
+    </title>
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <!-- bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    <!-- Custom fonts for this template-->
+
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
-  
+
     <!-- Custom styles for this template-->
     <link href="{% static 'css/main-template.css' %}" rel="stylesheet">
     <!-- icons -->
     <link href="{% static 'plugins/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
-    
+
 </head>
 
 <body id="page-top">
@@ -40,9 +42,9 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'manager:index' %}">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'employee:index' %}">
                 <div class="sidebar-brand-icon rotate-n-15">
-                  <img src="{% static 'img/logo.png' %}" width="30" height="30" role="img">
+                    <img src="{% static 'img/logo.png' %}" width="30" height="30" role="img">
                 </div>
                 <div class="sidebar-brand-text mx-3">ORDER <sup>IO</sup></div>
             </a>
@@ -51,10 +53,10 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
-                <a class="nav-link" href="{% url 'manager:index' %}">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'employee:index' %}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
+                    <span>Home</span></a>
             </li>
 
             <!-- Divider -->
@@ -67,30 +69,16 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-utensils"></i>
-                    <span>Meal</span>
-                </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Actions:</h6>
-                        <a class="collapse-item" href="{% url 'meal:create_meal' %}">Create Meal</a>
-                        <a class="collapse-item" href="{% url 'meal:all_meals' %}">Meal List</a>
-                        <h6 class="collapse-header">Category:</h6>
-                        <a class="collapse-item" href="{% url 'meal:create_category' %}">Create category</a>
-                        <a class="collapse-item" href="{% url 'meal:all_categories' %}">Category list</a>
-                        
-                        
-                    </div>
-                </div>
+                <a class="nav-link" href="{% url 'employee:daily_menu' %}">
+                    <i class="fas fa-table"></i>
+                    <span>Today's Menu</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'menu:weekly_menu' %}">
-                <i class="fas fa-table"></i>
-                  <span>This week's Menu</span></a>
-          </li>
-            
+                <a class="nav-link" href="{% url 'menu:view_weekly_menu' week year %}">
+                    <i class="fas fa-table"></i>
+                <span>This week's Menu</span></a>
+            </li>
+
 
             <!-- Divider -->
             <hr class="sidebar-divider">
@@ -102,51 +90,17 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'order:daily_orders' %}">
-                  <i class="fas fa-calendar-day"></i>
-                    <span>Today</span></a>
+                <a class="nav-link" href="{% url 'order:user_order_history' %}">
+                    <i class="fas fa-calendar-day"></i>
+                    <span>Order history</span></a>
             </li>
 
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'order:all_orders_this_week' %}">
-                  <i class="fas fa-calendar-week"></i>
-                    <span>This week</span></a>
-            </li>
-
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link" href="tables.html">
-                  <i class="fas fa-calendar-alt"></i>
-                    <span>All time</span></a>
-            </li>
-            <hr class="sidebar-divider">
-            <!-- Heading -->
-            <div class="sidebar-heading">
-              Users
-            </div>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'create_user' %}">
-                <i class="fas fa-plus-square"></i>
-                  <span>Register User</span></a>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link" href="{% url 'user_list' %}">
-              <i class="fas fa-list"></i>
-                <span>User List</span></a>
-          </li>
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'manager:reports_index' %}">
-                <i class="far fa-chart-bar"></i>
-                  <span>Reports</span></a>
-            </li>
+          
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
-            
+
 
         </ul>
         <!-- End of Sidebar -->
@@ -165,7 +119,7 @@
                         <i class="fa fa-bars"></i>
                     </button>
 
-                    
+
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -261,8 +215,7 @@
                                 </h6>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src=""
-                                            alt="...">
+                                        <img class="rounded-circle" src="" alt="...">
                                         <div class="status-indicator bg-success"></div>
                                     </div>
                                     <div class="font-weight-bold">
@@ -273,8 +226,7 @@
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src=""
-                                            alt="...">
+                                        <img class="rounded-circle" src="" alt="...">
                                         <div class="status-indicator"></div>
                                     </div>
                                     <div>
@@ -285,8 +237,7 @@
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src=""
-                                            alt="...">
+                                        <img class="rounded-circle" src="" alt="...">
                                         <div class="status-indicator bg-warning"></div>
                                     </div>
                                     <div>
@@ -323,15 +274,14 @@
                                     {%else%}
                                     {{request.user.username}}
                                     {% endif %}
-
+                                    
                                 </span>
-                                <img class="img-profile rounded-circle"
-                                    src="{{request.user.employee.profile_pic.url}}">
+                                <img class="img-profile rounded-circle border" src="{{request.user.employee.profile_pic.url}}">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="{% url 'manager:manager_profile' %}">
+                                <a class="dropdown-item" href="{% url 'employee:employee_profile' %}">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
@@ -354,9 +304,9 @@
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                  {% block content %}
-      
-                  {% endblock %}
+                    {% block content %}
+
+                    {% endblock %}
                 </div>
                 <!-- /.container-fluid -->
 
@@ -403,11 +353,11 @@
             </div>
         </div>
     </div>
-    
-    
-    
-    
-<!-- Bootstrap core JavaScript-->
+
+
+
+
+    <!-- Bootstrap core JavaScript-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
