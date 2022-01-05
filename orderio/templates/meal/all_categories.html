@@ -1,13 +1,87 @@
+{% extends "../manager-base.html" %}
+{% load static %}
+{% block title %}
+  Meal List
+{% endblock title %}
+{% block content %}
+
+<!-- Custom styles for this page -->
+<link href='{% static "plugins/datatables/dataTables.bootstrap4.min.css" %}' rel="stylesheet">
 {% for message in messages %}
-        <div class="alert alert-{{message.level_tag}}  alert-dismissible fade show">
-            {{message}}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+<div class="alert alert-{{message.level_tag}}  alert-dismissible fade show">
+    {{message}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
 {% endfor %}
-{% for category in categories %}
-  {{category.name}}<br>
-  <a href="{{category.get_absolute_url}}">View</a> 
-  <a href="{% url 'meal:update_category' category.id %}">Edit</a> 
-  <a href="{% url 'meal:delete_category' category.id %}">Delete</a> 
-  <hr>
-{% endfor %}
+ <!-- Page Heading -->
+ <div class="container-fluid">
+ <h1 class="h3 mb-2 text-gray-800">Category List</h1>
+ <p class="mb-4">Click on the category name to view more details.</p>
+
+ <div class="card shadow mb-4">
+     <div class="card-header py-3">
+         <h6 class="m-0 font-weight-bold text-primary">Category List</h6>
+     </div>
+     <div class="card-body">
+         <div class="table-responsive">
+             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                 <thead>
+                     <tr>
+                      
+                      <th>Category Name</th>
+                      <th>Description</th>
+                      <th>Action</th>
+                     </tr>
+                 </thead>
+                 <tfoot>
+                  <tr>
+                   
+                    <th>Category Name</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                  </tr>
+                </tfoot>
+                 <tbody>
+                  {% for category in categories %}
+                   <tr>
+                     
+                     <td><a href="{{category.get_absolute_url}}">{{category.name}}</a> </td>
+                     <td>{{category.description|truncatechars:40}}</td>
+                     <td>
+                      <a href="{% url 'meal:update_category' category.id %}" class="btn btn-sm btn-info">Edit</a>  
+                      <button data-url="{% url 'meal:delete_category' category.id %}" value="{% url 'meal:delete_category' category.id %}" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                      class="btn btn-sm btn-danger" id="del-btn{{category.pk}}">Delete</button> </td>
+                   </tr>
+                   {% endfor %}
+
+                 </tbody>
+             </table>
+         </div>
+     </div>
+ </div>
+
+</div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">You are about to delete a meal!</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to <b class="text-danger">delete</b> this meal?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" id="conf-btn">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="{% static 'js/danger-confirmation.js' %}"></script>
+<script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'plugins/datatables/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'js/datatables.js' %}"></script>
+{% endblock content %}
+

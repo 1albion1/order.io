@@ -14,7 +14,10 @@ class CategoryForm(ModelForm):
             "name":"Enter Category Name",
             "description":"Enter description",
         }
-    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['name'].widget.attrs.update({'class': 'form-control form-control-user','placeholder':'Category Name*'})
+        self.fields['description'].widget.attrs.update({'class': 'form-control form-control-user','placeholder':'Category Description'})
     
     def clean_name(self):
         name = self.cleaned_data.get("name")

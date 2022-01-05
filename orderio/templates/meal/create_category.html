@@ -1,26 +1,48 @@
-{% for message in messages %}
+{% extends "../manager-base.html" %}
+{% block content %}
+<div class="container-fluid" >
+    {% for message in messages %}
         <div class="alert alert-{{message.level_tag}}  alert-dismissible fade show">
             {{message}}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-{% endfor %}
-<form method="post" action="">
-    {% csrf_token %}
-{{form.name.label}}
-{{form.name}}<br>
-{{form.description.label}}<br>
-{{form.description}}<br>
-<div class="alert alert-danger">
-    {% if form.errors %}
-      {% for field in form %}
-          {% for error in field.errors %} 
-              <div class="alert alert-danger">
-                  <strong>{{ error|escape }}</strong>
-              </div>
-          {% endfor %}
-      {% endfor %}
-    {% endif %}
+    {% endfor %}
+    <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+                <div class="col-lg-8 offset-md-2">
+                    <div class="p-5">
+                        <div class="text-center mb-4">
+                            <h1 class="h4 text-gray-900 ">Add a new Category!</h1>
+                            <p class="text-info">Fields marked with an asterisk (*) are required.</p>
+                        </div>
+                            <form method="post" action="">
+                                {% csrf_token %}
+                            
+                            {{form.name}}<br>
+                          
+                            {{form.description}}<br>
+                                {% if form.errors %}
+                                  {% for field in form %}
+                                      {% for error in field.errors %} 
+                                          <div class="alert alert-danger">
+                                              <strong>{{ error|escape }}</strong>
+                                          </div>
+                                      {% endfor %}
+                                  {% endfor %}
+                                {% endif %}
+                                <div class="text-center">
+                                    <input type="submit" value="Create Categy" class="btn btn-primary btn-user btn-block">
+                                </div>
+                           
+                            </form>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+{% endblock %}
 
-<input type="submit" class="" value="Create Category">
-</form>

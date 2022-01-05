@@ -59,7 +59,7 @@ def create_category(request):
         if form.is_valid():
             messages.success(request,f"Category {request.POST.get('name')} was created successfully!")
             form.save()
-            return redirect("meal:index")
+            return redirect("meal:all_categories")
     context = {"form":form}
     return render(request,"meal/create_category.html",context)
 
@@ -82,6 +82,7 @@ def update_category(request,pk):
         if form.is_valid():
             messages.success(request,f"Category {request.POST.get('name')} was updated successfully!")
             form.save()
+            return redirect("meal:all_categories")
     context = {"form":form}
     return render(request,"meal/update_category.html",context)
 

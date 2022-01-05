@@ -26,7 +26,7 @@ class Meal(models.Model):
     description = models.TextField(blank=True,null=True)
     calories = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
-    meal_img = models.ImageField(null=True,blank=True,default="meal-default.png",upload_to=img_path)
+    meal_img = models.ImageField(null=True,default="meal-default.png",upload_to=img_path)
     
     def __str__(self):
         return self.name

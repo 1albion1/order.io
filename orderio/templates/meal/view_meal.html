@@ -1,2 +1,71 @@
-{{meal}}
-{{meal.meal_img.url}}
+{% extends "../manager-base.html" %}
+{% load static %}
+{% block title %}
+  {{meal.name}}
+{% endblock title %}
+{% block content %}
+<body class="bg-gradient-primary">
+
+    <div class="container">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    <div class="col-lg-3 d-none d-lg-block align-items-center">
+                        <img src="{{meal.meal_img.url}}" class="img-responsive img-responsive" width="100%">
+                    </div>
+                    <div class="col-lg-9 border">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4">{{meal.name}}</h1>
+                            </div>
+                                 <i><b>Description:</b></i><br>
+                                {{meal.description}}
+                                <hr>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    Price:
+                                    <b class="text-primary">${{meal.price}}</b>
+                                </div>
+                                <div class="col-md-4">
+                                    Calories:
+                                    <b class="text-primary">{{meal.calories}}</b>
+                                </div>
+                                <div class="col-md-4">
+                                    Category:
+                                    <b class="text-primary">{{meal.category.name}}</b>
+                                </div>
+                                
+                            </div>
+                           
+                            <hr>
+                            <div class="text-center">
+                                <a href="{% url 'meal:update_meal' meal.id %}" class="btn btn-lg btn-info">Edit</a>  
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    
+    
+    <!-- Bootstrap core JavaScript-->
+    
+    <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="{% static 'plugins/jquery-easing/jquery.easing.min.js' %}"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="{% static 'js/main-template.min.js' %}"></script>
+
+
+</body>
+  
+{% endblock content %}
