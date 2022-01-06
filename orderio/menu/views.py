@@ -15,14 +15,14 @@ from menu.custom_functions import user_or_manager
 def weekly_menu(request):
     week = timezone.now().isocalendar().week
     year = timezone.now().isocalendar().year
-    days = {1:"Moday",2:"Tuesday",3:"Wendnesday",4:"Thursday",5:"Friday",6:"Saturday",7:"Sunday"} 
+
     try:
         weekly_menu = WeeklyMenu.objects.get(week=week,year=year)
     except:
         weekly_menu = WeeklyMenu(week=week,year=year)
         weekly_menu.save()
     menus = weekly_menu.menu_set.all()
-    context={"weekly_menu":weekly_menu,"menus":menus,"days":days}
+    context={"weekly_menu":weekly_menu,"menus":menus}
     return render(request,'menu/weekly_menu.html',context)
 
 def all_weekly_menus(request):
@@ -111,8 +111,8 @@ def create_menu(request,weekly_id):
         ss = Custom_Session(request)
         weekday = request.POST.get('weekday')
         menu_meals_session = ss.get_menu_items()
-        if len(menu_meals_session) > 7:
-            return HttpResponse("You cannot andd more than 7 meals")
+        if len(menu_meals_session) > Menu.CAPACITY:
+            return HttpResponse(f"You cannot add more than {Menu.CAPACITY} meals")
         avability = request.POST.get('menu_avability')  
         
         if weekly_menu.menu_set.filter(created_for=weekday):

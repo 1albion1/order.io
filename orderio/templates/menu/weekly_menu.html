@@ -1,4 +1,8 @@
 {% extends "../manager-base.html" %}
+{% load static %}
+{% block title %}
+  Weekly Menu
+{% endblock title %}
 {% block content %}
 {% for message in messages %}
 <div class="alert alert-{{message.level_tag}}  alert-dismissible fade show">
@@ -6,25 +10,114 @@
   <small><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></small>
 </div>
 {% endfor %}
+<div class="container-fluid">
+  <h1 class="h3 mb-2 text-gray-800">Menus for this week</h1>
+  <p class="mb-4">Create,update,delete or approve the menus for this week here.<br>
+  <b>Be careful!</b> <br>
+  You <i>cannot</i> change the menu after it has been approved.</p>
+ 
+<div class="row">
 {% for menu in menus %}
-<ol>
-  {{menu.get_day_name}}
-  <br>
-  Meals:
-  {% for meal in menu.meals.all %}
-  <li><a href="{{meal.get_absolute_url}}">{{meal.name}}</a></li>
-  {% endfor %}
-  {% if menu.approved %}
-  <a href="#" class="btn btn-success btn-sm disabled"><i class="bi bi-check-circle"></i>Approved</a>
-  {%else%}
-  <a href="{% url 'menu:update_menu' menu.pk %}" class="btn btn-info">Update</a>
-  <a href="{% url 'menu:delete_menu' menu.pk %}" class="btn btn-danger">Delete</a>
-  {% if menu.meals.all.count > 0 %}
-  <a href="{% url 'menu:approve_menu' menu.pk %}" class="btn btn-success">Approve</a>
-  {% endif %}
-  {% endif %}
-</ol>
-{% endfor %}
 
+  <div class="col-lg-4 col-md-6">
+<div class="card shadow mb-4 ">
+  <!-- Card Header - Accordion -->
+  <a href="#collapseCardExample{{menu.id}}" class="d-block card-header py-3" data-toggle="collapse"
+      role="button" aria-expanded="true" aria-controls="collapseCardExample{{menu.id}}">
+      <h6 class="m-0 font-weight-bold text-primary">{{menu.get_day_name}}</h6>
+  </a>
+  <!-- Card Content - Collapse -->
+  <div class="collapse show" id="collapseCardExample{{menu.id}}">
+      <div class="card-body">
+        Meals:
+        {% for meal in menu.meals.all %}
+        <li><a href="{{meal.get_absolute_url}}">{{meal.name}}</a></li>
+        {% endfor %}
+        <hr>
+        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+         
+          {% if menu.approved %}
+  <button href="#" class="btn btn-success btn-icon-split  btn-sm disabled">
+    <span class="icon text-white-50">
+      <i class="fas fa-check"></i>
+  </span>
+  <span class="text">Approved</span></button>
+  {%else%}
+  <a href="{% url 'menu:update_menu' menu.pk %}" class="btn btn-info btn-sm btn-icon-split">
+    <span class="icon text-white-50">
+      <i class="far fa-edit"></i>
+  </span>
+  <span class="text">Edit</span></button>
+    
+  </a>
+  <button  data-url="{% url 'menu:delete_menu' menu.pk %}" data-bs-toggle="modal" data-bs-target="#deleteModal"
+   value="{% url 'menu:delete_menu' menu.pk %}" id="del-btn{{menu.pk}}"  class="btn btn-danger btn-icon-split btn-sm mx-1"><span class="icon text-white-50">
+    <i class="fas fa-trash"></i>
+</span>
+<span class="text">Delete</span></button>
+    
+  {% if menu.meals.all.count > 0 %}
+  <button data-url="{% url 'menu:approve_menu' menu.pk %}" value="{% url 'menu:approve_menu' menu.pk %}" class="btn btn-warning btn-icon-split btn-sm" id="approve-btn{{menu.pk}}"  data-bs-toggle="modal" data-bs-target="#approveModal">
+    <span class="icon text-white-50">
+      <i class="fas fa-check"></i>
+  </span>
+  <span class="text">Approve</span></button>
+  </button>
+  {% endif %}
+  {% endif %}
+        </div>
+      </div>
+  </div>
+</div>
+</div>
+
+
+{% endfor %}
+</div>
+</div>
 <a href="{% url 'menu:create_menu' weekly_menu.pk %}" class="btn btn-primary">Create</a>
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">You are about to delete a menu!</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to <b class="text-danger">delete</b> this menu?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" id="conf-btn">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="approveModal" tabindex="-1" aria-labelledby="approveModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="approveModalLabel">You are about to approve a menu!</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to <span class="text-warning">approve</span> this menu?<br>
+        <hr>
+        <b class="text-danger">Be careful!</b><br> 
+        Once you approve the menu, <b><i>you cannot edit or delete it anymore</i></b>!
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-warning" id="conf-btn">Approve</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'js/danger-confirmation.js' %}"></script>
+
 {% endblock content %}

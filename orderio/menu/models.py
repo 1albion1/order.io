@@ -24,6 +24,8 @@ class WeeklyMenu(models.Model):
     
 
 class Menu(models.Model):
+    CAPACITY = 7
+    
     Monday = 1
     Tuesday =2
     Wendnesday = 3
@@ -48,6 +50,7 @@ class Menu(models.Model):
     approved = models.BooleanField(default=False)
     approved_at = models.DateTimeField(blank=True,null=True)
     created_for = models.IntegerField(choices=DAYS,default=Monday,null=True,blank=True)
+    
     
     class Meta:
         ordering = ('weekly_menu','created_for',)

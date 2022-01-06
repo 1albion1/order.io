@@ -2,8 +2,8 @@ csrf = $("input[name='csrfmiddlewaretoken']").val();
 
 $(document).on('click',"button[id^='add-btn']",function add(e){
     url = $(this).data("url")
-    
-    console.log(csrf)
+    $(this).html('<i class="fas fa-check"></i>');
+    $(this).addClass("disabled");
     e.preventDefault();
     $.ajax({
       
@@ -16,8 +16,8 @@ $(document).on('click',"button[id^='add-btn']",function add(e){
       },
       success: function (json){
         $( "#menu-items" ).load(location.href + " #menu-items");
-        $(this).addClass("invisible");
 
+        
       },
       error: function(xhr,errmsg,err){
 
@@ -29,6 +29,8 @@ $(document).on('click',"button[id^='add-btn']",function add(e){
   });
   $(document).on('click',"button[id^='del-btn']",function remove (e){
     url = $(this).data("url")
+    $("#add-btn"+$(this).val()).text("Add");
+    $("#add-btn"+$(this).val()).removeClass("disabled");
     e.preventDefault();
     $.ajax({
       
@@ -41,7 +43,6 @@ $(document).on('click',"button[id^='add-btn']",function add(e){
       },
       success: function (json){
         $( "#menu-items" ).load(location.href + " #menu-items");
-        $( "#meal-table" ).load(location.href + " #meal-table");
         
       },
       error: function(xhr,errmsg,err){
