@@ -2,8 +2,7 @@ csrf = $("input[name='csrfmiddlewaretoken']").val();
 
 $(document).on('click',"button[id^='add-btn']",function add(e){
     url = $(this).data("url")
-    $(this).html('<i class="fas fa-check"></i>');
-    $(this).addClass("disabled");
+    
     e.preventDefault();
     $.ajax({
       
@@ -15,8 +14,8 @@ $(document).on('click',"button[id^='add-btn']",function add(e){
         action: 'add'
       },
       success: function (json){
-        $( "#menu-items" ).load(location.href + " #menu-items");
-
+        location.reload()
+  
         
       },
       error: function(xhr,errmsg,err){
@@ -43,6 +42,7 @@ $(document).on('click',"button[id^='add-btn']",function add(e){
       },
       success: function (json){
         $( "#menu-items" ).load(location.href + " #menu-items");
+        location.reload($( "#dataTable" ));
         
       },
       error: function(xhr,errmsg,err){

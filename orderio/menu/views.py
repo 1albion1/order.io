@@ -104,11 +104,14 @@ def create_menu(request,weekly_id):
     weekly_menu = get_object_or_404(WeeklyMenu,id=weekly_id) 
     all_options = Menu.DAYS
     available_options = []
+    ss = Custom_Session(request)
+    for meal in ss.get_menu_items():
+        meals=meals.exclude(pk=meal)
     for day in all_options:
         if not weekly_menu.menu_set.filter(created_for=day[0]):
             available_options.append(int(day[0]))
     if request.method == 'POST':
-        ss = Custom_Session(request)
+        
         weekday = request.POST.get('weekday')
         menu_meals_session = ss.get_menu_items()
         if len(menu_meals_session) > Menu.CAPACITY:

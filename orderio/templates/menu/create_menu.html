@@ -7,8 +7,6 @@
   <p class="mb-4">Add or remove meals from the menu. Click continue when you are done.</p>
   <!-- meal choosing -->
   <div class="row " >
-    
-
     <div class="col-lg-7 col-md-7  card shadow mb-4">
       <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary">Meal List</h6>
@@ -25,7 +23,7 @@
                 <th>Action</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="meal-table-body">
               {% for meal in meals %}
                 <tr>
                   <td>{{meal.name}}</td>
