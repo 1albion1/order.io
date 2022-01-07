@@ -1,42 +1,105 @@
-{% extends "../base.html" %}
+{% extends "../manager-base.html" %}
 {% load static %}
 {% block content %}
-  {% if not orders %}
-    No orders yet!
-  {% endif %}
+{% for message in messages %}
+<div class="alert alert-{{message.level_tag}}  alert-dismissible fade show">
+    {{message}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+ <!-- Page Heading -->
+ <div class="container-fluid">
+ <h1 class="h3 mb-2 text-gray-800">Orders for <b>{{day}}</b>, Week {{week}} of year {{year}}</h1>
+ <p class="mb-4">Here you can view,accept or deny today's orders.</p>
+ {% if not orders %}
+ No orders yet!
+{% else %}
 
-  {% for order in orders %}
-  
-    {{order.employee}}
-    {% for meal in order.meals.all %}
-      {{meal.name}}
-    {% endfor %}
-    {{order.created_at}}<br>
-    {{order.order_cost }}<br>
-    <a href="{{order.get_absolute_url}}" class="btn btn-info">View</a>
-    {% if order.order_status == "Pending" %}
-      <a href="{% url 'order:change_order_status' order.pk 1 %}" class="btn btn-success">Accept</a> 
-      <button data-url="{% url 'order:change_order_status' order.pk 0 %}" class="btn btn-danger" 
-      data-bs-toggle="modal" data-bs-target="#exampleModal" value="{% url 'order:change_order_status' order.pk 0 %}" id="del-btn{{order.pk}}">Deny</button> 
-    {% elif order.order_status == "Accepted" %}
-    <a href="#" class="btn btn-success btn-sm disabled"><i class="bi bi-check-circle"></i> Accepted</a> 
-    {% else%}
-    <a href="#" class="btn btn-danger btn-sm disabled"><i class="bi bi-x-circle"></i> Denied</a> 
+ <div class="card shadow mb-4">
+     <div class="card-header py-3">
+         <h6 class="m-0 font-weight-bold text-primary">Today's Order List</h6>
+     </div>
+     <div class="card-body">
+         <div class="table-responsive">
+             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                 <thead>
+                     <tr class="bg-gradient-primary text-white">
+                      <th>Ordered by</th>
+                      <th>Meals</th>
+                      <td>Created at</td>
+                      <td>Total Price</td>
+                      <th>Action</th>
+                     </tr>
+                 </thead>
+                 
+                 <tbody>
+                  {% for order in orders %}
+                   <tr>
+                     <td>{{order.employee}}</td>
+                     <td>{% for meal in order.meals.all %}
+                      {{meal.name}}, 
+                    {% endfor %}</td>
+                     <td>{{order.created_at}}</td>
+                     <td>{{order.order_cost }}</td>
+                     
+                     <td>
+                      
+                    <a href="{{order.get_absolute_url}}" class="btn btn-circle btn-primary btn-sm">                  
+                        <i class="far fa-eye"></i>
+                
+                      </a>
+                      
+                      {% if order.order_status == "Pending" %}
+                        <a href="{% url 'order:change_order_status' order.pk 1 %}" class="btn btn-success btn-sm btn-circle">
+                          
+                            <i class="fas fa-check"></i>
+                   
+                        </a> 
+                        <button data-url="{% url 'order:change_order_status' order.pk 0 %}" class="btn btn-danger btn-sm btn-circle" 
+                        data-bs-toggle="modal" data-bs-target="#exampleModal" 
+                        value="{% url 'order:change_order_status' order.pk 0 %}"
+                         id="del-btn{{order.pk}}">
+                         <i class="fas fa-times"></i>
+                        </button> 
+                      {% elif order.order_status == "Accepted" %}
+                      <a  class="btn btn-circle btn-success btn-sm disabled">
+                        
+                       
+                          <i class="fas fa-check-circle"></i>
+                        
+                      </a> 
+                      {% else%}
+                      <a href="#" class="btn btn-circle btn-danger btn-sm disabled">
+                        <i class="fas fa-times-circle"></i>
+                      </a> 
+                      {% endif %}
+                    
+                    </td>
+                   </tr>
+                   {% endfor %}
 
-    {% endif %}
-    <br>
-  {% endfor %}
+                 </tbody>
+             </table>
+         </div>
+     </div>
+ </div>
+
+</div>
+{% endif %}
+
+ 
 
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">You are about to deny an order!</h5>
+          <h5 class="modal-title" id="exampleModalLabel">You are about to <b class="text-danger">deny</b> an order!</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          Are you sure you want to deny this order?
+          Are you sure you want to deny this order? <br>
+          <i>If you deny the order, the order cost will be refunded and the employee can make another order.</i>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

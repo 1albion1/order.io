@@ -1,16 +1,19 @@
-{% extends "../base.html" %}
+{% extends "../manager-base.html" %}
 {% load static %}
 {% block content %}
-<div class="container">
+
+<div class="container-fluid">
   <a href="{% url 'menu:weekly_menu' %}">BACK</a>
   <!-- meal choosing -->
-  <div class="row">
-    <div class="col-lg-8">
-      <div class="table-responsive">
-      <div class="input-group m-1 d-flex justify-content-end">
-        <span class="input-group-text" id="addon-wrapping"><i class="bi bi-search"></i></span>
-        <input type="text" id="search" onkeyup="filterTable()" placeholder="Search for food.." class="form-control">
-        <table class="table table-white table-hover" id="meal-table">
+  <div class="row " >
+    <div class="col-lg-8 col-md-8  card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Meal List</h6>
+      </div>
+      <div class="table-responsive" >
+
+        
+        <table class="table table-bordered" id="dataTable">
           <thead>
             <tr class="bg-dark text-white">
               <th>Meal</th>
@@ -21,14 +24,14 @@
               <th>Action</th>
             </tr>
           </thead>
-          <tbody id="meal-table-body">
+          <tbody>
             {% for meal in meals %}
             {% if meal not in menu_meals %}
             <tr>
               <td><a href="{{meal.get_absolute_url}}">{{meal.name}}</a></td>
               <td>{{meal.calories}} </td>
               <td>{{meal.price}} </td>
-              <td>{{meal.description|truncatechars:150}}</td>
+              <td>{{meal.description|truncatechars:50}}</td>
               <td>{{meal.category.name}}</td>
               <td>
                 {% if bag|length < 7 %}
@@ -44,13 +47,13 @@
             {% endfor %}
           </tbody>
         </table>
-      </div>
+
       </div>
     </div>
 
 
     
-    <div  class="col-md-6 col-lg-4 col-sm-12 order-md-last">
+    <div  class="col-md-4 col-lg-4 col-sm-12 order-md-last">
       <div id="menu-items">
       <h4 class="d-flex justify-content-between align-items-center mb-3">
         <span class="text-primary">Your menu</span>
@@ -100,4 +103,5 @@
 
 <!-- table filter js -->
 <script src="{% static 'js/table-filter.js' %}"></script>
+
 {% endblock content %}

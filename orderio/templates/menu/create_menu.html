@@ -1,7 +1,7 @@
 {% extends "../manager-base.html" %}
 {% load static %}
 {% block content %}
-<link href='{% static "plugins/datatables/dataTables.bootstrap4.min.css" %}' rel="stylesheet">
+
 <div class="container-fluid" >
   <h1 class="h3 mb-2 text-gray-800">Create menu</h1>
   <p class="mb-4">Add or remove meals from the menu. Click continue when you are done.</p>
@@ -26,7 +26,7 @@
             <tbody id="meal-table-body">
               {% for meal in meals %}
                 <tr>
-                  <td>{{meal.name}}</td>
+                  <td><a href="{{meal.get_absolute_url}}">{{meal.name}}</a></td>
                   <td>{{meal.calories}} </td>
                   <td>{{meal.price}} </td>
                   <td>{{meal.description|truncatechars:50}}</td>
@@ -111,10 +111,7 @@
 
 <!-- table filter js -->
 <script src="{% static 'js/table-filter.js' %}"></script>
-<!-- datatables -->
-<script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
-<script src="{% static 'plugins/datatables/dataTables.bootstrap4.min.js' %}"></script>
-<script src="{% static 'js/datatables.js' %}"></script>
+
 <!-- ajax js -->
 <script src="{% static 'js/create_menu.js' %}">
 </script>

@@ -1,44 +1,74 @@
-{% extends "../base.html" %}
+{% extends "../manager-base.html" %}
 {% block content %}
-
-    <form method="get" action="">
-    {{order_filter.form}}
-    <input type="submit" value="Search">
-    </form>
-    
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    Menu
-                </th>
-                <th>
-                    created_at
-                </th>
-                <th>
-                    Employee
-                </th>
-                <th>
-                    Action
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            
-        {% for order in orders %}
-        <tr>
-            <td>{{order.menu.get_day_name}}</td>
-            <td>{{order.created_at}}</td>
-            <td>{{order.employee.user.username}}</td>
-            <td>
-                <a href="{{order.get_absolute_url}}">View Details</a>
-            </td>
-        </tr>
-        {% endfor %}
+<div class="container-fluid">
+    <h1 class="h3 mb-2 text-gray-800">Orders for Week <b>{{week}}</b> of Year {{year}}</h1>
+ <p class="mb-4">All orders for this week are listed below. You can filter by choosing one or multiple choices and pressing the <b><i>Show</i></b> button.</p>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">This week's Order List</h6>
+    </div>
+    <div class="card-body">
+        <form method="get" action="">
+            <div class="form-group row d-flex justify-content-center">
+                <div class="col-lg-3 mb-3 mb-sm-0">
+                    <span class="text-info">Employee:</span>
+                    {{order_filter.form.employee}}
+                </div>
+                <div class="col-lg-3">
+                    <span class="text-info">Order Status:</span>
+                    {{order_filter.form.order_status}}
+                </div>
+                <div class="col-lg-3">
+                    <span class="text-info">Daily Menu:</span>
+                    {{order_filter.form.day}}
+                </div>
+                <div class="col-lg-2 align-self-end">
+                    <input type="submit" value="Show" class="btn btn-primary">
+                </div>
+            </div>
+        
+        </form>
+        
+        <table class="table">
+            <thead class="bg-gradient-dark text-white">
+                <tr>
+                    <th>
+                        Menu
+                    </th>
+                    <th>
+                        Created At
+                    </th>
+                    <th>
+                        Employee
+                    </th>
+                    <th>
+                        Action
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
                 
+            {% for order in orders %}
+            <tr>
+                <td>{{order.menu.get_day_name}}</td>
+                <td>{{order.created_at}}</td>
+                <td>{{order.employee.user.username}}</td>
+                <td>
+                    <a href="{{order.get_absolute_url}}" class="btn btn-info btn-sm"><i class="far fa-eye"></i> View Details</a>
+                </td>
+            </tr>
+            {% endfor %}
+                    
+    
+            </tbody>
+        </table>
+        </div>
+    </div>
+</div>
 
-        </tbody>
-    </table>
-
-
+<script>
+    $(document).ready(function() {
+        $('select').addClass("form-select");
+      });
+</script>
 {% endblock content %}

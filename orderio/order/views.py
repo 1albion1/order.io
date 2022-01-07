@@ -26,11 +26,12 @@ def daily_orders(request):
         orders = menu.order_set.all()
         if not menu.approved:
             return HttpResponse("You have not approved today's menu!")
+        context={"orders":orders,"day":menu.get_day_name,"week":week,"year":year}
+        return render(request,"order/daily_orders.html",context)
+
     except:
         return HttpResponse("You have not created a menu for today!")
-    context={"orders":orders}
-    return render(request,"order/daily_orders.html",context)
-
+    
 @login_required(login_url="login")
 @allowed_users(allowed_roles=['manager'])
 def weekly_orders(request):
@@ -112,5 +113,5 @@ def all_orders_this_week(request):
     if request.method == "GET":    
         order_filter = OrderFilter(request.GET,queryset=orders)
         orders = order_filter.qs
-    context = {"weekly_menu":weekly_menu,"order_filter":order_filter,"orders":orders}
+    context = {"weekly_menu":weekly_menu,"order_filter":order_filter,"orders":orders,"week":week,"year":year}
     return render(request,"order/all_orders_this_week.html",context)

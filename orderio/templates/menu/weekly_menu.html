@@ -75,7 +75,7 @@
 {% endfor %}
 </div>
 </div>
-<a href="{% url 'menu:create_menu' weekly_menu.pk %}" class="btn btn-primary">Create</a>
+<a href="{% url 'menu:create_menu' weekly_menu.pk %}" class="btn btn-primary {% if weekly_menu.menu_set.all.count == 7 %} disabled {% endif %} ">Create</a> 
 
 <!-- Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
