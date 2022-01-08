@@ -21,7 +21,7 @@ class OrderFilter(django_filters.FilterSet):
     
     class Meta:
         model = Order
-        fields = ["employee","order_status"]
+        fields = ["employee","order_status","menu"]
     
     def get_by_day(self,queryset,name,value):
         return queryset.filter(menu__created_for = value)

@@ -23,21 +23,22 @@ class CreateUserForm(UserCreationForm):
         self.fields['email'].widget.attrs.update({'class': 'form-control form-control-user','placeholder':'Email'})
         self.fields['password1'].widget.attrs.update({'class': 'form-control form-control-user','placeholder':'Password'})
         self.fields['password2'].widget.attrs.update({'class': 'form-control form-control-user','placeholder':'Confirm Password'})
-        self.fields['role'].widget.attrs.update({'class': 'form-control form-control-user','placeholder':'Role','required':True})
+        self.fields['role'].widget.attrs.update({'class': 'form-control','placeholder':'Role','required':True})
         self.fields['first_name'].widget.attrs.update({'class': 'form-control form-control-user','placeholder':'First Name'})
         self.fields['last_name'].widget.attrs.update({'class': 'form-control form-control-user','placeholder':'Last Name'})
+       
         
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if len(email) <5:
             raise forms.ValidationError("Please enter a valid email.")
-        if CustomUser.objects.filter(email=email).exists():
+        if CustomUser.objects.filter(email__iexact=email).exists():
             raise forms.ValidationError("Email is already registered")
         return email
 
     def clean_username(self):
         username = self.cleaned_data.get("username")
-        if CustomUser.objects.filter(username=username).exists():
+        if CustomUser.objects.filter(username__iexact=username).exists():
             raise ValidationError("This username already exists!")
         return username
     
@@ -54,6 +55,6 @@ class FnameLnameForm(ModelForm):
     
     def clean_email(self):
         email = self.cleaned_data.get('email')
-        if CustomUser.objects.filter(email=email).exists():
+        if CustomUser.objects.filter(email__iexact=email).exists():
             raise forms.ValidationError("Email is already registered")
         return email

@@ -1,4 +1,5 @@
 {% extends "../manager-base.html" %}
+{% load static %}
 {% block title %}
   Manager Dashboard
 {% endblock title %}
@@ -9,14 +10,163 @@
             <small><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></small>
         </div>
 {% endfor %}
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+  <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+</div>
+<div class="row">
+  
+  
+  <!-- Earnings (Monthly) Card Example -->
+  <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-left-primary shadow h-100 py-2">
+          <div class="card-body">
+              <div class="row no-gutters align-items-center">
+                  <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                          Total orders this week</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{this_week_orders}}</div>
+                  </div>
+                  <div class="col-auto">
+                      <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
 
-<a href="{% url 'meal:index' %}" class="btn btn-primary">Meals</a> 
-<a href="{% url 'create_user' %}" class="btn btn-primary">Create user</a> 
-<a href="{% url 'menu:weekly_menu' %}" class="btn btn-primary">This week's Menu</a>
+  <!-- Earnings (Monthly) Card Example -->
+  <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-left-success shadow h-100 py-2">
+          <div class="card-body">
+              <div class="row no-gutters align-items-center">
+                  <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                          Earnings (Annual)</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                  </div>
+                  <div class="col-auto">
+                      <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
 
-<a href="{% url 'order:daily_orders' %}" class="btn btn-primary">Daily Orders</a>
-<a href="{% url 'meal:create_meal' %}" class="btn btn-primary">Create meal</a>
-<a href="{% url 'manager:reports_index' %}" class="btn btn-primary">Reports</a>
-<a href="{% url 'user_list' %}" class="btn btn-primary">User List</a>
-<a href="{% url 'change_password' %}" class="btn btn-primary">Change Password</a>
+  <!-- Earnings (Monthly) Card Example -->
+  <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-left-info shadow h-100 py-2">
+          <div class="card-body">
+              <div class="row no-gutters align-items-center">
+                  <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks
+                      </div>
+                      <div class="row no-gutters align-items-center">
+                          <div class="col-auto">
+                              <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
+                          </div>
+                          <div class="col">
+                              <div class="progress progress-sm mr-2">
+                                  <div class="progress-bar bg-info" role="progressbar"
+                                      style="width: 50%" aria-valuenow="50" aria-valuemin="0"
+                                      aria-valuemax="100"></div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-auto">
+                      <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <!-- Pending Requests Card Example -->
+  <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-left-warning shadow h-100 py-2">
+          <div class="card-body">
+              <div class="row no-gutters align-items-center">
+                  <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                          Pending Orders Today</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{pending_orders}}</div>
+                  </div>
+                  <div class="col-auto">
+                      <i class="fas fa-comments fa-2x text-gray-300"></i>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<div class="row">
+
+  <!-- Area Chart -->
+  <div class="col-xl-8 col-lg-8">
+      <div class="card shadow mb-4">
+          <!-- Card Header - Dropdown -->
+          <div
+              class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+              <h6 class="m-0 font-weight-bold text-primary">Orders Overview</h6>
+              
+          </div>
+          <!-- Card Body -->
+          <div class="card-body">
+            <div id="container" class="chart-area" style="width: 100%; height:auto;" data-url="{% url 'manager:number_of_orders_by_day' %}">
+              <canvas id="population-chart" ></canvas>
+            </div>
+          </div>
+      </div>
+  </div>
+
+  <!-- Pie Chart -->
+  <div class="col-xl-4 col-lg-4">
+      <div class="card shadow mb-4">
+          <!-- Card Header - Dropdown -->
+          <div
+              class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+              <h6 class="m-0 font-weight-bold text-primary">Today's menu</h6>
+              
+          </div>
+          <!-- Card Body -->
+          <div class="card-body">
+            {% if menu %}
+            Menu for: <br>
+            <b class="fs-5 text-dark">{{menu.get_day_name}}</b><br>
+            Meals:
+            {% for meal in menu.meals.all %}
+            <li><a href="{{meal.get_absolute_url}}">{{meal.name}}</a></li>
+            {% endfor %}
+            Menu status:<br> 
+            <b class="fs-5 text-dark">
+            {% if menu.approved %}
+              Approved
+              {% else %}
+              Pending
+            {% endif %}
+            </b><br>
+            <hr>
+            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+              <a href="{{menu.get_absolute_url}}" class="btn btn-info btn-sm"><i class="far fa-eye"></i> View menu</a>
+            <a href="{% url 'menu:weekly_menu' %}" class="btn btn-primary btn-sm ml-1">
+              <i class="fas fa-calendar-week"></i> Menus for this week
+            </a>
+            </div>
+            
+              {% else %}
+              You have not created a menu for today!
+              <hr>
+              <a href="{% url 'menu:weekly_menu' %}" class="btn btn-info">
+                 Create
+              </a>
+              {% endif %}
+          </div>
+      </div>
+  </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+<script src='{% static "js/manager-dashboard.js" %}'></script> 
+
 {% endblock%}

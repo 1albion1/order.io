@@ -1,7 +1,7 @@
 
 $(document).on('change',"#user-select",function(){
     
-    url = $('#user-select option:selected').data("url");
+  url = $('#user-select option:selected').data("url");
   var $populationChart = $("#population-chart");
   labels = []
   defaultData = []

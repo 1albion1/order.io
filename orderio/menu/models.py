@@ -11,7 +11,7 @@ class WeeklyMenu(models.Model):
         return "Year "+str(self.year)+" Week "+str(self.week)
     
     class Meta:
-        ordering = ('year','-week',)
+        ordering = ('-year','-week',)
     
     def get_absolute_url(self):
         return reverse("menu:view_weekly_menu", kwargs={"week": self.week,"year":self.year})
@@ -58,9 +58,11 @@ class Menu(models.Model):
     def __str__(self):
         try: 
             week = self.weekly_menu.week
+            year = self.weekly_menu.year
         except:
             week = "no week"
-        return str(self.get_day_name()) +" Week "+ str(week)
+            year = ""
+        return str(self.get_day_name()) +" Week "+ str(week) + " Year " + str(year)
     
     def allowes_orders(self):
         return (timezone.now()-self.approved_at)<timezone.timedelta(hours=self.avability)

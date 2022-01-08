@@ -1,12 +1,87 @@
-Order ID:{{order.pk}}<br>
-Meals:
-<ol>
-{% for meal in order.meals.all %}
-  <li>{{meal}}</li>
-{% endfor %}
-</ol>
-Weekly menu: {{order.menu.weekly_menu.week}}<br>
-Menu for: {{order.menu.get_day_name}}<br>
-Created at: {{order.created_at}}<br>
-Order status: {{order.order_status}}<br>
-Created by: {{order.employee.user.username}}
+{% extends "../manager-base.html" %}
+{% block title %}
+Order {{order.pk}}
+{% endblock title %}
+{% block content %}
+<body class="bg-gradient-primary">
+  <button onclick="history.back()" class=" btn btn-primary m-3"><i class="fas fa-arrow-circle-left"></i> Go Back</button>
+    <div class="container">
+      
+        <div class="card o-hidden border-0 shadow-lg my-5 ">
+            <div class="card-body p-0">
+              
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                  
+                    <div class="col-lg-3 ">
+                      <div class="p-5">
+                        
+                             <i class="text-primary fs-4"><b>Meals:</b></i><br>
+                             
+                             <ol>
+                             {% for meal in order.meals.all %}
+                               <li><a href="{{meal.get_absolute_url}}">{{meal}}</a></li> 
+                             {% endfor %}
+                             </ol>
+                            
+                        
+                        
+                    </div>
+                    </div>
+                    <div class="col-lg-9 border-left border-info">
+                      
+                     <div class="p-5">
+                      <div class="text-center">
+                        <h1 class="h4 fs-1 text-gray-900 mb-4 border-bottom border-info">Order: {{order.pk}}</h1>
+                    </div>
+                      <div class="ml-3">
+                        <div class="row">
+                          <div class="col-lg-6 p-1">
+                            <b>Total cost:</b>
+                            <b class="text-primary">${{order.order_cost}}</b>
+                          </div>
+                          <div class="col-lg-6 p-1"> 
+                            <b>Weekly menu:</b>
+                            <a class="text-primary" href="{{order.menu.weekly_menu.get_absolute_url}}">{{order.menu.weekly_menu}}</a>
+                          </div>
+                          <div class="col-lg-6 p-1"> 
+                            <b>Created at:</b>
+                            <b class="text-primary">{{order.created_at}}</b>
+                          </div>
+                          <div class="col-lg-6 p-1"> 
+                            <b>Order status:</b> {{order.order_status}}
+                          </div>
+                          <div class="col-lg-6 p-1"> 
+                            <b>Menu for:</b>  <a href="{{order.menu.get_absolute_url}}">{{order.menu.get_day_name}}</a>
+                          </div>
+                          <div class="col-lg-6 p-1"> 
+                            <b>Created by:</b> {{order.employee.user.username}}
+                          </div>
+                        </div>
+                        <br>
+                   <br>
+                  
+                      <br>
+                     <br>
+                     <br>
+                      <br>
+                      </div>
+                     </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    
+    
+
+
+
+</body>
+
+
+
+{% endblock content %}

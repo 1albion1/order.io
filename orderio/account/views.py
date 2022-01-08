@@ -96,7 +96,7 @@ def delete_user(request,pk):
     user = get_object_or_404(CustomUser,pk=pk)
     username = user.username
     user.delete()
-    messages.warning(request,f"{username} was deleted successfully.")
+    messages.success(request,f"{username} was deleted successfully.")
     return redirect("user_list")
 
 @login_required(login_url="login")

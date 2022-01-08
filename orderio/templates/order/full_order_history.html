@@ -2,8 +2,8 @@
 {% block content %}
 <div class="container-fluid">
     
-    <h1 class="h3 mb-2 text-gray-800">Orders for Week <b>{{week}}</b> of Year {{year}}</h1>
- <p class="mb-4">All orders for this week are listed below. You can filter by choosing one or multiple choices and pressing the <b><i>Show</i></b> button.</p>
+    <h1 class="h3 mb-2 text-gray-800">Order History</h1>
+ <p class="mb-4">All orders listed below. You can filter by choosing one or multiple choices and pressing the <b><i>Show</i></b> button.</p>
 <div class="card shadow mb-4">
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary">This week's Order List</h6>
@@ -20,8 +20,8 @@
                     {{order_filter.form.order_status}}
                 </div>
                 <div class="col-lg-3">
-                    <span class="text-info">Daily Menu:</span>
-                    {{order_filter.form.day}}
+                    <span class="text-info">Menu:</span>
+                    {{order_filter.form.menu}}
                 </div>
                 <div class="col-lg-2 align-self-end">
                     <input type="submit" value="Show" class="btn btn-primary">

@@ -1,16 +1,30 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404, render,redirect
+from django.shortcuts import get_object_or_404, render
 from main.decorators import allowed_users
-from employee.models import Employee,Department
+from employee.models import Department
 from account.models import CustomUser
-from menu.models import WeeklyMenu
-from django.urls import reverse
+from menu.models import WeeklyMenu,Menu
+from order.models import Order
 from django.http import JsonResponse
+from django.utils import timezone
+from datetime import date
 from main.forms import FnameLnameForm
 @login_required(login_url="login")
 @allowed_users(allowed_roles=['manager'])
 def index(request):
-    return render(request,'manager/index.html')
+    week = timezone.now().isocalendar().week
+    day = timezone.now().isoweekday()
+    year = timezone.now().isocalendar().year
+    try:
+        weekly_menu = get_object_or_404(WeeklyMenu,week=week,year=year)
+        menu = weekly_menu.menu_set.get(created_for=day)
+        pending_orders = menu.order_set.filter(order_status="Pending").count()
+    except:
+        pending_orders = 0
+        menu = ""
+    this_week_orders = Order.objects.filter(created_at__week=week).count()
+    context= {"pending_orders":pending_orders,"this_week_orders":this_week_orders,"menu":menu}
+    return render(request,'manager/index.html',context)
 
 def manager_profile(request):
     form = FnameLnameForm
@@ -61,6 +75,19 @@ def chart_total_orders_by_department(request,pk):
         labels.append(department.name)
         data.append(order_count)
         order_count = 0
+    return JsonResponse(data={
+        'labels': labels,
+        'data': data,
+    })
+    
+def number_of_orders_by_day(request):
+    labels = []
+    data = []
+    menus = Menu.objects.filter(approved=True).order_by('-weekly_menu','created_for',)[:20]
+    for menu in menus:
+        
+        labels.append(str(menu.get_day_name())[:3]+", "+str(date.fromisocalendar(menu.weekly_menu.year,menu.weekly_menu.week,menu.created_for,).strftime("%d/%m/%y")) )
+        data.append(menu.order_set.all().count())
     return JsonResponse(data={
         'labels': labels,
         'data': data,

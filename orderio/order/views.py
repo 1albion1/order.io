@@ -32,12 +32,6 @@ def daily_orders(request):
     except:
         return HttpResponse("You have not created a menu for today!")
     
-@login_required(login_url="login")
-@allowed_users(allowed_roles=['manager'])
-def weekly_orders(request):
-    
-    context={}
-    return render(request,"order/weekly_orders.html",context)
 
 def create_order(request):
     ss = Custom_Session(request)
@@ -115,3 +109,12 @@ def all_orders_this_week(request):
         orders = order_filter.qs
     context = {"weekly_menu":weekly_menu,"order_filter":order_filter,"orders":orders,"week":week,"year":year}
     return render(request,"order/all_orders_this_week.html",context)
+
+def full_order_history(request):
+    orders = Order.objects.all()
+    context = {"orders":orders}
+    if request.method == "GET":    
+        order_filter = OrderFilter(request.GET,queryset=orders)
+        orders = order_filter.qs
+    context = {"order_filter":order_filter,"orders":orders}
+    return render(request,"order/full_order_history.html",context)
