@@ -2,6 +2,7 @@ from django.db import models
 from meal.models import Meal
 from django.utils import timezone
 from django.urls import reverse
+from datetime import date
 # Create your models here.
 class WeeklyMenu(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -56,13 +57,14 @@ class Menu(models.Model):
         ordering = ('weekly_menu','created_for',)
     
     def __str__(self):
+        
         try: 
             week = self.weekly_menu.week
             year = self.weekly_menu.year
         except:
             week = "no week"
             year = ""
-        return str(self.get_day_name()) +" Week "+ str(week) + " Year " + str(year)
+        return str(date.fromisocalendar(year,week,self.created_for).strftime("%A, %d/%b/%y"))
     
     def allowes_orders(self):
         return (timezone.now()-self.approved_at)<timezone.timedelta(hours=self.avability)

@@ -55,7 +55,7 @@ Order {{order.pk}}
                             <b>Menu for:</b>  <a href="{{order.menu.get_absolute_url}}">{{order.menu.get_day_name}}</a>
                           </div>
                           <div class="col-lg-6 p-1"> 
-                            <b>Created by:</b> {{order.employee.user.username}}
+                            <b>Created by:</b> <a href="{{order.employee.get_absolute_url}}">{{order.employee}}</a>
                           </div>
                         </div>
                         <br>

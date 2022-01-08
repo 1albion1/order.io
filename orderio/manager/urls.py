@@ -4,7 +4,6 @@ app_name = "manager"
 urlpatterns = [
     
     path("",views.index, name="index"),
-    path("profile",views.manager_profile, name="manager_profile"),
     #reports
     path("reports",views.reports_index,name="reports_index"),
     path("user_spendings",views.user_spendings,name="user_spendings"),

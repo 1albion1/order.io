@@ -12,8 +12,10 @@
         <small><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></small>
     </div>
     {% endfor %}
-    <h1 class="h3 mb-2 text-gray-800">Create menu</h1>
-    <p class="mb-4">Add or remove meals from the menu. Click continue when you are done.</p>
+    <h1 class="h3 mb-2 text-gray-800 fs-1">User list</h1>
+    <p class="mb-4">Here you can change daily allowance for each employee.<br>
+        <i><b class="text-danger">Careful!</b> You can only change the allowance before the user has made an order this week.</i><br>
+    <span class="text-dark">Make sure to update daily allowances before you approve the menu for the first working day of the week.</span></p>
 
 
 
@@ -35,7 +37,13 @@
                 <tbody>
                     {% for user in users %}
                     <tr>
+                        {% if user.role.name == "user" %}
+                        <td><a href="{% url 'employee:employee_profile' user.pk %}">{{user.username}}</a></td> 
+                        {% else %}
                         <td>{{user.username}}</td>
+                        {% endif %}
+                        
+
                         <td>{{user.role}}</td>
 
                         {% if user.role.name == "user" %}

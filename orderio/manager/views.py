@@ -15,6 +15,7 @@ def index(request):
     week = timezone.now().isocalendar().week
     day = timezone.now().isoweekday()
     year = timezone.now().isocalendar().year
+    total_users = CustomUser.objects.filter(role__name="user").count()
     try:
         weekly_menu = get_object_or_404(WeeklyMenu,week=week,year=year)
         menu = weekly_menu.menu_set.get(created_for=day)
@@ -23,13 +24,13 @@ def index(request):
         pending_orders = 0
         menu = ""
     this_week_orders = Order.objects.filter(created_at__week=week).count()
-    context= {"pending_orders":pending_orders,"this_week_orders":this_week_orders,"menu":menu}
+    context= {"pending_orders":pending_orders,
+              "this_week_orders":this_week_orders,
+              "menu":menu,
+              "total_users":total_users,
+              }
     return render(request,'manager/index.html',context)
 
-def manager_profile(request):
-    form = FnameLnameForm
-    context ={"form":form}
-    return render(request,'manager/manager_profile.html',context)
 
 def reports_index (request):
     return render(request,'manager/reports_index.html')
@@ -86,7 +87,7 @@ def number_of_orders_by_day(request):
     menus = Menu.objects.filter(approved=True).order_by('-weekly_menu','created_for',)[:20]
     for menu in menus:
         
-        labels.append(str(menu.get_day_name())[:3]+", "+str(date.fromisocalendar(menu.weekly_menu.year,menu.weekly_menu.week,menu.created_for,).strftime("%d/%m/%y")) )
+        labels.append(str(date.fromisocalendar(menu.weekly_menu.year,menu.weekly_menu.week,menu.created_for,).strftime("%a, %d/%b/%y")))
         data.append(menu.order_set.all().count())
     return JsonResponse(data={
         'labels': labels,

@@ -31,7 +31,6 @@ def all_weekly_menus(request):
     return render(request,"menu/all_weekly_menus.html",context)
 
 def view_weekly_menu(request,week,year):
-    print(week,year)
     
     wm = WeeklyMenu.objects.get(week=week,year=year)
     context = {"wm":wm}

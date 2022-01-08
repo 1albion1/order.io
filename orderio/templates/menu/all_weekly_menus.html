@@ -1,3 +1,61 @@
+{% extends "../manager-base.html" %}
+{% load static %}
+{% block title %}
+  Meal List
+{% endblock title %}
+{% block content %}
+
+<!-- Custom styles for this page -->
+
+{% for message in messages %}
+<div class="alert alert-{{message.level_tag}}  alert-dismissible fade show">
+    {{message}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+ <!-- Page Heading -->
+ <div class="container-fluid">
+ <h1 class="h3 mb-2 text-gray-800">Weekly Menu History</h1>
+ <p class="mb-4">Click on the meal name to view more details.</p>
+
+ <div class="card shadow mb-4">
+     <div class="card-header py-3">
+         <h6 class="m-0 font-weight-bold text-primary">All Weekly Menus</h6>
+     </div>
+     <div class="card-body">
+         <div class="table-responsive">
+             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                 <thead>
+                     <tr>
+                       <th>Weekly Menu</th>
+
+                      <th>Created At</th>
+                      <th>Action</th>
+                     </tr>
+                 </thead>             
+                 <tbody>
+                  {% for wm in all_weekly_menus %}
+                   <tr>
+                     <td>  <a href="{{wm.get_absolute_url}}">Week: {{wm.week}} Year: {{wm.year}}</a><br></td>
+                     <td>{{wm.created_at}}</td>
+                     <td>
+                      <a href="{{wm.get_absolute_url}}" class="btn btn-sm btn-info">View</a>  
+                     
+                   </tr>
+                   {% endfor %}
+
+                 </tbody>
+             </table>
+         </div>
+     </div>
+ </div>
+
+</div>
+
+
+{% endblock content %}
+
+
 {% for wm in all_weekly_menus %}
     Week: <a href="{{wm.get_absolute_url}}">{{wm.week}} </a><br>
     Year: {{wm.year}}<br>

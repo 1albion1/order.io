@@ -1,11 +1,76 @@
-Week: <a href="{{wm.get_absolute_url}}">{{wm.week}} </a><br>
-    Created at: {{wm.created_at}}<br>
-    Total Order Count: {{wm.get_total_order_count}}<br>
-    Menus:
-    <ol>
-    {% for menu in wm.menu_set.all %}
-    <li><a href="{{menu.get_absolute_url}}">
-        {{menu.get_day_name}}
-    </a></li> 
-    {% endfor %}
-    </ol>
+{% extends "../manager-base.html" %}
+{% block title %}
+Order {{order.pk}}
+{% endblock title %}
+{% block content %}
+<body class="bg-gradient-primary">
+  <button onclick="history.back()" class=" btn btn-primary m-3"><i class="fas fa-arrow-circle-left"></i> Go Back</button>
+    <div class="container">
+      
+        <div class="card o-hidden border-0 shadow-lg my-5 ">
+            <div class="card-body p-0">
+              
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                  
+                    <div class="col-lg-3 ">
+                      <div class="p-5">
+                        
+                             <i class="text-primary fs-4"><b>Menus::</b></i><br>
+                             
+                            <ol>
+                            {% for menu in wm.menu_set.all %}
+                            <li><a href="{{menu.get_absolute_url}}">
+                                {{menu.get_day_name}}
+                            </a></li> 
+                            {% endfor %}
+                            </ol>
+                             
+                            
+                        
+                        
+                    </div>
+                    </div>
+                    <div class="col-lg-9 border-left border-info">
+                      
+                     <div class="p-5">
+                      <div class="text-center">
+                        <h1 class="h4 fs-1 text-gray-900 mb-4 border-bottom border-info"><small>Weekly Menu:</small> <i>{{wm}}</i></h1>
+                    </div>
+                      <div class="ml-3">
+                        <div class="row">
+                          
+                          <div class="col-lg-6 p-1">
+                            <b>Created at:</b>
+                            <b class="text-primary">{{wm.created_at}}</b>
+                          </div>
+                          <div class="col-lg-6 p-1">
+                            <b>Total order count :</b>
+                            <b class="text-primary">{{wm.get_total_order_count}} orders</b>
+                          </div>
+                          
+                          
+                      </div>
+                     </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    
+    
+
+
+
+</body>
+
+
+
+{% endblock content %}
+
+
+
+    

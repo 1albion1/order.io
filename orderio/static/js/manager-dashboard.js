@@ -32,7 +32,7 @@ $(document).ready(function(){
             },
             title: {
                 display: true,
-                text: 'Total orders each day' , 
+                text: 'Total orders each day (Pending or Accepted)' , 
             }
             }
         });

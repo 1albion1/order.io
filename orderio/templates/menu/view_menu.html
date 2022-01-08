@@ -1,11 +1,85 @@
-{{menu.created_for}}
-{{menu.created_at}}
-{{menu.avability}}
-{{menu.approved}}
-{{menu.approved_at}}
-Total orders for this menu: {{menu.order_set.all.count}}<br>
-<ol>
-{% for order in menu.order_set.all%}
-  <li><a href="{{order.get_absolute_url}}">{{order.employee.user.username}} </a></li>
-{% endfor %}
-</ol>
+{% extends "../manager-base.html" %}
+{% block title %}
+Order {{order.pk}}
+{% endblock title %}
+{% block content %}
+<body class="bg-gradient-primary">
+  <button onclick="history.back()" class=" btn btn-primary m-3"><i class="fas fa-arrow-circle-left"></i> Go Back</button>
+    <div class="container">
+      
+        <div class="card o-hidden border-0 shadow-lg my-5 ">
+            <div class="card-body p-0">
+              
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                  
+                    <div class="col-lg-3 ">
+                      <div class="p-5">
+                        
+                             <i class="text-primary fs-4"><b>Meals:</b></i><br>
+                             
+                             <ol>
+                             {% for meal in menu.meals.all %}
+                               <li><a href="{{meal.get_absolute_url}}">{{meal}}</a></li> 
+                             {% endfor %}
+                             </ol>
+                            
+                        
+                        
+                    </div>
+                    </div>
+                    <div class="col-lg-9 border-left border-info">
+                      
+                     <div class="p-5">
+                      <div class="text-center">
+                        <h1 class="h4 fs-1 text-gray-900 mb-4 border-bottom border-info"><small>Menu:</small> <i>{{menu}}</i></h1>
+                    </div>
+                      <div class="ml-3">
+                        <div class="row">
+                          <div class="col-lg-6 p-1">
+                            <b>Weekly menu:</b>
+                            <b class="text-primary"><a href="{{menu.weekly_menu.get_absolute_url}}" class="text-decoration-underline">{{menu.weekly_menu}}</a></b>
+                          </div>
+                          <div class="col-lg-6 p-1">
+                            <b>Created at:</b>
+                            <b class="text-primary">{{menu.created_at}}</b>
+                          </div>
+                          <div class="col-lg-6 p-1">
+                            <b>Avability :</b>
+                            <b class="text-primary">{{menu.avability}} hours</b>
+                          </div>
+                          <div class="col-lg-6 p-1">
+                            <b>Approved:</b>
+                            <b class="text-primary">{{menu.approved}}</b>
+                          </div>
+                          {% if menu.approved_at %}
+                          <div class="col-lg-6 p-1">
+                            <b>Approved_at:</b>
+                            <b class="text-primary">{{menu.approved_at}}</b>
+                          </div>
+                          {% endif %}
+                          <div class="col-lg-6 p-1">
+                            <b>Total orders:</b>
+                            <b class="text-primary">{{menu.order_set.all.count}}</b>
+                          </div>
+                          
+                      </div>
+                     </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    
+    
+
+
+
+</body>
+
+
+
+{% endblock content %}
