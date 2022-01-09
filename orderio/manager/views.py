@@ -8,7 +8,7 @@ from order.models import Order
 from django.http import JsonResponse
 from django.utils import timezone
 from datetime import date
-from main.forms import FnameLnameForm
+
 @login_required(login_url="login")
 @allowed_users(allowed_roles=['manager'])
 def index(request):
@@ -19,12 +19,12 @@ def index(request):
     try:
         weekly_menu = get_object_or_404(WeeklyMenu,week=week,year=year)
         menu = weekly_menu.menu_set.get(created_for=day)
-        pending_orders = menu.order_set.filter(order_status="Pending").count()
+        
     except:
-        pending_orders = 0
+        
         menu = ""
     this_week_orders = Order.objects.filter(created_at__week=week).count()
-    context= {"pending_orders":pending_orders,
+    context= {
               "this_week_orders":this_week_orders,
               "menu":menu,
               "total_users":total_users,

@@ -28,11 +28,15 @@ def view_meal(request,pk):
     context = {"meal":meal}
     return render(request,"meal/view_meal.html",context)
 
+@login_required(login_url="login")
+@allowed_users(allowed_roles=['manager'])
 def all_meals(request):
     meals = Meal.objects.all()
     context = {"meals":meals}
     return render(request,"meal/all_meals.html",context)
 
+@login_required(login_url="login")
+@allowed_users(allowed_roles=['manager'])
 def update_meal(request,pk):
     meal = get_object_or_404(Meal,pk=pk)
     form = MealForm(instance=meal)
@@ -45,13 +49,16 @@ def update_meal(request,pk):
     context = {"form":form}
     return render(request,"meal/update_meal.html",context)
 
+@login_required(login_url="login")
+@allowed_users(allowed_roles=['manager'])
 def delete_meal(request,pk):
     meal = get_object_or_404(Meal,pk=pk)
     meal.delete()
     messages.success(request,"The meal was deleted successfully!")
     return redirect("meal:all_meals")
 
-
+@login_required(login_url="login")
+@allowed_users(allowed_roles=['manager'])
 def create_category(request):
     form = CategoryForm()
     if request.method == 'POST':
@@ -63,11 +70,15 @@ def create_category(request):
     context = {"form":form}
     return render(request,"meal/create_category.html",context)
 
+@login_required(login_url="login")
+@allowed_users(allowed_roles=['manager'])
 def view_category(request,pk):
     category = get_object_or_404(Category,pk=pk)
     context = {"category":category}
     return render(request,"meal/view_category.html",context)
 
+@login_required(login_url="login")
+@allowed_users(allowed_roles=['manager'])
 def all_categories(request):
     categories = Category.objects.all()
     context = {"categories":categories}

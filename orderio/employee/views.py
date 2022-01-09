@@ -43,6 +43,7 @@ def employee_profile(request):
 @login_required(login_url="login")
 @allowed_users(allowed_roles=['user'])
 def daily_menu(request):
+    ss = Custom_Session(request)
     day = timezone.now().isoweekday()
     menu_budget = user_money_available(request)
     try:
@@ -52,6 +53,9 @@ def daily_menu(request):
         if not menu.approved:
             return HttpResponse(f"The menu for {menu.get_day_name} is not approved ready yet!")
         meals = menu.meals.all()
+        for meal in ss.get_menu_items():
+            meals=meals.exclude(pk=meal)
+        
         context={"menu":menu,"meals":meals,"day":day,"menu_status":menu_status,"menu_budget":menu_budget,"week":week,"year":year}
         return render(request,'employee/daily_menu.html',context)
     except:

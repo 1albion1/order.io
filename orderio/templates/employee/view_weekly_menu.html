@@ -1,10 +1,59 @@
-<ol>
-{% for menu in wm.menu_set.all %}
+{% extends "../user-base.html" %}
+{% block title %}
+  Weekly Menu
+{% endblock title %}
+{% block content %}
+<div class="container-fluid">
+    <h1 class="h3 mb-2 text-gray-800">Menus for this week</h1>
+    <p class="mb-4">Here you can see all the menus scheduled for this week.<br>
+        <span class="text-info">Click on the meal to view more details.</span>
+   </p>
+   
+  <div class="row">
+  {% for menu in wm.menu_set.all %}
+  
+    <div class="col-lg-4 col-md-6">
+  <div class="card shadow mb-4 ">
+    <!-- Card Header - Accordion -->
+    <a href="#collapseCardExample{{menu.id}}" class="d-block card-header py-3" data-toggle="collapse"
+        role="button" aria-expanded="true" aria-controls="collapseCardExample{{menu.id}}">
+        <h6 class="m-0 font-weight-bold text-primary">{{menu.get_day_name}}</h6>
+    </a>
+    <!-- Card Content - Collapse -->
+    <div class="collapse show" id="collapseCardExample{{menu.id}}">
+        <div class="card-body">
+          Meals:
+          {% for meal in menu.meals.all %}
+          <li><a href="{{meal.get_absolute_url}}">{{meal.name}}</a></li>
+          {% endfor %}
+          <hr>
+          <div>Status: {% if menu.approved %}
+            <span class="text-success fw-bold">Approved</span>
+              {% else %}
+              <span class="text-info fw-bold">Pending</span>
+            {% endif %} </div>
+          
+        </div>
+    </div>
+  </div>
+  </div>
+  
+  
+  {% endfor %}
+  </div>
+  </div>
 
-<li>
-    {{menu.get_day_name}}
-    <a href="{{menu.get_absolute_url}}">View</a>
+
+
+  
+<ol>
+    {% for menu in wm.menu_set.all %}
     
-</li> 
-{% endfor %}
-</ol>
+    <li>
+        {{menu.get_day_name}}
+        <a href="{{menu.get_absolute_url}}">View</a>
+        
+    </li> 
+    {% endfor %}
+    </ol>
+{% endblock content %}

@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-t7#6+*pbt$qb!em=9unjz00f2fdes7*185s6hhhptf3-o^=(jj
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1"]
 
 
 # Application definition
@@ -70,7 +70,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'main.context_processors.bag' #custom
+                'main.context_processors.bag', #custom
+                'main.context_processors.weekly_menu_link', #custom
+                'manager.context_processors.pending_orders' #custom
             ],
         },
     },

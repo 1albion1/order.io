@@ -30,6 +30,8 @@
     <!-- icons -->
     <link href="{% static 'plugins/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <!-- datatables -->
+    <link href='{% static "plugins/datatables/dataTables.bootstrap4.min.css" %}' rel="stylesheet">
 
 </head>
 
@@ -74,7 +76,7 @@
                     <span>Today's Menu</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'menu:view_weekly_menu' week year %}">
+                <a class="nav-link" href="{{weekly_menu_link}}">
                     <i class="fas fa-table"></i>
                 <span>This week's Menu</span></a>
             </li>
@@ -367,6 +369,10 @@
     <!-- Custom scripts for all pages-->
     <script src="{% static 'js/main-template.min.js' %}"></script>
 
+    <!-- datatables -->
+    <script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'plugins/datatables/dataTables.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'js/datatables.js' %}"></script>
 
 </body>
 

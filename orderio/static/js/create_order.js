@@ -12,7 +12,7 @@ $(document).on('click',"button[id^='add-btn']",function add(e){
           action: 'add'
         },
         success: function (json){
-            $( "#menu-items" ).load(location.href + " #menu-items");
+            $( "#main" ).load(location.href + " #main");
           
         },
         error: function(xhr,errmsg,err){
@@ -38,7 +38,7 @@ $(document).on('click',"button[id^='del-btn']",function remove (e){
         action: 'remove'
       },
       success: function (json){
-        $( "#menu-items" ).load(location.href + " #menu-items");
+        $( "#main" ).load(location.href + " #main");
         
       },
       error: function(xhr,errmsg,err){

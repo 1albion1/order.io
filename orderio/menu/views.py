@@ -36,7 +36,8 @@ def view_weekly_menu(request,week,year):
     context = {"wm":wm}
     return user_or_manager(request,"view_weekly_menu",context)
     
-
+@login_required(login_url="login")
+@allowed_users(allowed_roles=['manager'])
 def delete_menu(request,pk):
     menu = get_object_or_404(Menu,pk=pk)
     name = menu.get_day_name()

@@ -41,6 +41,7 @@ def create_order(request):
         if menu.allowes_orders():
             if can_user_order(request,ss.get_total_price()):
                 meals = ss.get_menu_items()
+
                 for meal in meals.keys():
                     if not menu.meals.filter(pk=meal):
                         return HttpResponse("the meal is not on the menu")
