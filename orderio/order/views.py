@@ -32,7 +32,8 @@ def daily_orders(request):
     except:
         return HttpResponse("You have not created a menu for today!")
     
-
+@login_required(login_url="login")
+@allowed_users(allowed_roles=['user'])
 def create_order(request):
     ss = Custom_Session(request)
     employee = get_object_or_404(Employee,user=request.user.id)
@@ -59,6 +60,8 @@ def create_order(request):
             return redirect("employee:index")
     return redirect("employee:index")
 
+@login_required(login_url="login")
+@allowed_users(allowed_roles=['manager'])
 def view_order(request,pk):
     order = get_object_or_404(Order,pk=pk)
     context ={"order" : order}
@@ -72,6 +75,8 @@ def user_order_history(request):
     }
     return render(request,"employee/order_history.html",context)
 
+@login_required(login_url="login")
+@allowed_users(allowed_roles=['manager'])
 def change_order_status(request,pk,status):
     order = get_object_or_404(Order,pk=pk)
     if status == 1:
@@ -98,7 +103,9 @@ def add_to_order(request):
         ss.remove(product=meal_id)
         response = JsonResponse({"id": meal_id})
         return response
-    
+
+@login_required(login_url="login")
+@allowed_users(allowed_roles=['manager'])
 def all_orders_this_week(request):
     week = timezone.now().isocalendar().week
     year = timezone.now().isocalendar().year
@@ -110,6 +117,8 @@ def all_orders_this_week(request):
     context = {"weekly_menu":weekly_menu,"order_filter":order_filter,"orders":orders,"week":week,"year":year}
     return render(request,"order/all_orders_this_week.html",context)
 
+@login_required(login_url="login")
+@allowed_users(allowed_roles=['manager'])
 def full_order_history(request):
     orders = Order.objects.all()
     context = {"orders":orders}

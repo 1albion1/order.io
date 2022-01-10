@@ -84,7 +84,8 @@ def all_categories(request):
     context = {"categories":categories}
     return render(request,"meal/all_categories.html",context)
 
-
+@login_required(login_url="login")
+@allowed_users(allowed_roles=['manager'])
 def update_category(request,pk):
     category = get_object_or_404(Category,pk=pk)
     form = CategoryForm(instance=category)
@@ -97,7 +98,8 @@ def update_category(request,pk):
     context = {"form":form}
     return render(request,"meal/update_category.html",context)
 
-
+@login_required(login_url="login")
+@allowed_users(allowed_roles=['manager'])
 def delete_category(request,pk):
     category = get_object_or_404(Category,pk=pk)
     category.delete()

@@ -15,7 +15,7 @@ $(document).on('change',"#user-select",function(){
             data: {
             labels: data.labels,
             datasets: [{
-                label: 'Amount',
+                label: 'Number of orders',
                 backgroundColor: 
                     'rgba(255, 99, 132, 0.2)'
                     
@@ -37,7 +37,7 @@ $(document).on('change',"#user-select",function(){
             },
             title: {
                 display: true,
-                text: 'Amount spent by week for ' + $('#user-select option:selected').text(), 
+                text: 'Total number of orders including meal ' + $('#user-select option:selected').text(), 
             }
             }
         });

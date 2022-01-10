@@ -10,7 +10,11 @@ class EmployeeForm(ModelForm):
         model = Employee
         fields = '__all__'
         exclude = ['user','weekly_allowance']
-        
+    
+   
+
+    
+            
 class CreateUserForm(UserCreationForm):
     
     class Meta:
@@ -47,14 +51,27 @@ class UserProfileForm(ModelForm):
         model = Employee
         fields = '__all__'
         exclude = ['user','daily_allowance','wekly_allowance']
-
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['department'].widget.attrs.update({'class': 'form-control form-control-user','placeholder':'Username'})
+        self.fields['phone_number'].widget.attrs.update({'class': 'form-control form-control-user','placeholder':'Email'})
+        self.fields['profile_pic'].widget.attrs.update({'class': 'form-control form-control-user','placeholder':'Username'})
+        
+        
 class FnameLnameForm(ModelForm):
     class Meta():
         model = CustomUser
         fields = ['first_name','last_name','email']
     
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['email'].widget.attrs.update({'class': 'form-control form-control-user','placeholder':'Email'})      
+        self.fields['first_name'].widget.attrs.update({'class': 'form-control form-control-user','placeholder':'First Name'})
+        self.fields['last_name'].widget.attrs.update({'class': 'form-control form-control-user','placeholder':'Last Name'})
+       
+    
     def clean_email(self):
         email = self.cleaned_data.get('email')
-        if CustomUser.objects.filter(email__iexact=email).exists():
-            raise forms.ValidationError("Email is already registered")
+        if len(email) <5:
+            raise ValidationError("Please enter a valid email.")
         return email

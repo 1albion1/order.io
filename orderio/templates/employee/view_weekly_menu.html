@@ -46,14 +46,5 @@
 
 
   
-<ol>
-    {% for menu in wm.menu_set.all %}
-    
-    <li>
-        {{menu.get_day_name}}
-        <a href="{{menu.get_absolute_url}}">View</a>
-        
-    </li> 
-    {% endfor %}
-    </ol>
+
 {% endblock content %}

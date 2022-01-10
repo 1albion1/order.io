@@ -5,11 +5,10 @@
 <div class="container rounded bg-white mt-5 mb-5 shadow">
     <div class="row">
         <div class="col-md-4 border-right">
+            <form action="" enctype="multipart/form-data" method="post">
             <div class="d-flex flex-column align-items-center text-center p-3 py-5">
                 <img class="rounded-circle mt-5" width="150px" src="{{request.user.employee.profile_pic.url}}">
                 {{e_form.profile_pic}}
-                <span class="font-weight-bold">{{fl_form.username}}</span>
-                <span class="text-black-50"> {{fl_form.email}}</span>
                 <span> 
                 </span></div>
         </div>
@@ -28,6 +27,10 @@
                 </div>
                 <div class="row mt-3">
                     <div class="col-md-12">
+                        <label class="labels">Email</label>
+                        <span class="form-control border-0 fw-bold fs-4">{{fl_form.email}}</span>
+                    </div>
+                    <div class="col-md-12">
                         <label class="labels">Mobile Number</label>
                         <span class="form-control border-0 fw-bold fs-4">{{e_form.phone_number}}</span>
                     </div>
@@ -43,32 +46,28 @@
                             {{request.user.employee.created_at}}
                         </span>
                     </div>
-                    <div class="col-md-12">
-                        <label class="labels">Total orders</label>
-                        <span class="form-control border-0 fw-bold fs-4">
-                            {{e_form.order_set.all.count}}
-                        </span>
+                    {% if form.errors %}
+                                  {% for field in form %}
+                                      {% for error in field.errors %} 
+                                          <div class="alert alert-danger">
+                                              <strong>{{ error|escape }}</strong>
+                                          </div>
+                                      {% endfor %}
+                                  {% endfor %}
+                                {% endif %}
+                    <div class="col-md-12 text-center">
+                        {% csrf_token %}
+                        <input type="submit" value="Update Profile" class="btn btn-primary">
                     </div>
                 </div>
-                
+            </form>
             </div>
         </div>
         
     </div>
 </div>
-</div>
-</div>
+
+
+
 {% endblock content %}
-{% if request.user.employee.profile_pic %}
-<img src="{{request.user.employee.profile_pic.url}}" width="200px"> 
-{% endif %}
 
-
-<form action="" enctype="multipart/form-data" method="post">
-    {% csrf_token %}
-    {{fl_form}}
-    {{e_form}}
-    <input type="submit" value="Update" class="btn btn-success">
-</form>
-
-<a href='{% url "change_password" %}'>Change password</a>

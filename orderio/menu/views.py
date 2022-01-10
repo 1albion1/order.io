@@ -25,11 +25,14 @@ def weekly_menu(request):
     context={"weekly_menu":weekly_menu,"menus":menus}
     return render(request,'menu/weekly_menu.html',context)
 
+@login_required(login_url="login")
+@allowed_users(allowed_roles=['manager'])
 def all_weekly_menus(request):
     all_weekly_menus = WeeklyMenu.objects.all()
     context={"all_weekly_menus":all_weekly_menus}
     return render(request,"menu/all_weekly_menus.html",context)
 
+@login_required(login_url="login")
 def view_weekly_menu(request,week,year):
     
     wm = WeeklyMenu.objects.get(week=week,year=year)
@@ -72,6 +75,7 @@ def approve_menu(request,pk):
     menu.save()
     return redirect("menu:weekly_menu")
 
+@login_required(login_url="login")
 def view_menu(request,pk):
     menu = get_object_or_404(Menu,pk=pk)
     context = {"menu":menu}
@@ -85,7 +89,9 @@ def add_to_menu(request,meal_pk,menu_pk):
     meal = get_object_or_404(Meal,pk=meal_pk)
     menu.meals.add(meal)
     return redirect("menu:update_menu",pk=menu_pk)
-    
+
+@login_required(login_url="login")
+@allowed_users(allowed_roles=['manager'])
 def remove_from_menu(request,meal_pk,menu_pk):
     menu = get_object_or_404(Menu,pk=menu_pk)
     meal = get_object_or_404(Meal,pk=meal_pk)

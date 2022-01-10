@@ -2,6 +2,6 @@
 {% block content %}
 <a href="{% url 'manager:total_orders_by_department' %}">total orders by department</a><br>
 <a href="{% url 'manager:user_spendings' %}">User spendings</a><br>
-<a href="">Most ordered meal category</a><br>
+<a href="{% url 'manager:most_ordered_meals' %}">Most ordered meals</a><br>
 <a href="{% url 'menu:all_weekly_menus' %}" class="btn btn-primary">Weekly menu History</a><br>
 {% endblock content %}

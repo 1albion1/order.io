@@ -8,8 +8,9 @@ class WeeklyMenu(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     week = models.IntegerField(default=int(timezone.now().isocalendar().week))
     year = models.IntegerField(default=int(timezone.now().isocalendar().year))
+    
     def __str__(self):
-        return "Year "+str(self.year)+" Week "+str(self.week)
+        return f"{date.fromisocalendar(self.year,self.week,1).strftime('%d/%b/%y')}-{date.fromisocalendar(self.year,self.week,7).strftime('%d/%b/%y')}"
     
     class Meta:
         ordering = ('-year','-week',)

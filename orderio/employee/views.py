@@ -49,7 +49,7 @@ def my_profile(request):
     if request.method == 'POST':
         e_form = UserProfileForm(request.POST,request.FILES,instance = employee)
         fl_form = FnameLnameForm(request.POST,instance=request.user)
-        if e_form.is_valid() and fl_form.is_valid:
+        if e_form.is_valid() and fl_form.is_valid():
             e_form.save()
             fl_form.save()
             messages.success(request,"Profile changes were saved successfully!")
@@ -80,7 +80,8 @@ def daily_menu(request):
         return HttpResponse(f"The menu for today is not ready yet!")
     
     
-    
+@login_required(login_url="login")
+@allowed_users(allowed_roles=['manager'])
 def change_daily_allowance(request,pk):
     today = timezone.now().isoweekday()
     employee = get_object_or_404(Employee,pk=pk)
@@ -94,6 +95,8 @@ def change_daily_allowance(request,pk):
             return HttpResponse("This user already has an order this week. You cannot change the allowance!")
     return redirect("user_list")
 
+@login_required(login_url="login")
+@allowed_users(allowed_roles=['manager'])
 def employee_profile(request,pk):
     employee = get_object_or_404(Employee,user=pk)
     
