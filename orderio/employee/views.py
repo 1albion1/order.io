@@ -5,8 +5,8 @@ from main.decorators import allowed_users
 from main.session_handle import Custom_Session
 from django.http.response import JsonResponse
 from django.contrib import messages
-from meal.models import Meal
-from menu.models import Menu,WeeklyMenu
+
+from menu.models import WeeklyMenu
 from django.utils import timezone
 from employee.employee_status import *
 from employee.models import Employee
@@ -18,13 +18,31 @@ week = timezone.now().isocalendar().week
 @login_required(login_url="login")
 @allowed_users(allowed_roles=['user'])
 def index(request):
+    day = timezone.now().isoweekday()
+    day_name = timezone.now().strftime("%A")
+    has_ordered = has_order(request)
+    orders = Order.objects.filter(employee = request.user.employee)[:5]
+    try:
+        weekly_menu = WeeklyMenu.objects.get(week=week,year=year)
+        menu = weekly_menu.menu_set.get(created_for=day)
+        
+    except:
+        menu = ""
+       
+        print(day_name)
+    
+    
     budget_available = user_money_available(request)
-    context = {"budget_available":budget_available,"week":week,"year":year}
+    context = {"budget_available":budget_available,
+               "menu":menu,
+               "day_name":day_name,
+               "orders":orders,
+               "has_ordered":has_ordered}
     return render(request,'employee/index.html',context)
 
 @login_required(login_url="login")
 @allowed_users(allowed_roles=['user'])
-def employee_profile(request):
+def my_profile(request):
     employee = request.user.employee
     e_form = UserProfileForm(instance=employee)
     fl_form = FnameLnameForm(instance=request.user)

@@ -65,8 +65,7 @@ def view_order(request,pk):
     return render(request,'order/view_order.html',context)
 
 def user_order_history(request):
-    employee = get_object_or_404(Employee,user=request.user.id)
-    orders = employee.order_set.all()
+    orders = Order.objects.filter(employee = request.user.employee)
     
     context={
         "orders":orders

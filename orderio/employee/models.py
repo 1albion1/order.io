@@ -15,7 +15,7 @@ class Employee(models.Model):
     department = models.ForeignKey(Department,on_delete=models.CASCADE,null=True)
     daily_allowance = models.DecimalField(max_digits=6,decimal_places=2,default=5)
     phone_number = models.CharField(max_length=15,blank=True,null=True)
-    profile_pic = models.ImageField(null=True,blank=True,default="default.png",upload_to=img_path)
+    profile_pic = models.ImageField(null=True,default="default.png",upload_to=img_path)
     created_at = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.user.username

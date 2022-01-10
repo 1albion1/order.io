@@ -7,11 +7,124 @@
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 {% endfor %}
-<a href="{% url 'employee:daily_menu' %}">Today's menu</a> <br>
-<a href="{% url 'menu:view_weekly_menu' week year %}">This weeks menu</a> <br>
-<a href="{% url 'order:user_order_history' %}">Order History</a> <br>
-<a href="{% url 'employee:employee_profile' %}">View Profile</a> <br>
+<div class="row">
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Your daily allowance</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{request.user.employee.daily_allowance}}</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Budget available</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{budget_available}}</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xl-4 col-lg-4 col-md-6">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div
+                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Today's menu</h6>
+                
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+              {% if menu %}
+              <b class="fs-5 text-dark">{{menu.get_day_name}}</b><br>
+              Meals:
+              {% for meal in menu.meals.all %}
+              <li><a href="{{meal.get_absolute_url}}">{{meal.name}}</a></li>
+              {% endfor %}
+              
+              Menu status:<br> 
+              <b class="fs-5 text-dark">
+              {% if menu.approved %}
+              {% if menu.allowes_orders %}
+              <span class="text-success">Available</span>
+              <hr>
+                <a class="btn btn-primary {% if has_ordered %}disabled{% endif %}" href="{% url 'employee:daily_menu' %}">Order Now</a>
+              {% else %}
+              <span class="text-danger">Expired</span>
+              {% endif %}
+                
+                
+                {% else %}
+                <span class="text-warning">Pending</span>
+              {% endif %}
+              </b><br>
+              
+              
+                {% else %}
+                The menu for {{day_name}} is not ready yet!
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-8 col-lg-8 col-md-6">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div
+                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Recent Orders</h6>
+                
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+                <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead class="bg-primary text-white fw-bold">
+                        <tr>
+                            <th>Created at</th>
+                            <th>Meals</th>
+                            <th>Status</th>
+                            <th>Cost</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                        <tr>
+                            <td>{{order.created_at}}</td>
+                            <td>{% for meal in order.meals.all %}
+                                {{meal}}
+                              {% endfor %}</td>
+                              <td class='text-{% if order.order_status == "Accepted" %}success{% elif order.order_status == "Pending" %}warning{% else %}danger{% endif %}'>
+                                {{order.order_status}}
+                            </td>
+                            <td>${{order.order_cost}}</td>
+                        </tr>
+                        {% endfor %}
+                        
+                    </tbody>
+                </table>
+            </div>
+                <div class="text-center"><a href="{% url 'order:user_order_history' %}">View all your previous orders</a></div>
+            </div>
+        </div>
+    </div>
+  </div>
 
-Your daily allowance is : {{request.user.employee.daily_allowance}}<br>
-Budget available: {{budget_available}}
 {% endblock content %}

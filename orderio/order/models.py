@@ -18,6 +18,9 @@ class Order(models.Model):
     order_status = models.CharField(default="Pending",choices=STATUS,blank=True,null=True,max_length=10)
     order_cost = models.DecimalField(max_digits=6,decimal_places=2,default=0)
     
+    class Meta:
+        ordering = ("-created_at",)
+        
     def get_created_at_date(self):
         return self.created_at.date()
     

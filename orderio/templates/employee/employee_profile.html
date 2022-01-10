@@ -1,3 +1,64 @@
+{% extends "../user-base.html" %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/public_profile.css' %}">
+<div class="container rounded bg-white mt-5 mb-5 shadow">
+    <div class="row">
+        <div class="col-md-4 border-right">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                <img class="rounded-circle mt-5" width="150px" src="{{request.user.employee.profile_pic.url}}">
+                {{e_form.profile_pic}}
+                <span class="font-weight-bold">{{fl_form.username}}</span>
+                <span class="text-black-50"> {{fl_form.email}}</span>
+                <span> 
+                </span></div>
+        </div>
+        <div class="col-md-8 border-right">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="text-right">User Profile</h4>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-6"><label class="labels">Name</label><br>
+                        <span class="form-control border-0 fw-bold fs-4">{{fl_form.first_name}}</span>
+                    </div>
+                    <div class="col-md-6"><label class="labels">Surname</label>
+                        <br><span class="form-control border-0 fw-bold fs-4">{{fl_form.last_name}}</span>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12">
+                        <label class="labels">Mobile Number</label>
+                        <span class="form-control border-0 fw-bold fs-4">{{e_form.phone_number}}</span>
+                    </div>
+                    <div class="col-md-12">
+                        <label class="labels">Department</label>
+                        <span class="form-control border-0 fw-bold fs-4">
+                            {{e_form.department}}
+                        </span>
+                    </div>
+                    <div class="col-md-12">
+                        <label class="labels">Account created at</label>
+                        <span class="form-control border-0 fw-bold fs-4">
+                            {{request.user.employee.created_at}}
+                        </span>
+                    </div>
+                    <div class="col-md-12">
+                        <label class="labels">Total orders</label>
+                        <span class="form-control border-0 fw-bold fs-4">
+                            {{e_form.order_set.all.count}}
+                        </span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</div>
+</div>
+</div>
+{% endblock content %}
 {% if request.user.employee.profile_pic %}
 <img src="{{request.user.employee.profile_pic.url}}" width="200px"> 
 {% endif %}
