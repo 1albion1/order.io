@@ -3,7 +3,6 @@ from django.shortcuts import redirect, render,get_object_or_404
 from main.forms import UserProfileForm,FnameLnameForm
 from main.decorators import allowed_users
 from main.session_handle import Custom_Session
-from django.http.response import JsonResponse
 from django.contrib import messages
 
 from menu.models import WeeklyMenu

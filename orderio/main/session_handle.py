@@ -23,14 +23,12 @@ class  Custom_Session():
                 }
         self.save()
     
-   
     def remove(self,product):
         product_id = product
         if product_id in self.ss:
             del self.ss[product_id]
         self.save()
         
-    
     def get_menu_items(self):
         return self.ss
 

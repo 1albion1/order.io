@@ -1,4 +1,3 @@
-from datetime import timedelta
 from django.shortcuts import render,get_object_or_404,redirect
 from main.decorators import allowed_users 
 from django.http.response import HttpResponse, JsonResponse

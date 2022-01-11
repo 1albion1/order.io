@@ -63,7 +63,7 @@ class Menu(models.Model):
             week = self.weekly_menu.week
             year = self.weekly_menu.year
         except:
-            week = "no week"
+            week = ""
             year = ""
         return str(date.fromisocalendar(year,week,self.created_for).strftime("%A, %d/%b/%y"))
     
