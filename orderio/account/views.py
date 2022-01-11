@@ -19,10 +19,13 @@ def login_page(request):
         user = authenticate(request,username=username,password=password)
         if user is not None:
             login(request,user)
-            if user.role.name == "manager":
-                return redirect("manager:index")
-            else:
-                return redirect("employee:index")
+            try:
+                if user.role.name == "manager":
+                    return redirect("manager:index")
+                else:
+                    return redirect("employee:index")
+            except:
+                return HttpResponse("Your user role was not found. Please contact the system admistrator to specify your role.")
         else:
             messages.warning(request,"Username or password is incorrect!")
     context = {}
