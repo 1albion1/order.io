@@ -6,8 +6,6 @@ from django.contrib.auth.decorators import login_required
 from .forms import CategoryForm,MealForm
 # Create your views here.
 
-def index(request):
-    return render(request,"meal/index.html")
 
 @login_required(login_url="login")
 @allowed_users(allowed_roles=['manager'])

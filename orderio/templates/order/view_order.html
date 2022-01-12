@@ -49,7 +49,8 @@ Order {{order.pk}}
                             <b class="text-primary">{{order.created_at}}</b>
                           </div>
                           <div class="col-lg-6 p-1"> 
-                            <b>Order status:</b> {{order.order_status}}
+                            <b>Order status:</b> <span class="fw-bold text-{% if order.order_status == 'Pending' %}warning{%elif order.order_status == 'Accepted' %}success{% else %}danger{% endif %}">{{order.order_status}}</span>
+                            
                           </div>
                           <div class="col-lg-6 p-1"> 
                             <b>Menu for:</b>  <a href="{{order.menu.get_absolute_url}}">{{order.menu.get_day_name}}</a>

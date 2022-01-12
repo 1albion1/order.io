@@ -1,7 +1,7 @@
 {% extends "../manager-base.html" %}
 {% load static %}
 {% block title %}
-  {{meal.name}}
+  {{category.name}}
 {% endblock title %}
 {% block content %}
 <body class="bg-gradient-primary">
@@ -13,7 +13,7 @@
                 <!-- Nested Row within Card Body -->
                 <div class="row">
                     <div class="col-lg-3 d-none d-lg-block align-items-center">
-                        <img src="{{meal.meal_img.url}}" class="img-responsive img-responsive" width="100%">
+                        
                     </div>
                     <div class="col-lg-9 border">
                         <div class="p-5">

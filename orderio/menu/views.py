@@ -75,10 +75,11 @@ def approve_menu(request,pk):
     return redirect("menu:weekly_menu")
 
 @login_required(login_url="login")
+@allowed_users(allowed_roles=['manager'])
 def view_menu(request,pk):
     menu = get_object_or_404(Menu,pk=pk)
     context = {"menu":menu}
-    return user_or_manager(request,"view_menu",context)
+    return render(request,f"menu/view_menu.html",context)
 
 @login_required(login_url="login")
 @allowed_users(allowed_roles=['manager'])
