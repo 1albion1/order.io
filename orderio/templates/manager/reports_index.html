@@ -1,7 +1,73 @@
 {% extends "../manager-base.html" %}
+{% load static %}
+{% block title %}
+  Reports
+{% endblock title %}
 {% block content %}
-<a href="{% url 'manager:total_orders_by_department' %}">total orders by department</a><br>
-<a href="{% url 'manager:user_spendings' %}">User spendings</a><br>
-<a href="{% url 'manager:most_ordered_meals' %}">Most ordered meals</a><br>
-<a href="{% url 'menu:all_weekly_menus' %}" class="btn btn-primary">Weekly menu History</a><br>
+<style>
+    .card a:hover
+    { text-decoration: none;
+    }
+    .card a div:hover{
+        color: black !important;
+    }
+    .row .card {
+        border: 1px solid #4e73df;
+        text-align: center;
+    }
+</style>
+<div class="container-fluid">
+    
+    <h1 class="h3 mb-2 text-gray-800">Reports</h1>
+ <p class="mb-4">This is the index page report. Click on the type of the report you wish to view below.</p>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">All reports</h6>
+    </div>
+    <div class="card-body ">
+        <div class="row">
+            <div class="col-lg-4">
+                <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 100%;" src="{% static 'img/reports.svg' %}" alt="...">
+            </div>
+            <div class="col-lg-8">
+                <div class="row  justify-content-evenly">
+                    <div class="card mb-4 border-bottom-primary col-lg-5">
+                        <a href="{% url 'manager:total_orders_by_department' %}">
+                        <div class="card-body fw-bold text-primary fs-5">
+                            Total Orders by Department
+                        </div>
+                    </a>
+                    </div>
+                    <div class="card mb-4 border-bottom-primary col-lg-5">
+                        <a href="{% url 'manager:user_spendings' %}"><div class="card-body fw-bold text-primary fs-5">
+                            User Spendings
+                        </div></a>
+                    </div>
+                    <div class="card mb-4 border-bottom-primary col-lg-5">
+                        <a href="{% url 'manager:most_ordered_meals' %}"><div class="card-body fw-bold text-primary fs-5">
+                            Most ordered meals
+                        </div></a>
+                    </div>
+                    <div class="card mb-4 border-bottom-primary col-lg-5">
+                        <a href="{% url 'manager:most_ordered_category' %}"><div class="card-body fw-bold text-primary fs-5">
+                            Most ordered Category
+                        </div></a>
+                    </div>
+                    <div class="card mb-4 border-bottom-primary col-lg-5">
+                        <a href="{% url 'menu:all_weekly_menus' %}"><div class="card-body fw-bold text-primary fs-5">
+                            Weekly menu History
+                        </div></a>
+                    </div>
+                </div>
+                
+  
+            </div>
+        </div>
+        
+        
+        </div>
+    </div>
+</div>
+
+
 {% endblock content %}

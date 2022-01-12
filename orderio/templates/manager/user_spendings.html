@@ -1,21 +1,55 @@
 {% extends "../manager-base.html" %}
 {% load static %}
+
+
+{% block title %}
+User Spendings Each Week
+{% endblock title %}
 {% block content %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css" integrity="sha512-yVvxUQV0QESBt1SyZbNJMAwyKvFTLMyXSyBHDO4BG5t7k/Lw34tyqlSDlKIrIENIzCl+RVUNjmCPG+V/GMesRw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-Select user to show amount spent each week.
-<select id="user-select" class="chosen">
-  <option default>Select user</option>
-    {% for user in users %}
-      <option value="{{user.id}}" data-url="{% url 'manager:chart_user_spendings' user.id %}">
-        {{user}} | {{user.first_name}} {{user.last_name}}
-      </option>
-    {% endfor %}
-</select>
-<div id="container" style="width: 75%;">
-    <canvas id="population-chart" data-url="{% url 'manager:chart_user_spendings' 2 %}"></canvas>
-  </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js" integrity="sha512-rMGGF4wg1R73ehtnxXBt5mbUfN9JUJwbk21KMlnLZDJh7BkPmeovBuddZCENJddHYYMkCh9hPFnPmS9sspki8g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> 
+<div class="container-fluid">
+    
+  <h1 class="h3 mb-2 text-gray-800">User Spendings Each Week</h1>
+<p class="mb-4">Select a user to see how they have spent each week.</p>
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">Chart</h6>
+  </div>
+  <div class="card-body ">
+      <div class="row">
+        <div class="col-lg-3">
+          <h5>Select or search for the user.</h5>
+          <select id="user-select" class="chosen">
+            <option default>Select user</option>
+              {% for user in users %}
+                <option value="{{user.id}}" data-url="{% url 'manager:chart_user_spendings' user.id %}">
+                  {{user}} | {{user.first_name}} {{user.last_name}}
+                </option>
+              {% endfor %}
+          </select>
+        </div>
+        <div class="col-lg-9">
+          <div id="container" style="width: 100%; height:auto;">
+            <canvas id="population-chart" data-url="{% url 'manager:chart_user_spendings' 2 %}"></canvas>
+          </div>
+        </div>
+        
+      </div>
+      
+      
+      </div>
+  </div>
+</div>
+
+
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js" integrity="sha512-rMGGF4wg1R73ehtnxXBt5mbUfN9JUJwbk21KMlnLZDJh7BkPmeovBuddZCENJddHYYMkCh9hPFnPmS9sspki8g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  
+  
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
   <script src='{% static "js/user_spendings.js" %}'></script> 
   <script type="text/javascript">

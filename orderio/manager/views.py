@@ -8,7 +8,8 @@ from order.models import Order
 from django.http import JsonResponse
 from django.utils import timezone
 from datetime import date
-from meal.models import Meal
+from meal.models import Meal,Category
+import random
 
 @login_required(login_url="login")
 @allowed_users(allowed_roles=['manager'])
@@ -126,4 +127,33 @@ def number_of_orders_by_day(request):
     return JsonResponse(data={
         'labels': labels,
         'data': data,
+    })
+
+def most_ordered_category(request):
+    
+    return render(request,"manager/most_ordered_category.html")
+ 
+def chart_most_ordered_category(request):
+    labels = []
+    data = []
+    bgColor = []
+    total_orders = 0
+    categories = Category.objects.all()
+    #qe te mos ndryshojne
+    random.seed(1)
+    for category in categories:
+        labels.append(category.name)
+        bgColor.append(f'rgba({random.randint(0,255)}, {random.randint(0,255)}, {random.randint(0,255)},{random.random()})')
+        if category.meal_set.all().count()>0:
+            for meal in category.meal_set.all():      
+                total_orders+=meal.order_set.all().count()
+            data.append(total_orders)
+            
+            total_orders=0
+        else:
+            data.append(0)
+    return JsonResponse(data={
+        'labels': labels,
+        'data': data,
+        'bgColor':bgColor
     })

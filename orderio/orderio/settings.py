@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'main',
     'menu',
     'order',
-    'django_filters'
+    'django_filters',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -161,3 +162,9 @@ EMAIL_HOST_PASSWORD = 'tJ!h9V5QU_qRiBa'
 #session
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 SESSION_COOKIE_AGE = 5 * 60 * 60
+
+#graph
+GRAPH_MODELS = {
+  'all_applications': True,
+  'group_models': True,
+}

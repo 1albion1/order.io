@@ -1,0 +1,44 @@
+{% extends "../manager-base.html" %}
+{% load static %}
+{% block title %}
+Most Ordered Meal Category
+{% endblock title %}
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css" integrity="sha512-yVvxUQV0QESBt1SyZbNJMAwyKvFTLMyXSyBHDO4BG5t7k/Lw34tyqlSDlKIrIENIzCl+RVUNjmCPG+V/GMesRw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<div class="container-fluid">
+    
+  <h1 class="h3 mb-2 text-gray-800">Most Ordered Meal Category</h1>
+
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">Pie Chart</h6>
+  </div>
+  <div class="card-body ">
+      <div class="row">
+        <div class="col-lg-2">
+          <p class="mb-4">Hover to see the total, of how many times the meals from the category have been in an order.</p>
+        </div>
+        <div class="col-lg-10">
+          <div id="container" class="chart-area" style="width: 100%; height:auto;" data-url="{% url 'manager:chart_most_ordered_category' %}">
+            <canvas id="population-chart" ></canvas>
+          </div>
+        </div>
+        
+      </div>
+      
+      
+      </div>
+  </div>
+</div>
+
+
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js" integrity="sha512-rMGGF4wg1R73ehtnxXBt5mbUfN9JUJwbk21KMlnLZDJh7BkPmeovBuddZCENJddHYYMkCh9hPFnPmS9sspki8g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+<script src='{% static "js/most_ordered_category.js" %}'></script> 
+{% endblock content %}
+
