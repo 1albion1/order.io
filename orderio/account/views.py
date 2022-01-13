@@ -9,6 +9,7 @@ from main.session_handle import Custom_Session
 from account.models import CustomUser,Role
 from employee.models import Employee,Department
 from django.contrib.auth.decorators import login_required
+from notification.models import Notification
 # Create your views here.
 
 @authenticated_user
@@ -50,6 +51,7 @@ def register(request):
             basic_role = Role.objects.get(name="user")
             user.role = basic_role
             user.save()
+            Notification(to_user=user,text=f"Thank you for signing up to order.io! Make sure to complete your profile.",type=3).save()
             Employee.objects.create(user=user,department=department)
             username = form.cleaned_data['username']
             messages.success(request,f"Account for {username} has been created successfully!")

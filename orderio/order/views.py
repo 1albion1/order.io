@@ -87,7 +87,7 @@ def change_order_status(request,pk,status):
         return redirect("order:daily_orders")
     order.save()
     type = 0 if order.order_status == "Denied" else 1
-    Notification(to_user=order.employee.user,from_user=request.user,text=f"Your order {order.pk} was {order.order_status}!",type=type).save()
+    Notification(to_user=order.employee.user,from_user=request.user,text=f"Your order for {order.menu.get_day_name()} was {order.order_status}",type=type).save()
     return redirect("order:daily_orders")
 
 @login_required(login_url="login")

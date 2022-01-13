@@ -6,4 +6,4 @@ def notifications(request):
         user = ""
     notifications = Notification.objects.filter(to_user=user)
     unseen = notifications.filter(seen=False).count()
-    return {"notifications":notifications,"unseen":unseen}
+    return {"notifications":notifications[:5],"unseen":unseen}

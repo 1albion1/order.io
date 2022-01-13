@@ -88,7 +88,7 @@ def change_daily_allowance(request,pk):
         if not has_order_this_week(request,pk):
             employee.daily_allowance = request.POST.get('daily_allowance')
             employee.save()
-            Notification(to_user=employee.user,from_user=request.user,text=f"Your daily allowance was changed to {float(request.POST.get('daily_allowance'))}").save()
+            Notification(to_user=employee.user,from_user=request.user,text=f"Your daily allowance was changed to {float(request.POST.get('daily_allowance'))}",type=2).save()
             messages.success(request,f"Daily allowance changed for user {employee.user.username}")
         else:
             return HttpResponse("This user already has an order this week. You cannot change the allowance!")
