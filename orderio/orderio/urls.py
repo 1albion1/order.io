@@ -12,7 +12,7 @@ urlpatterns = [
     path('order/', include('order.urls',namespace="order")),
     path('menu/', include('menu.urls',namespace="menu")),
     path('meal/', include('meal.urls',namespace="meal")),
-    #path('reports/', include('reports.urls',namespace="reports"))
+    path('notification/', include('notification.urls',namespace="notification")),
 ]
 urlpatterns+= static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
 

@@ -124,7 +124,7 @@
 
 
                     <!-- Topbar Navbar -->
-                    <ul class="navbar-nav ml-auto">
+                    <ul class="navbar-nav ml-auto" id="notification-zone">
 
                         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
                         <li class="nav-item dropdown no-arrow d-sm-none">
@@ -156,26 +156,33 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
                                 <!-- Counter - Alerts -->
-                                <span class="badge badge-danger badge-counter">3+</span>
+                                {% if unseen %}
+                                <span class="badge badge-danger badge-counter">{{unseen}}</span>
+                                {% endif %}
+                                
                             </a>
                             <!-- Dropdown - Alerts -->
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="alertsDropdown">
+                                aria-labelledby="alertsDropdown" >
                                 <h6 class="dropdown-header">
                                     Alerts Center
                                 </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                {% csrf_token %}
+                                {% for notification in notifications %}
+                                <button class="dropdown-item d-flex align-items-center" id="not-btn{{notification.pk}}" value="{{notification.pk}}" data-url="{% url 'notification:notif_seen'%}"> 
                                     <div class="mr-3">
-                                        <div class="icon-circle bg-primary">
-                                            <i class="fas fa-file-alt text-white"></i>
+                                        <div class="icon-circle bg-{{notification.get_type}}">
+                                            <i class="fas fa-info-circle text-white"></i>
                                         </div>
                                     </div>
                                     <div>
-                                        <div class="small text-gray-500">December 12, 2019</div>
-                                        <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                        <div class="small text-gray-500">{{notification.date}}</div>
+                                        <span {% if not notification.seen %}class="font-weight-bold"{% endif %}>{{notification.text}} by {{notification.from_user}}</span>
+                                    </div> 
+                                </button>
+                                
+                                {% endfor %}
+                                <!-- <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="mr-3">
                                         <div class="icon-circle bg-success">
                                             <i class="fas fa-donate text-white"></i>
@@ -185,18 +192,8 @@
                                         <div class="small text-gray-500">December 7, 2019</div>
                                         $290.29 has been deposited into your account!
                                     </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-warning">
-                                            <i class="fas fa-exclamation-triangle text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 2, 2019</div>
-                                        Spending Alert: We've noticed unusually high spending for your account.
-                                    </div>
-                                </a>
+                                </a> -->
+                                
                                 <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                             </div>
                         </li>
@@ -358,7 +355,34 @@
 
 
 
+    <script>
+        csrf = $("input[name='csrfmiddlewaretoken']").val();
+        $(document).on('click',"button[id^='not-btn']",function seen (e){
+            console.log("value"+$(this).val());
+            url = $(this).data("url");
+            e.preventDefault();
+            $.ajax({
+            
+            type: 'POST',
+            url: url,
+            data: {
+                notification_pk: $(this).val(),
+                csrfmiddlewaretoken: csrf,
+            },
+            success: function (json){
+                $('#notification-zone').load(document.URL +  ' #notification-zone');
+        
+                
+            },
+            error: function(xhr,errmsg,err){
 
+            },
+            complete: function(){
+                
+            }
+            });
+        });
+    </script>
     <!-- Bootstrap core JavaScript-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
@@ -374,6 +398,7 @@
     <script src="{% static 'plugins/datatables/dataTables.bootstrap4.min.js' %}"></script>
     <script src="{% static 'js/datatables.js' %}"></script>
 
+    
 </body>
 
 </html>

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'main',
     'menu',
     'order',
+    'notification',
     'django_filters',
     'django_extensions',
 ]
@@ -73,7 +74,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'main.context_processors.bag', #custom
                 'main.context_processors.weekly_menu_link', #custom
-                'manager.context_processors.pending_orders' #custom
+                'manager.context_processors.pending_orders', #custom
+                'notification.context_processors.notifications' #custom
             ],
         },
     },

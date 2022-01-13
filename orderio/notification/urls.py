@@ -1,0 +1,8 @@
+from django.urls import path
+from . import views
+
+
+app_name = "notification"
+urlpatterns = [
+    path("notif_seen",views.notif_seen,name="notif_seen")
+]

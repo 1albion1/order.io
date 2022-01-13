@@ -4,7 +4,7 @@ from main.forms import UserProfileForm,FnameLnameForm
 from main.decorators import allowed_users
 from main.session_handle import Custom_Session
 from django.contrib import messages
-
+from notification.models import Notification
 from menu.models import WeeklyMenu
 from django.utils import timezone
 from employee.employee_status import *
@@ -82,13 +82,13 @@ def daily_menu(request):
 @login_required(login_url="login")
 @allowed_users(allowed_roles=['manager'])
 def change_daily_allowance(request,pk):
-    today = timezone.now().isoweekday()
     employee = get_object_or_404(Employee,pk=pk)
     
     if request.method == 'POST':
         if not has_order_this_week(request,pk):
             employee.daily_allowance = request.POST.get('daily_allowance')
             employee.save()
+            Notification(to_user=employee.user,from_user=request.user,text=f"Your daily allowance was changed to {float(request.POST.get('daily_allowance'))}").save()
             messages.success(request,f"Daily allowance changed for user {employee.user.username}")
         else:
             return HttpResponse("This user already has an order this week. You cannot change the allowance!")

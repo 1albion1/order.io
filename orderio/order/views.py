@@ -11,6 +11,7 @@ from django.utils import timezone
 from employee.employee_status import can_user_order
 from meal.models import Meal
 from order.filters import OrderFilter
+from notification.models import Notification
 # Create your views here.
 # Create your views here.
 @login_required(login_url="login")
@@ -85,6 +86,8 @@ def change_order_status(request,pk,status):
     else: 
         return redirect("order:daily_orders")
     order.save()
+    type = 0 if order.order_status == "Denied" else 1
+    Notification(to_user=order.employee.user,from_user=request.user,text=f"Your order {order.pk} was {order.order_status}!",type=type).save()
     return redirect("order:daily_orders")
 
 @login_required(login_url="login")
