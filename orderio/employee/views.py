@@ -28,7 +28,6 @@ def index(request):
     except:
         menu = ""
        
-        print(day_name)
     
     
     budget_available = user_money_available(request)

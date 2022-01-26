@@ -45,7 +45,6 @@ def allowance_until_now(request):
         return request.user.employee.daily_allowance
 
 def user_money_available(request):
-    print(allowance_until_now(request))
     return allowance_until_now(request)-user_money_spent(request)
 
 

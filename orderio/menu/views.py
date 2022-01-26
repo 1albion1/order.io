@@ -33,8 +33,10 @@ def all_weekly_menus(request):
 
 @login_required(login_url="login")
 def view_weekly_menu(request,week,year):
-    
-    wm = WeeklyMenu.objects.get(week=week,year=year)
+    try:
+        wm = WeeklyMenu.objects.get(week=week,year=year)
+    except:
+        wm = ""
     context = {"wm":wm}
     return user_or_manager(request,"view_weekly_menu",context)
     
@@ -147,14 +149,12 @@ def create_menu(request,weekly_id):
 def update_session(request):
     ss = Custom_Session(request)
     if request.POST.get('action') == 'add':
-        print("no")
         meal_id = int(request.POST.get('meal_id'))
         meal = get_object_or_404(Meal,pk=meal_id)
         ss.add(product=meal)
         response = JsonResponse({"id": meal.id})
         return response
     if request.POST.get('action') == 'remove':
-        print("remove")
         meal_id = str(request.POST.get('meal_id'))
         ss.remove(product=meal_id)
         response = JsonResponse({"id": meal_id})
