@@ -25,7 +25,7 @@ def daily_orders(request):
         menu = weekly_menu.menu_set.get(created_for=day)
         orders = menu.order_set.all()
         if not menu.approved:
-            return render(request,'main/error-template.html',{"text":f"You have not approved today's menu! Go to 'This week\'s menu' and approve the menu for {menu.get_day_name}"})
+            return render(request,'main/error-template.html',{"text":f"You have not approved today's menu! Go to 'This week\'s menu' and approve the menu for {menu.get_day_name()}"})
         context={"orders":orders,"day":menu.get_day_name,"week":week,"year":year}
         return render(request,"order/daily_orders.html",context)
 
