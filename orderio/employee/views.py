@@ -67,7 +67,7 @@ def daily_menu(request):
         menu = weekly_menu.menu_set.get(created_for=day)
         menu_status = "Available" if menu.allowes_orders() else "Expired"
         if not menu.approved:
-            return HttpResponse(f"The menu for {menu.get_day_name} is not approved ready yet!")
+            return render(request,'main/error-template.html',{"text":f"The menu for {menu.get_day_name()} is not approved ready yet!"})
         meals = menu.meals.all()
         for meal in ss.get_menu_items():
             meals=meals.exclude(pk=meal)
@@ -75,7 +75,8 @@ def daily_menu(request):
         context={"menu":menu,"meals":meals,"day":day,"menu_status":menu_status,"menu_budget":menu_budget,"week":week,"year":year}
         return render(request,'employee/daily_menu.html',context)
     except:
-        return HttpResponse(f"The menu for today is not ready yet!")
+        return render(request,'main/error-template.html',{"text":f"The menu for today is not ready yet!"})
+
     
     
 @login_required(login_url="login")

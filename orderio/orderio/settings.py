@@ -75,7 +75,8 @@ TEMPLATES = [
                 'main.context_processors.bag', #custom
                 'main.context_processors.weekly_menu_link', #custom
                 'manager.context_processors.pending_orders', #custom
-                'notification.context_processors.notifications' #custom
+                'notification.context_processors.notifications', #custom
+                'menu.context_processors.menu_capacity', #custom
             ],
         },
     },

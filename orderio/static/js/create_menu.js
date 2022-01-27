@@ -14,8 +14,8 @@ $(document).on('click',"button[id^='add-btn']",function add(e){
         action: 'add'
       },
       success: function (json){
-        location.reload()
-  
+        $(" #menu-items").load(" #menu-items")
+        $("#add-btn"+json.id).addClass("disabled")
         
       },
       error: function(xhr,errmsg,err){
@@ -41,9 +41,9 @@ $(document).on('click',"button[id^='add-btn']",function add(e){
         action: 'remove'
       },
       success: function (json){
-        $( "#menu-items" ).load(location.href + " #menu-items");
-        location.reload($( "#dataTable" ));
-        
+        $(" #menu-items").load(" #menu-items")
+       $("#add-btn"+json.id).removeClass("disabled")
+       
       },
       error: function(xhr,errmsg,err){
 

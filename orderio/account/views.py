@@ -26,7 +26,7 @@ def login_page(request):
                 else:
                     return redirect("employee:index")
             except:
-                return HttpResponse("Your user role was not found. Please contact the system admistrator to specify your role.")
+                return render(request,'main/error-template.html',{"text":"Your user role was not found. Please contact the system admistrator to specify your role."})
         else:
             messages.warning(request,"Username or password is incorrect!")
     context = {}

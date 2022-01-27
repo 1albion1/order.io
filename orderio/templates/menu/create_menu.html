@@ -29,17 +29,21 @@ New Menu
             <tbody id="meal-table-body">
               {% for meal in meals %}
                 <tr>
+                  
                   <td><a href="{{meal.get_absolute_url}}">{{meal.name}}</a></td>
                   <td>{{meal.calories}} </td>
-                  <td>{{meal.price}} </td>
+                  <td>{{meal.price}}
+                    
+                    
+                    
                   <td>{{meal.description|truncatechars:50}}</td>
                   <td>{{meal.category.name}}</td>
                   <td>
-                    {% if bag|length < 7 %}
-                    <button class="btn btn-success " id="add-btn{{meal.id}}" value="{{meal.id}}"
+                    {% if bag|length < menu_cap and meal.id not in bag.get_meal_ids %}
+                    <button class="btn btn-primary " id="add-btn{{meal.id}}" value="{{meal.id}}"
                       data-url="{% url 'menu:update_session' %}">Add</button>
                     {% else %}
-                    <button class="btn btn-success disabled">Add</button>
+                    <button id="add-btn{{meal.id}}" class="btn btn-primary disabled">Add</button>
                     {% endif %}
                   </td>
                 </tr>
@@ -60,7 +64,7 @@ New Menu
         </h4>
 
         <ul class="list-group mb-3">
-          {% if bag|length == 7 %}
+          {% if bag|length == menu_cap %}
           <div class="alert alert-danger">Menu is at maximum capacity!</div>
           {% endif %}
           {% for i in bag.get_menu_items.values %}
@@ -123,7 +127,7 @@ New Menu
 <script>
   $(document).on("click", "#show", function show () {
     $("#show").hide();
-    $("form").removeClass('invisible').addClass('visible');;
+    $("form").removeClass('invisible').addClass('visible');
   });
 </script>
 {% endblock%}

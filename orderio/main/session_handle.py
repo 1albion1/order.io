@@ -49,3 +49,9 @@ class  Custom_Session():
         for key in self.ss:
             total_price += self.ss[key]['price']
         return total_price
+    
+    def get_meal_ids(self):
+        ids = set()
+        for key in self.ss:
+            ids.add(self.ss[key]['id'])
+        return ids
