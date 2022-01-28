@@ -106,19 +106,25 @@
                             <th>Meals</th>
                             <th>Status</th>
                             <th>Cost</th>
+                            <th>Action</th>
+                            
                         </tr>
                     </thead>
                     <tbody>
                         {% for order in orders %}
                         <tr>
-                            <td>{{order.created_at}}</td>
+                            <td> {{order.created_at}}</td>
                             <td>{% for meal in order.meals.all %}
                                 {{meal}}
                               {% endfor %}</td>
                               <td class='text-{% if order.order_status == "Accepted" %}success{% elif order.order_status == "Pending" %}warning{% else %}danger{% endif %}'>
                                 {{order.order_status}}
                             </td>
-                            <td>${{order.order_cost}}</td>
+                            <td>${{order.order_cost}} </td>
+                            <td>
+                            {% if order.order_status == 'Pending' %}
+                            <a href="{% url 'order:delete_order' order.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                               {% endif %}</td>
                         </tr>
                         {% endfor %}
                         

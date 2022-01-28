@@ -134,6 +134,20 @@ Dashboard
               {% endif %}
           </div>
       </div>
+      <div class="card shadow mb-4">
+        <div
+        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Custom Order</h6>
+        
+    </div>
+    <div class="card-body">
+       <div class="text-dark mb-3"> By clicking the button below you can create a custom order, no matter if the menu is accepted, expired or not.</div>
+        <div class="text-center">
+        <a href="{% url 'order:custom_order' %}"  class="btn btn-warning">Create custom order</a>
+    </div></div>
+      </div>
+      
+      
   </div>
 </div>
 

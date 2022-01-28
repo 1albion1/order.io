@@ -1,4 +1,6 @@
+from django.http import Http404
 from django.shortcuts import render,get_object_or_404,redirect
+from django.template import context
 from main.decorators import allowed_users 
 from django.http.response import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
@@ -12,6 +14,7 @@ from employee.employee_status import can_user_order
 from meal.models import Meal
 from order.filters import OrderFilter
 from notification.models import Notification
+from order.forms import OrderCreationForm
 # Create your views here.
 # Create your views here.
 @login_required(login_url="login")
@@ -130,3 +133,34 @@ def full_order_history(request):
         orders = order_filter.qs
     context = {"order_filter":order_filter,"orders":orders}
     return render(request,"order/full_order_history.html",context)
+
+@login_required(login_url="login")
+@allowed_users(allowed_roles=['manager'])
+def custom_order(request):
+    form = OrderCreationForm()
+    if request.method == "POST":
+        order_form = OrderCreationForm(request.POST)
+        if order_form.is_valid():
+            order = order_form.save()
+            meals = request.POST.getlist('meals')
+            order.meals.set(meals)
+            order.save()
+            messages.success(request,"Custom order created successfully!")
+            return redirect("manager:index")
+        
+    context = {"form":form}
+    return render(request,"order/custom_order.html",context)
+
+@login_required(login_url="login")
+@allowed_users(allowed_roles=['user'])
+def delete_order(request,pk):
+    order = get_object_or_404(Order,pk=pk)
+    if order.employee == request.user.employee:
+        if order.order_status == 'Pending':
+            order.delete()
+        else:
+            messages.warning(request,"You can only cancel orders that are pending!")
+            return redirect("employee:index")
+    else:
+        return HttpResponse("You cannot delete this order!")
+    return redirect("employee:index")

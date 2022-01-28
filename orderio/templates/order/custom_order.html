@@ -1,0 +1,64 @@
+{% extends "../manager-base.html" %}
+{% block title %}
+Custom Order
+{% endblock title %}
+{% block content %}
+<div class="container-fluid" >
+    {% for message in messages %}
+        <div class="alert alert-{{message.level_tag}}  alert-dismissible fade show">
+            {{message}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+    <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+                <div class="col-lg-8 offset-md-2">
+                    <div class="p-5">
+                        <div class="text-center mb-4">
+                            <h1 class="h4 text-gray-900 ">Create custom order!</h1>
+                            <p class="text-info">Fields marked with an asterisk (*) are required.</p>
+                        </div>
+                            <form method="post" action="" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                {{form.employee.label}} *<br>
+                            {{form.employee}}<br>
+                            {{form.meals.label}} *<br>
+                            {{form.meals}}<br>
+                            {{form.menu.label}} *<br>
+                            {{form.menu}}<br>
+                            {{form.order_status.label}} <br>
+                            {{form.order_status}}<br>
+                            {{form.order_cost.label}} *<br>
+                            {{form.order_cost}}<br>
+                            
+                            
+                            
+                            
+                                {% if form.errors %}
+                                  {% for field in form %}
+                                      {% for error in field.errors %} 
+                                          <div class="alert alert-danger">
+                                              <strong>{{ error|escape }}</strong>
+                                          </div>
+                                      {% endfor %}
+                                  {% endfor %}
+                                {% endif %}
+                                <div class="text-center">
+                                    <input type="submit" value="Create Order" class="btn btn-primary btn-user btn-block">
+                                </div>
+                           
+                            </form>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}
