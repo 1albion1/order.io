@@ -54,8 +54,8 @@ class UserProfileForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['department'].widget.attrs.update({'class': 'form-control form-control-user','placeholder':'Username'})
-        self.fields['phone_number'].widget.attrs.update({'class': 'form-control form-control-user','placeholder':'Email'})
-        self.fields['profile_pic'].widget.attrs.update({'class': 'form-control form-control-user','placeholder':'Username'})
+        self.fields['phone_number'].widget.attrs.update({'class': 'form-control form-control-user','placeholder':'Phone Number'})
+        self.fields['profile_pic'].widget.attrs.update({'class': 'form-control form-control-user','placeholder':'Profile Picture'})
         
         
 class FnameLnameForm(ModelForm):

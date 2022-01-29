@@ -16,7 +16,7 @@ def create_meal(request):
         if form.is_valid():
             messages.success(request,f"Meal {request.POST.get('name')} was created successfully!")
             form.save()
-            return redirect("meal:index")
+            return redirect("meal:create_meal")
             
     context = {"form":form}
     return render(request,"meal/create_meal.html",context)

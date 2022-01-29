@@ -1,10 +1,17 @@
-from datetime import time
-from datetime import datetime,date
+# from meal.models import Meal,Category
+# import urllib.request, json 
+# import random
+# with open('foods.json') as json_file:
+#     data = json.load(json_file)
+ 
+#     # Print the type of data variable
+#     for item in data['foodItems']:
+#         Meal(category=random.choice(Category.objects.all()),name=item['foodName'],price=round(random.uniform(0.50, 3.50), 2),calories = item['calories']).save()
 
-print(datetime.now())
-week = 1
-month = 1
-year =2021
-weekday = 2
+    
+       
 
-print(datetime.fromisocalendar(2022,1,6))
+
+# #category = random.choice(Category.objects.all())
+# #print(round(random.uniform(0.50, 3.50), 2))
+

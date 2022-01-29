@@ -30,6 +30,7 @@
                        <th>Image</th>
                       <th>Meal Name</th>
                       <th>Description</th>
+                      <th>Category</th>
                       <th>Action</th>
                      </tr>
                  </thead>
@@ -47,6 +48,7 @@
                      <td> <img src="{{meal.meal_img.url}}" class="img-thumbnai" width="50px" height="50px" alt=""></td>
                      <td><a href="{{meal.get_absolute_url}}" >{{meal.name|truncatechars:20}}</a> </td>
                      <td>{{meal.description|truncatechars:40}}</td>
+                     <td>{{meal.category.name|truncatechars:40}}</td>
                      <td>
                       <a href="{% url 'meal:update_meal' meal.id %}" class="btn btn-sm btn-info">Edit</a>  
                       <button data-url="{% url 'meal:delete_meal' meal.id %}" value="{% url 'meal:delete_meal' meal.id %}" data-bs-toggle="modal" data-bs-target="#exampleModal"

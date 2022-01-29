@@ -39,12 +39,12 @@ New Menu
                   <td>{{meal.description|truncatechars:50}}</td>
                   <td>{{meal.category.name}}</td>
                   <td>
-                    {% if bag|length < menu_cap and meal.id not in bag.get_meal_ids %}
+                    
                     <button class="btn btn-primary " id="add-btn{{meal.id}}" value="{{meal.id}}"
-                      data-url="{% url 'menu:update_session' %}">Add</button>
-                    {% else %}
-                    <button id="add-btn{{meal.id}}" class="btn btn-primary disabled">Add</button>
-                    {% endif %}
+                      data-url="{% url 'menu:update_session' %}" {% if bag|length >= menu_cap %}disabled{% endif %} >Add</button>
+
+                      
+                    
                   </td>
                 </tr>
               {% endfor %}
@@ -58,15 +58,22 @@ New Menu
         <h4 class="d-flex justify-content-between align-items-center mb-3">
           <span class="text-primary">Your menu</span>
 
-          <span class="badge bg-primary rounded-pill">{% with bag|length as b %}
+          <span class="badge bg-primary rounded-pill" id="stuff" 
+          data-bl = "{{bag|length}}" data-mc= "{{menu_cap}}"
+          >{% with bag|length as b %}
             {{b}}
             {% endwith %}</span>
         </h4>
 
         <ul class="list-group mb-3">
-          {% if bag|length == menu_cap %}
-          <div class="alert alert-danger">Menu is at maximum capacity!</div>
+          {% if bag|length >= menu_cap %}
+          <div class="alert alert-danger">Maximum meals allowed are {{menu_cap}}!</div>
+          
           {% endif %}
+          <script>
+            
+            
+          </script>
           {% for i in bag.get_menu_items.values %}
           <li class="list-group-item d-flex justify-content-between lh-sm">
             <div>
