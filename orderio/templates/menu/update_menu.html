@@ -9,6 +9,12 @@
   <a href="{% url 'menu:weekly_menu' %}">BACK</a>
   <!-- meal choosing -->
   <div class="row " >
+    {% for message in messages %}
+<div class="alert alert-{{message.level_tag}}  alert-dismissible fade show">
+    {{message}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
     <div class="col-lg-8 col-md-8  card shadow mb-4">
       <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary">You are editing menu for {{menu.get_day_name}}</h6>
@@ -37,7 +43,7 @@
               <td>{{meal.description|truncatechars:50}}</td>
               <td>{{meal.category.name}}</td>
               <td>
-                {% if bag|length < 7 %}
+                {% if item_count < 100 %}
                 
                 <a class="btn btn-primary" href="{% url 'menu:add_to_menu' meal.pk menu.pk %}">Add</a>
 
@@ -65,7 +71,7 @@
       </h4>
       
       <ul class="list-group mb-3">
-        {% if bag|length == 7 %}
+        {% if item_count == menu_cap %}
             
         <div class="alert alert-danger">Menu is at maximum capacity!</div>
         {% endif %}

@@ -70,10 +70,6 @@ New Menu
           <div class="alert alert-danger">Maximum meals allowed are {{menu_cap}}!</div>
           
           {% endif %}
-          <script>
-            
-            
-          </script>
           {% for i in bag.get_menu_items.values %}
           <li class="list-group-item d-flex justify-content-between lh-sm">
             <div>
@@ -111,7 +107,7 @@ New Menu
               </option>
               {% endfor %}
             </select>
-            <input type="number" name="menu_avability" class="form-control" placeholder="Avability">
+            <input type="number" required name="menu_avability" class="form-control" placeholder="Avability">
             <button type="submit" class="btn btn-success">Create Menu</button>
           </div>
         </form>

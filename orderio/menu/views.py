@@ -1,5 +1,5 @@
 from django.http.response import HttpResponse, JsonResponse
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import get_object_or_404, redirect, render,reverse
 from main.session_handle import Custom_Session
 from main.decorators import allowed_users
 from django.contrib.auth.decorators import login_required
@@ -59,6 +59,7 @@ def update_menu(request,pk):
     item_count = menu.meals.all().count()
     item_price_total = menu.get_menu_total_price()
     if request.method == 'POST':
+        
         avability = request.POST.get("avability")
         menu.avability = avability
         menu.save()
@@ -89,6 +90,10 @@ def add_to_menu(request,meal_pk,menu_pk):
     print(meal_pk)
     menu = get_object_or_404(Menu,pk=menu_pk)
     meal = get_object_or_404(Meal,pk=meal_pk)
+    item_count = menu.meals.all().count()
+    if item_count >= Menu.CAPACITY:
+            messages.warning(request,f"You cannot add more than {Menu.CAPACITY} meals")
+            return redirect(reverse("menu:update_menu",kwargs={"pk":menu.pk}))
     menu.meals.add(meal)
     return redirect("menu:update_menu",pk=menu_pk)
 
