@@ -3,6 +3,7 @@ from meal.models import Meal
 from django.utils import timezone
 from django.urls import reverse
 from datetime import date
+
 # Create your models here.
 class WeeklyMenu(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -35,7 +36,9 @@ class Menu(models.Model):
     Friday = 5
     Saturday = 6
     Sunday = 7
-    DAYS = ((Monday,"Monday"),
+    
+    DAYS = (
+            (Monday,"Monday"),
             (Tuesday,"Tuesday"),
             (Wendnesday,"Wendnesday"),
             (Thursday,"Thursday"),

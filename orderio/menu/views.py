@@ -75,7 +75,7 @@ def approve_menu(request,pk):
     menu.approved = True
     menu.approved_at = timezone.now()
     menu.save()
-    return redirect("menu:weekly_menu")
+    return redirect(request.META.get('HTTP_REFERER'))
 
 @login_required(login_url="login")
 @allowed_users(allowed_roles=['manager'])

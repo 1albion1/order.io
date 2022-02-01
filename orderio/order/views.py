@@ -49,6 +49,7 @@ def create_order(request):
 
                 for meal in meals.keys():
                     if not menu.meals.filter(pk=meal):
+                        ss.clear()
                         return HttpResponse("the meal is not on the menu")
                 total_price = ss.get_total_price()
                 order = Order(employee = employee, menu=menu,order_cost=total_price)
@@ -58,7 +59,7 @@ def create_order(request):
                 ss.clear()
                 messages.success(request,"Your order was created successfully!")
             else:
-                return redirect("employee:index")
+                return redirect(request.META.get('HTTP_REFERER'))
         else:
             messages.warning(request,"Menu does not allow orders anymore")
             return redirect("employee:index")

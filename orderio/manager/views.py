@@ -10,6 +10,7 @@ from django.utils import timezone
 from datetime import date
 from meal.models import Meal,Category
 import random
+from django.db.models import Q
 
 @login_required(login_url="login")
 @allowed_users(allowed_roles=['manager'])
@@ -123,7 +124,7 @@ def number_of_orders_by_day(request):
     menus = Menu.objects.filter(approved=True).order_by('-weekly_menu','created_for',)[:20]
     for menu in menus:
         labels.append(str(date.fromisocalendar(menu.weekly_menu.year,menu.weekly_menu.week,menu.created_for,).strftime("%a, %d/%b/%y")))
-        data.append(menu.order_set.all().count())
+        data.append(menu.order_set.filter(Q(order_status="Accepted")|Q(order_status="Pending")).count())
     return JsonResponse(data={
         'labels': labels,
         'data': data,

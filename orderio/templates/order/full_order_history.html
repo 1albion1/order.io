@@ -46,17 +46,22 @@
                         Employee
                     </th>
                     <th>
+                        Status
+                    </th>
+                    <th>
                         Action
                     </th>
                 </tr>
             </thead>
             <tbody>
                 
+                
             {% for order in orders %}
             <tr>
                 <td>{{order.menu.get_day_name}}</td>
                 <td>{{order.created_at}}</td>
                 <td>{{order.employee.user.username}}</td>
+                <td class='text-{% if order.order_status == "Accepted" %}success{% elif order.order_status == "Pending" %}warning{% else %}danger{% endif %}'>{{order.order_status}}</td>
                 <td>
                     <a href="{{order.get_absolute_url}}" class="btn btn-info btn-sm"><i class="far fa-eye"></i> View Details</a>
                 </td>

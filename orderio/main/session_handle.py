@@ -19,7 +19,7 @@ class  Custom_Session():
                 "name":str(product.name),
                 "description":str(product.description),
                 "calories":float(product.calories),
-                "meal_category":str(product.category),
+                "meal_category":str(product.category.name),
                 }
         self.save()
     
