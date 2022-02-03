@@ -32,12 +32,19 @@ def allowance_until_now(request):
         total_working_days = weekly_menu.menu_set.all()
         weekday = timezone.now().isoweekday()
         days_until_now = 0
-        for day in total_working_days:
+        index = 1
+        account_created_days = int((timezone.now()-request.user.employee.created_at).days)
+        if account_created_days < total_working_days.count():
+            index = total_working_days.count()-account_created_days
+            
+        for day in total_working_days[index-1:]:
             if int(day.created_for) > weekday:
                 break
             else:
                 if day.approved:
                     days_until_now += 1
+        
+            
         daily_allowance = request.user.employee.daily_allowance
         allowance_until_now = days_until_now*daily_allowance
         return allowance_until_now
