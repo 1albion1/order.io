@@ -28,12 +28,12 @@ def daily_orders(request):
         menu = weekly_menu.menu_set.get(created_for=day)
         orders = menu.order_set.all()
         if not menu.approved:
-            return render(request,'main/error-template.html',{"text":f"You have not approved today's menu! Go to 'This week\'s menu' and approve the menu for {menu.get_day_name()}"})
+            return render(request,'manager/error-template.html',{"text":f"You have not approved today's menu! Go to 'This week\'s menu' and approve the menu for {menu.get_day_name()}"})
         context={"orders":orders,"day":menu.get_day_name,"week":week,"year":year}
         return render(request,"order/daily_orders.html",context)
 
     except:
-        return render(request,'main/error-template.html',{"text":"You have not created a menu for today!"})
+        return render(request,'manager/error-template.html',{"text":"You have not created a menu for today!"})
 
     
 @login_required(login_url="login")
@@ -159,6 +159,7 @@ def delete_order(request,pk):
     if order.employee == request.user.employee:
         if order.order_status == 'Pending':
             order.delete()
+            messages.success(request,"Order was deleted successfully! You can now make a new order.")
         else:
             messages.warning(request,"You can only cancel orders that are pending!")
             return redirect("employee:index")

@@ -1,0 +1,23 @@
+{% extends "../manager-base.html" %}
+{% load static %}
+{% block title %}
+  Error
+{% endblock title %}
+{% block content %}
+  <!-- Begin Page Content -->
+  <div class="container-fluid d-flex justify-content-center align-items-center" style="height:80vh;">
+
+    <!-- 404 Error Text -->
+    <div class="text-center">
+        <div class="error mx-auto" data-text="OOPS">OOPS</div>
+        
+        <p class="text-info fs-2 fw-bold mb-0">{{text}}</p>
+        <a href="{% url 'main:index' %}">&larr; Back to Dashboard</a>
+    </div>
+
+</div>
+<!-- /.container-fluid -->
+{% endblock content %}
+                
+
+            

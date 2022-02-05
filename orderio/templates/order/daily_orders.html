@@ -15,7 +15,15 @@
  <h1 class="h3 mb-2 text-gray-800">Orders for <b>{{day}}</b>, Week {{week}} of year {{year}}</h1>
  <p class="mb-4">Here you can view,accept or deny today's orders.</p>
  {% if not orders %}
- No orders yet!
+ <div class="row justify-content-center">
+   <div class="col-log-4 col-md-4 text-center">
+    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 100%;" src="{% static 'img/sad.svg' %}" alt="...">
+    <h2 class="text-dark">No orders yet!</h2>
+   </div>
+   
+ </div>
+
+ 
 {% else %}
 
  <div class="card shadow mb-4">
