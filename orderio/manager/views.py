@@ -121,7 +121,10 @@ def chart_most_ordered_meals(request,pk):
 def number_of_orders_by_day(request):
     labels = []
     data = []
-    menus = Menu.objects.filter(approved=True).order_by('-weekly_menu','created_for',)[:20]
+    upper_bound = Menu.objects.filter(approved=True).count()
+    lower_bound = upper_bound-50 if upper_bound>50 else 0
+
+    menus = Menu.objects.filter(approved=True).order_by('-weekly_menu','created_for',)[lower_bound:upper_bound]
     for menu in menus:
         labels.append(str(date.fromisocalendar(menu.weekly_menu.year,menu.weekly_menu.week,menu.created_for,).strftime("%a, %d/%b/%y")))
         data.append(menu.order_set.filter(Q(order_status="Accepted")|Q(order_status="Pending")).count())
