@@ -8,30 +8,39 @@ Profile
 <div class="container rounded bg-white mt-5 mb-5 shadow">
     <div class="row">
         <div class="col-md-4 border-right">
+            
             <form action="" enctype="multipart/form-data" method="post">
             <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                
                 <img class="rounded-circle mt-5" width="150px" src="{{request.user.employee.profile_pic.url}}">
                 {{e_form.profile_pic}}
                 <span> 
-                </span></div>
+                </span><br>
+                </div>
         </div>
         <div class="col-md-8 border-right">
             <div class="p-3 py-5">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h4 class="text-right">User Profile</h4>
                 </div>
+                
                 <div class="row mt-2">
+                    <div class="col-md-6">
+                        <label class="labels">Email</label>
+                        <span class="form-control border-0 fw-bold fs-4">{{fl_form.email}}</span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="labels">username</label>
+                        <span class="form-control border-0 fw-bold fs-4">{{request.user.username}}</span>
+                    </div>
+                    
+                </div>
+                <div class="row mt-3">
                     <div class="col-md-6"><label class="labels">Name</label><br>
                         <span class="form-control border-0 fw-bold fs-4">{{fl_form.first_name}}</span>
                     </div>
                     <div class="col-md-6"><label class="labels">Surname</label>
                         <br><span class="form-control border-0 fw-bold fs-4">{{fl_form.last_name}}</span>
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-md-12">
-                        <label class="labels">Email</label>
-                        <span class="form-control border-0 fw-bold fs-4">{{fl_form.email}}</span>
                     </div>
                     <div class="col-md-12">
                         <label class="labels">Mobile Number</label>
